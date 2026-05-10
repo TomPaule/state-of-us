@@ -20,9 +20,6 @@ export default function Nav() {
           <span className="font-display text-lg font-medium tracking-tight text-stone-900">
             The State of Us
           </span>
-          <span className="hidden sm:block text-xs font-mono text-stone-400 mt-0.5">
-            Societal Health Index
-          </span>
         </Link>
 
         <nav className="flex items-center gap-1">
@@ -44,13 +41,6 @@ export default function Nav() {
             )
           })}
         </nav>
-
-        
-          href="#"
-          className="hidden md:block text-xs font-medium text-stone-500 hover:text-stone-900 transition-colors"
-        >
-          Subscribe to updates →
-        </a>
       </div>
     </header>
   )
