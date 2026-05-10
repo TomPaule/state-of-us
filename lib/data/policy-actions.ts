@@ -1,0 +1,286 @@
+import type { PolicyAction } from '../types'
+
+export const POLICY_ACTIONS: PolicyAction[] = [
+  {
+    id: 'ira',
+    title: 'Inflation Reduction Act — Clean Energy Investment',
+    date: 'Aug 2022',
+    administration: 'Biden',
+    overallDirection: 'toward',
+    description: 'The largest climate investment in US history — $369B for clean energy incentives, EV tax credits, and domestic manufacturing. Estimated to reduce US emissions 40% below 2005 levels by 2030.',
+    source: 'Congressional Budget Office · Princeton REPEAT Project · Goldman Sachs Research',
+    ringImpacts: [
+      {
+        ringId: 'environment',
+        verdict: 'toward',
+        explanation: 'The IRA is the single largest climate policy action in US history. Independent modeling from Princeton\'s REPEAT project estimates it will reduce US greenhouse gas emissions by 40–43% below 2005 levels by 2030, closing roughly half the gap to Paris Agreement targets.',
+        evidence: [
+          { type: 'good', text: '$369B in clean energy investment — wind, solar, battery storage, nuclear' },
+          { type: 'good', text: 'EV tax credits ($7,500) accelerating transition away from combustion vehicles' },
+          { type: 'good', text: 'Methane emissions fee — first direct price on fossil fuel pollution' },
+          { type: 'good', text: '$27B Greenhouse Gas Reduction Fund for low-income community clean energy' },
+          { type: 'bad',  text: 'Permitting reforms also accelerate some fossil fuel project approvals — a compromise for passage' },
+        ],
+      },
+      {
+        ringId: 'innovation',
+        verdict: 'toward',
+        explanation: 'The IRA functions as the largest industrial policy in US history since the interstate highway system, directing capital toward clean technology manufacturing and R&D. It has already triggered over $300B in private sector clean tech investment announcements.',
+        evidence: [
+          { type: 'good', text: '$30B in production tax credits for domestic solar panels, wind turbines, and battery cells' },
+          { type: 'good', text: '$10B investment tax credit for clean tech manufacturing facilities' },
+          { type: 'good', text: '$300B+ in private clean tech investment announced since passage' },
+          { type: 'neutral', text: 'Long-term innovation effects depend on sustained implementation across administrations' },
+        ],
+      },
+      {
+        ringId: 'economic',
+        verdict: 'toward',
+        explanation: 'The IRA creates an estimated 1.5 million clean energy jobs over a decade, with provisions targeting disadvantaged communities and union labor requirements for maximum incentives.',
+        evidence: [
+          { type: 'good', text: 'Prevailing wage and apprenticeship requirements for maximum tax credits' },
+          { type: 'good', text: 'Energy community bonuses for areas affected by coal plant closures' },
+          { type: 'good', text: 'Low-income household rebates for heat pumps and electric appliances' },
+          { type: 'bad',  text: 'Upfront costs of EV transition fall disproportionately on lower-income households' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'doge',
+    title: 'DOGE Federal Workforce Reductions',
+    date: 'Jan–Apr 2025',
+    administration: 'Trump',
+    overallDirection: 'away',
+    description: 'Department of Government Efficiency initiated mass federal layoffs across agencies including USAID, CDC, FDA, EPA, and Department of Education. Estimated 100,000+ positions eliminated or offered buyouts.',
+    source: 'Office of Personnel Management · GAO · Multiple Agency Inspector General Reports · Federal Court Rulings',
+    ringImpacts: [
+      {
+        ringId: 'governance',
+        verdict: 'away',
+        explanation: 'The scale and speed of workforce reductions — executed without congressional authorization in many cases — represents an unprecedented test of executive power versus legislative oversight. Courts have issued dozens of restraining orders finding many actions likely unlawful.',
+        evidence: [
+          { type: 'bad', text: 'USAID effectively dismantled — decades of institutional knowledge eliminated' },
+          { type: 'bad', text: 'Multiple actions found likely unlawful by federal courts' },
+          { type: 'bad', text: 'Congressional oversight bypassed — workforce reductions require legislative action in many cases' },
+          { type: 'bad', text: 'Inspector generals fired en masse — eliminating the internal watchdog function' },
+          { type: 'neutral', text: 'Some genuine efficiency gains possible — specific waste elimination not yet publicly documented at claimed scale' },
+        ],
+      },
+      {
+        ringId: 'lives',
+        verdict: 'away',
+        explanation: 'CDC, FDA, and NIH capacity reductions directly affect the US ability to monitor, detect, and respond to public health threats. Early evidence shows gaps in disease surveillance data reporting.',
+        evidence: [
+          { type: 'bad', text: 'CDC workforce cuts affected disease surveillance programs monitoring overdose, flu, and emerging pathogens' },
+          { type: 'bad', text: 'FDA reviewer cuts slow drug approval timelines — affecting access to treatments' },
+          { type: 'bad', text: 'NIH grant freezes halted ongoing research into cancer, heart disease, and infectious disease' },
+          { type: 'neutral', text: 'Some programs restored after court orders — net effect still being assessed' },
+        ],
+      },
+      {
+        ringId: 'economic',
+        verdict: 'mixed',
+        explanation: 'The economic effect is genuinely mixed. 100,000+ federal job losses creates immediate economic harm. Long-term fiscal savings claimed but not yet independently verified at the scale asserted.',
+        evidence: [
+          { type: 'bad', text: '100,000+ federal workers lost jobs abruptly — significant harm to individuals and communities' },
+          { type: 'neutral', text: 'DOGE claims $150B+ in savings — GAO and CBO have not independently verified this figure' },
+          { type: 'bad', text: 'Federal employment disproportionately employs veterans and workers with disabilities' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'tariffs',
+    title: 'Universal Import Tariffs — 2025 Escalation',
+    date: 'Apr 2025',
+    administration: 'Trump',
+    overallDirection: 'away',
+    description: '25% tariffs on Canada and Mexico, escalating tariffs on China reaching 145%, and a universal 10% baseline tariff on all imports. Largest increase in US tariff rates since the Smoot-Hawley Tariff Act of 1930.',
+    source: 'Peterson Institute for International Economics · Tax Foundation · Yale Budget Lab · Federal Reserve',
+    ringImpacts: [
+      {
+        ringId: 'financial',
+        verdict: 'away',
+        explanation: 'Broad tariffs function as a consumption tax paid by US importers and passed to consumers. Economic consensus is unusually strong that broad tariffs of this scale reduce overall economic efficiency and raise consumer prices.',
+        evidence: [
+          { type: 'bad', text: 'Peterson Institute estimates $1,300+ average annual household cost increase' },
+          { type: 'bad', text: 'Yale Budget Lab projects GDP reduction of 0.5–1.0% in first year' },
+          { type: 'bad', text: 'Retaliatory tariffs from Canada, EU, and China targeting US agricultural exports' },
+          { type: 'neutral', text: 'Some domestic manufacturing benefit possible in protected industries long-term' },
+        ],
+      },
+      {
+        ringId: 'economic',
+        verdict: 'away',
+        explanation: 'The burden of tariff-driven price increases falls disproportionately on lower-income households, who spend a higher share of income on imported goods including food, electronics, and clothing.',
+        evidence: [
+          { type: 'bad', text: 'Bottom income quintile faces proportionally larger price increases than top quintile' },
+          { type: 'bad', text: 'Grocery prices affected — Canada and Mexico supply significant US fresh produce' },
+          { type: 'neutral', text: 'Some US manufacturing jobs may be created in protected sectors — timeline uncertain' },
+        ],
+      },
+      {
+        ringId: 'existential',
+        verdict: 'away',
+        explanation: 'Trade relations with Canada and Mexico — the US\'s two largest trading partners and NATO allies — have been severely strained. The breakdown of USMCA undermines the international cooperation architecture the US spent decades building.',
+        evidence: [
+          { type: 'bad', text: 'USMCA effectively suspended — the trade agreement the US negotiated under Trump\'s first term' },
+          { type: 'bad', text: 'Canada-US relations at lowest point in post-WWII history' },
+          { type: 'bad', text: 'Weakens multilateral trade institutions that underpin international cooperation' },
+          { type: 'neutral', text: 'Bilateral deals possible — but no comprehensive agreements announced as of mid-2025' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'chips',
+    title: 'CHIPS and Science Act',
+    date: 'Aug 2022',
+    administration: 'Biden',
+    overallDirection: 'toward',
+    description: '$280B to boost domestic semiconductor manufacturing and scientific research. $52B in direct chip manufacturing subsidies, $200B for scientific R&D. First major US industrial policy in decades.',
+    source: 'Department of Commerce · Congressional Research Service · TSMC · Intel',
+    ringImpacts: [
+      {
+        ringId: 'innovation',
+        verdict: 'toward',
+        explanation: 'The CHIPS Act represents the most significant US investment in industrial policy since the Apollo program. It directly addresses the critical strategic vulnerability revealed by COVID-era semiconductor shortages.',
+        evidence: [
+          { type: 'good', text: 'TSMC building $65B fab in Arizona — first advanced chip manufacturing in US in decades' },
+          { type: 'good', text: 'Intel\'s $20B Ohio fab — largest private sector investment in Ohio history' },
+          { type: 'good', text: '$200B for NSF, DOE, and NIST scientific research — largest basic science investment in US history' },
+          { type: 'neutral', text: 'Long-term success depends on sustained workforce pipeline — engineering talent shortage is a real constraint' },
+        ],
+      },
+      {
+        ringId: 'existential',
+        verdict: 'toward',
+        explanation: 'Domestic semiconductor capacity is foundational to both military and economic security. The US military\'s dependence on Taiwanese chips represents a genuine existential vulnerability that this act partially addresses.',
+        evidence: [
+          { type: 'good', text: 'Reduces single-point-of-failure risk in Taiwan Strait for US military readiness' },
+          { type: 'good', text: 'Allied coordination — EU, Japan, and South Korea passing parallel chip resilience legislation' },
+          { type: 'neutral', text: 'Full military-grade chip independence remains years away — not a complete solution' },
+        ],
+      },
+      {
+        ringId: 'economic',
+        verdict: 'toward',
+        explanation: 'Semiconductor manufacturing creates high-wage jobs across skill levels. The geographic distribution of new fabs targets regions that have experienced manufacturing decline.',
+        evidence: [
+          { type: 'good', text: 'Ohio, Arizona, and Texas fabs creating 10,000+ direct manufacturing jobs each' },
+          { type: 'good', text: 'Chip manufacturing jobs average $110K+ annually — well above median wage' },
+          { type: 'good', text: '2-year degree pathways built into workforce programs — not just 4-year requirements' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'paris-withdraw',
+    title: 'Paris Agreement Withdrawal — Second Time',
+    date: 'Jan 2025',
+    administration: 'Trump',
+    overallDirection: 'away',
+    description: 'US formally withdrew from the Paris Climate Agreement on the first day of the second Trump term — the second US withdrawal after rejoining under Biden.',
+    source: 'UNFCCC · IPCC Synthesis Report · State Department · Climate Action Tracker',
+    ringImpacts: [
+      {
+        ringId: 'environment',
+        verdict: 'away',
+        explanation: 'US withdrawal removes the world\'s second-largest emitter from the primary international framework for climate coordination. IPCC models consistently show Paris targets require full US participation.',
+        evidence: [
+          { type: 'bad', text: 'US accounts for ~14% of global emissions — withdrawal undermines overall trajectory significantly' },
+          { type: 'bad', text: 'Climate Action Tracker downgrades global 2030 outlook following withdrawal' },
+          { type: 'neutral', text: 'IRA clean energy programs continue domestically — but without international coordination pressure' },
+          { type: 'bad', text: 'Other nations\' commitments weakened by US withdrawal — collective action problem' },
+        ],
+      },
+      {
+        ringId: 'existential',
+        verdict: 'away',
+        explanation: 'US withdrawal for the second time in 8 years signals that international agreements with the US cannot be relied upon — undermining the credibility of all US treaty commitments.',
+        evidence: [
+          { type: 'bad', text: 'US treaty reliability questioned — allies cannot plan 30-year commitments if US reverses every 4 years' },
+          { type: 'bad', text: 'China uses US withdrawal as diplomatic cover to slow its own commitments' },
+          { type: 'bad', text: 'Second withdrawal in one decade makes re-entry less credible to global partners' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'usaid',
+    title: 'USAID Dismantlement — Foreign Aid Freeze',
+    date: 'Jan–Feb 2025',
+    administration: 'Trump',
+    overallDirection: 'away',
+    description: 'USAID operations largely shut down, with $50B+ in foreign assistance frozen. Programs providing food, medicine, HIV treatment, and humanitarian aid to 40+ countries halted abruptly.',
+    source: 'USAID Inspector General · WHO · Lancet · Federal District Court Rulings',
+    ringImpacts: [
+      {
+        ringId: 'existential',
+        verdict: 'away',
+        explanation: 'Foreign aid is the primary tool through which the US builds the alliances, stability, and goodwill that underpin international cooperation. USAID\'s dismantlement signals US withdrawal from global leadership.',
+        evidence: [
+          { type: 'bad', text: 'China rapidly expanding development assistance in regions where USAID has withdrawn' },
+          { type: 'bad', text: 'US soft power significantly diminished — ability to influence without coercion reduced' },
+          { type: 'bad', text: 'Stability programs in conflict zones halted — fueling conditions for state failure' },
+        ],
+      },
+      {
+        ringId: 'lives',
+        verdict: 'away',
+        explanation: 'USAID programs have measurable mortality impact. The abrupt halt of HIV treatment, malaria prevention, vaccination programs, and food aid has immediate, quantifiable effects on preventable deaths.',
+        evidence: [
+          { type: 'bad', text: 'PEPFAR disruption affects 20M+ people on HIV antiretroviral treatment' },
+          { type: 'bad', text: 'WHO estimates USAID-funded programs prevented 500,000+ deaths annually' },
+          { type: 'bad', text: 'Malaria prevention programs serving 300M+ people in sub-Saharan Africa halted' },
+          { type: 'neutral', text: 'Some programs restored by court order — full restoration status contested as of mid-2025' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'infrastructure',
+    title: 'Bipartisan Infrastructure Law',
+    date: 'Nov 2021',
+    administration: 'Biden (bipartisan)',
+    overallDirection: 'toward',
+    description: '$1.2T infrastructure law funding roads, bridges, broadband, water systems, passenger rail, and EV charging. Passed with significant bipartisan support.',
+    source: 'White House Council on Environmental Quality · USDOT · NTIA · ASCE',
+    ringImpacts: [
+      {
+        ringId: 'quality',
+        verdict: 'toward',
+        explanation: 'The infrastructure law directly addresses the ASCE\'s C-grade US infrastructure report card, with targeted investment in transit, broadband, water, and mobility.',
+        evidence: [
+          { type: 'good', text: '$89B for public transit — largest federal transit investment in US history' },
+          { type: 'good', text: '$65B for broadband expansion — targeting the 14M+ Americans without access' },
+          { type: 'good', text: '$66B for passenger and freight rail — largest rail investment since Amtrak\'s creation' },
+          { type: 'good', text: '$55B for water infrastructure — replacing lead pipes serving millions' },
+        ],
+      },
+      {
+        ringId: 'environment',
+        verdict: 'toward',
+        explanation: 'The clean energy and transportation provisions reduce emissions through electrification of transport and modernization of the power grid.',
+        evidence: [
+          { type: 'good', text: '$7.5B for EV charging infrastructure — 500,000 chargers nationally' },
+          { type: 'good', text: 'Grid modernization investment — enables higher renewable energy penetration' },
+          { type: 'good', text: '$21B for environmental remediation — cleaning up Superfund and brownfield sites' },
+          { type: 'neutral', text: 'Road and highway investment could induce more driving — partially offsetting transit gains' },
+        ],
+      },
+      {
+        ringId: 'economic',
+        verdict: 'toward',
+        explanation: 'Infrastructure investment is among the highest-ROI government expenditures, with multiplier effects that generate economic activity beyond the initial spending.',
+        evidence: [
+          { type: 'good', text: 'Moody\'s estimates $2.20 in GDP growth per $1 of infrastructure spending' },
+          { type: 'good', text: 'Construction jobs created immediately — union-aligned wage standards included' },
+          { type: 'good', text: 'Broadband investment enables remote work and economic participation in rural areas' },
+          { type: 'neutral', text: 'Significant inflation in construction materials reduced real value of investment' },
+        ],
+      },
+    ],
+  },
+]
