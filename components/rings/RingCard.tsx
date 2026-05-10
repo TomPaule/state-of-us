@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import type { Ring } from '@/lib/types'
@@ -61,7 +62,7 @@ export default function RingCard({ ring, animationIndex = 0, isProofOfConcept = 
         </div>
       </div>
 
-      <div className="mb-0.5">
+      <div className="mb-3">
         <div className="text-xs text-stone-400 uppercase tracking-widest font-mono">Score</div>
         <div className="text-2xl font-semibold leading-tight" style={{ color: ring.color }}>
           {ring.score}
@@ -82,10 +83,6 @@ export default function RingCard({ ring, animationIndex = 0, isProofOfConcept = 
       </div>
 
       <StatusBadge status={ring.status} />
-
-      <div className="mt-2 text-xs text-stone-400 leading-relaxed line-clamp-2">
-        Goal: {ring.northStar}
-      </div>
     </Link>
   )
 }
