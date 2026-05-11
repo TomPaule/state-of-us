@@ -51,6 +51,7 @@ export const livesLostRing: Ring = {
           why: 'Cardiovascular disease becomes preventable when we address root causes — poor diet, physical inactivity, smoking, unmanaged stress, and lack of healthcare access. The 200,000 figure represents deaths that peer-nation healthcare systems routinely prevent.',
           source: 'CDC WONDER, IHME', unit: 'deaths/yr', trend: 'down', trendIsGood: true,
           chartLabel: 'Preventable CV deaths (K/yr)',
+          trust: { grade: 'A', explanation: 'CDC WONDER is the official US mortality registry using standardized death certificate coding. Preventable fraction from IHME peer-reviewed methodology replicated across multiple institutions.' },
           chart: [
             { year: 2000, us: 320, peer: 165, target: 0 }, { year: 2005, us: 300, peer: 155, target: 0 },
             { year: 2010, us: 275, peer: 140, target: 0 }, { year: 2015, us: 240, peer: 125, target: 0 },
@@ -62,6 +63,7 @@ export const livesLostRing: Ring = {
           why: 'Living in a food desert is independently associated with significantly higher rates of heart disease, diabetes, and obesity. This is a structural condition driven by retail investment decisions and agricultural subsidy policy — not personal choice.',
           source: 'USDA Economic Research Service', unit: 'million people', trend: 'stable', trendIsGood: false,
           chartLabel: 'Food desert population (M people)',
+          trust: { grade: 'B', explanation: 'USDA Economic Research Service uses consistent methodology but food desert definitions vary by study. Some researchers argue the metric understates access barriers in rural areas.' },
           chart: [
             { year: 2000, us: 18, peer: 8, target: 0 }, { year: 2005, us: 20, peer: 8, target: 0 },
             { year: 2010, us: 22, peer: 8, target: 0 }, { year: 2015, us: 23, peer: 8, target: 0 },
@@ -73,6 +75,7 @@ export const livesLostRing: Ring = {
           why: 'Without insurance, people with heart conditions delay treatment until emergency rooms — the most expensive and least effective intervention point. Uninsured patients with heart disease die significantly earlier than insured patients with identical conditions.',
           source: 'Kaiser Family Foundation', unit: 'million people', trend: 'down', trendIsGood: true,
           chartLabel: 'Uninsured with heart conditions (M)',
+          trust: { grade: 'B', explanation: 'Kaiser Family Foundation aggregates government survey data. Self-reported insurance status may undercount those with inadequate coverage.' },
           chart: [
             { year: 2010, us: 14, peer: 0, target: 0 }, { year: 2013, us: 13, peer: 0, target: 0 },
             { year: 2015, us: 10, peer: 0, target: 0 }, { year: 2017, us: 9, peer: 0, target: 0 },
@@ -84,6 +87,7 @@ export const livesLostRing: Ring = {
           why: 'Fine particulate matter enters the bloodstream and directly damages the cardiovascular system. Communities most exposed — typically low-income and communities of color — bear a disproportionate share of these deaths.',
           source: 'EPA, Lancet', unit: 'deaths/yr', trend: 'down', trendIsGood: true,
           chartLabel: 'Air pollution CV deaths (K/yr)',
+          trust: { grade: 'B', explanation: 'EPA air quality monitoring is robust in urban areas but has gaps in rural communities. Causal attribution to cardiovascular deaths uses established epidemiological models.' },
           chart: [
             { year: 2000, us: 110, peer: 40, target: 0 }, { year: 2005, us: 105, peer: 38, target: 0 },
             { year: 2010, us: 100, peer: 35, target: 0 }, { year: 2015, us: 92, peer: 32, target: 0 },
@@ -133,6 +137,7 @@ export const livesLostRing: Ring = {
           why: 'The IARC estimates 40–45% of US cancer cases are attributable to preventable causes: tobacco (largest driver), obesity, alcohol, physical inactivity, UV radiation, and certain infections.',
           source: 'IARC, NCI', unit: 'deaths/yr', trend: 'down', trendIsGood: true,
           chartLabel: 'Preventable cancer deaths (K/yr)',
+          trust: { grade: 'B', explanation: 'IARC methodology is peer-reviewed and internationally accepted. Attributable fraction estimates carry inherent uncertainty — range is 38-45% depending on assumptions.' },
           chart: [
             { year: 2000, us: 280, peer: 180, target: 0 }, { year: 2005, us: 268, peer: 172, target: 0 },
             { year: 2010, us: 255, peer: 162, target: 0 }, { year: 2015, us: 250, peer: 160, target: 0 },
@@ -144,6 +149,7 @@ export const livesLostRing: Ring = {
           why: 'The US 5-year cancer survival rate improved from ~50% in 1990 to 70% today. Immunotherapy, targeted therapy, and early detection drive this. The trend is genuinely positive.',
           source: 'NCI SEER', unit: '%', trend: 'up', trendIsGood: true,
           chartLabel: '5-year cancer survival rate (%)',
+          trust: { grade: 'A', explanation: 'NCI SEER is the gold standard for cancer survival data. Large sample sizes and decades of consistent methodology make this one of the most reliable metrics on the platform.' },
           chart: [
             { year: 1990, us: 50, peer: 48, target: 95 }, { year: 1995, us: 54, peer: 52, target: 95 },
             { year: 2000, us: 57, peer: 55, target: 95 }, { year: 2005, us: 60, peer: 58, target: 95 },
@@ -156,6 +162,7 @@ export const livesLostRing: Ring = {
           why: 'Cancer caught early is dramatically more survivable. Mammography, colonoscopy, cervical screening, and lung CT for high-risk populations are cost-effective interventions. The ~30M without access are overwhelmingly uninsured or underinsured.',
           source: 'Kaiser Family Foundation', unit: 'million people', trend: 'down', trendIsGood: true,
           chartLabel: 'Adults without recommended screening access (M)',
+          trust: { grade: 'B', explanation: 'KFF aggregates government survey data on insurance and access. Access gaps are likely understated since surveys miss the most marginalized populations.' },
           chart: [
             { year: 2010, us: 38, peer: 8, target: 0 }, { year: 2013, us: 35, peer: 7, target: 0 },
             { year: 2015, us: 33, peer: 7, target: 0 }, { year: 2017, us: 31, peer: 6, target: 0 },
@@ -167,6 +174,7 @@ export const livesLostRing: Ring = {
           why: 'Every major cancer survival improvement traces to federally funded basic research. Immunotherapy emerged from NIH-funded lab work decades before clinical application.',
           source: 'NIH Office of Budget', unit: '$B/yr', trend: 'up', trendIsGood: true,
           chartLabel: 'Cancer research funding ($B/yr)',
+          trust: { grade: 'A', explanation: 'NIH budget figures are official government data with no methodological ambiguity. Direct relationship between research funding and survival outcomes is well-established.' },
           chart: [
             { year: 2000, us: 2.4, peer: 1.0, target: 15 }, { year: 2005, us: 3.1, peer: 1.3, target: 15 },
             { year: 2010, us: 4.5, peer: 1.8, target: 15 }, { year: 2015, us: 5.0, peer: 2.1, target: 15 },
@@ -213,6 +221,7 @@ export const livesLostRing: Ring = {
           why: 'The US road fatality rate is dramatically higher than peer nations — not because Americans drive more unsafely, but because of design choices. Sweden\'s Vision Zero reduced their fatality rate by 80% over 30 years.',
           source: 'NHTSA, WHO', unit: 'deaths/yr', trend: 'up', trendIsGood: false,
           chartLabel: 'Road fatalities (K/yr)',
+          trust: { grade: 'A', explanation: 'NHTSA fatality data is collected from official police reports nationwide. One of the most consistently measured mortality metrics in the US.' },
           chart: [
             { year: 2000, us: 41.9, peer: 20, target: 0 }, { year: 2005, us: 43.5, peer: 18, target: 0 },
             { year: 2010, us: 33.0, peer: 14, target: 0 }, { year: 2015, us: 35.5, peer: 12, target: 0 },
@@ -224,6 +233,7 @@ export const livesLostRing: Ring = {
           why: 'US workplace fatality rates are higher than most peer nations. OSHA has roughly 1,800 federal inspectors for 10 million workplaces — enough to visit each once every 150 years.',
           source: 'Bureau of Labor Statistics', unit: 'deaths/yr', trend: 'up', trendIsGood: false,
           chartLabel: 'Workplace fatalities (K/yr)',
+          trust: { grade: 'A', explanation: 'Bureau of Labor Statistics Census of Fatal Occupational Injuries uses consistent methodology since 1992. Comprehensive coverage of employer-reported workplace deaths.' },
           chart: [
             { year: 2000, us: 6.0, peer: 3.5, target: 0 }, { year: 2005, us: 5.7, peer: 3.2, target: 0 },
             { year: 2010, us: 4.8, peer: 2.8, target: 0 }, { year: 2015, us: 4.8, peer: 2.5, target: 0 },
@@ -235,6 +245,7 @@ export const livesLostRing: Ring = {
           why: 'Falls are the leading cause of injury death among adults 65+, and the rate is rising as the population ages. Many are preventable through home modification, balance exercises, and medication review.',
           source: 'CDC, NCHS', unit: 'deaths/yr', trend: 'up', trendIsGood: false,
           chartLabel: 'Elderly fall deaths (K/yr)',
+          trust: { grade: 'A', explanation: 'CDC NCHS mortality data using standardized ICD-10 coding. Fall-related deaths are straightforwardly classified with minimal ambiguity.' },
           chart: [
             { year: 2000, us: 12, peer: 7, target: 0 }, { year: 2005, us: 16, peer: 8, target: 0 },
             { year: 2010, us: 21, peer: 9, target: 0 }, { year: 2015, us: 26, peer: 10, target: 0 },
@@ -278,6 +289,7 @@ export const livesLostRing: Ring = {
             why: 'Fentanyl is 50× more potent than heroin and is now present in virtually every illicit drug supply in the US — including counterfeit pills marketed as oxycodone, Xanax, and Adderall. Even people not seeking opioids are at risk.',
             source: 'CDC WONDER', unit: 'deaths/yr', trend: 'stable', trendIsGood: false,
             chartLabel: 'Fentanyl-involved deaths (K/yr)',
+            trust: { grade: 'B', explanation: 'CDC WONDER overdose data is reliable but fentanyl involvement is likely undercounted — many jurisdictions lack toxicology capacity to test every overdose death.' },
             chart: [
               { year: 2015, us: 9.5, peer: 0.5, target: 0 }, { year: 2016, us: 19, peer: 0.6, target: 0 },
               { year: 2017, us: 29, peer: 0.7, target: 0 }, { year: 2018, us: 32, peer: 0.8, target: 0 },
@@ -290,6 +302,7 @@ export const livesLostRing: Ring = {
             why: 'SAMHSA\'s National Survey consistently finds ~94% of people who need substance use treatment don\'t receive it. Primary barriers: cost, lack of providers, stigma, and criminalization that makes people afraid to seek help.',
             source: 'SAMHSA National Survey', unit: '% not receiving treatment', trend: 'up', trendIsGood: false,
             chartLabel: '% needing treatment not receiving it',
+            trust: { grade: 'B', explanation: 'SAMHSA survey data is self-reported and may undercount treatment need due to stigma. Methodology is consistent year over year making trends reliable even if absolute numbers are uncertain.' },
             chart: [
               { year: 2010, us: 90, peer: 40, target: 0 }, { year: 2013, us: 91, peer: 38, target: 0 },
               { year: 2015, us: 92, peer: 35, target: 0 }, { year: 2017, us: 93, peer: 33, target: 0 },
@@ -301,6 +314,7 @@ export const livesLostRing: Ring = {
             why: 'Addiction medicine research shows the window during which someone who wants treatment is willing to enter it is extremely short — often hours to days. A 28-day average waitlist means the vast majority of motivated people cannot access help in time.',
             source: 'SAMHSA, addiction medicine literature', unit: 'days', trend: 'up', trendIsGood: false,
             chartLabel: 'Average treatment waitlist (days)',
+            trust: { grade: 'C', explanation: 'Waitlist data is aggregated from multiple state surveys with inconsistent methodology. The 28-day figure is a reasonable estimate but varies significantly by region and treatment type.' },
             chart: [
               { year: 2010, us: 14, peer: 2, target: 1 }, { year: 2013, us: 18, peer: 2, target: 1 },
               { year: 2015, us: 22, peer: 2, target: 1 }, { year: 2017, us: 25, peer: 3, target: 1 },
@@ -349,6 +363,7 @@ export const livesLostRing: Ring = {
             why: 'The US maternal mortality rate is 5× the average of comparable wealthy nations and has risen for two decades while peer nations\' rates declined. Lack of universal coverage, postpartum care gaps, racial bias in treatment, and fragmented healthcare each contribute measurably.',
             source: 'CDC WONDER', unit: 'per 100K births', trend: 'up', trendIsGood: false,
             chartLabel: 'Maternal mortality rate (per 100K births)',
+            trust: { grade: 'A', explanation: 'CDC WONDER maternal mortality uses standardized ICD-10 coding. The US is one of few wealthy nations where this rate has risen — the trend is unambiguous across multiple data sources.' },
             chart: [
               { year: 2000, us: 9.8, peer: 5, target: 0 }, { year: 2005, us: 13, peer: 5, target: 0 },
               { year: 2010, us: 16, peer: 5, target: 0 }, { year: 2015, us: 18, peer: 5, target: 0 },
@@ -361,6 +376,7 @@ export const livesLostRing: Ring = {
             why: 'Black women die in childbirth at 2.6× the rate of white women regardless of income or education level. Research documents that Black patients\' pain is systematically undertreated and their symptoms are dismissed — not explained by underlying health conditions.',
             source: 'CDC, MMWR', unit: 'per 100K births', trend: 'up', trendIsGood: false,
             chartLabel: 'Black maternal mortality (per 100K births)',
+            trust: { grade: 'A', explanation: 'Racial disparity in maternal mortality is one of the most replicated findings in US health research. Consistent across CDC, academic, and state-level studies regardless of methodology.' },
             chart: [
               { year: 2018, us: 37, peer: 5, target: 0 }, { year: 2019, us: 44, peer: 5, target: 0 },
               { year: 2020, us: 55, peer: 6, target: 0 }, { year: 2021, us: 69, peer: 6, target: 0 },
@@ -372,6 +388,7 @@ export const livesLostRing: Ring = {
             why: 'Most maternal deaths occur in the weeks after delivery — not during it. Yet Medicaid coverage historically ended 60 days after birth. The American Rescue Plan allows states to extend to 12 months, but implementation is incomplete.',
             source: 'Medicaid data, KFF', unit: '% with no postpartum care', trend: 'down', trendIsGood: true,
             chartLabel: '% receiving no postpartum follow-up care',
+            trust: { grade: 'B', explanation: 'Postpartum care utilization data comes from Medicaid claims and survey data. Coverage varies by state making national figures an estimate. Direction of the gap is not in dispute.' },
             chart: [
               { year: 2018, us: 40, peer: 5, target: 0 }, { year: 2019, us: 40, peer: 5, target: 0 },
               { year: 2020, us: 40, peer: 5, target: 0 }, { year: 2021, us: 38, peer: 5, target: 0 },
@@ -419,6 +436,7 @@ export const livesLostRing: Ring = {
             why: 'Influenza and pneumonia alone kill 50,000+ Americans annually — most of whom could be protected by vaccines available at every pharmacy. Vaccination rates have declined in recent years, driven by misinformation ecosystems.',
             source: 'CDC, NCHS', unit: 'deaths/yr', trend: 'stable', trendIsGood: false,
             chartLabel: 'Vaccine-preventable deaths (K/yr)',
+            trust: { grade: 'B', explanation: 'CDC mortality data is reliable. Attribution of specific deaths to vaccine-preventable causes requires modeling assumptions — the 50,000 figure represents a reasonable central estimate.' },
             chart: [
               { year: 2010, us: 55, peer: 20, target: 5 }, { year: 2013, us: 54, peer: 19, target: 5 },
               { year: 2015, us: 52, peer: 18, target: 5 }, { year: 2017, us: 53, peer: 18, target: 5 },
@@ -431,6 +449,7 @@ export const livesLostRing: Ring = {
             why: 'Antibiotic-resistant bacteria kill 35,000 Americans annually and the number is rising. The primary driver is antibiotic overuse in industrial livestock farming — 70%+ of all US antibiotic use — creating reservoirs of resistant bacteria.',
             source: 'CDC Antibiotic Resistance Threats Report', unit: 'deaths/yr', trend: 'up', trendIsGood: false,
             chartLabel: 'Antibiotic resistance deaths (K/yr)',
+            trust: { grade: 'B', explanation: 'CDC antibiotic resistance threat report uses robust methodology. Causal chain from agricultural antibiotic use to human deaths involves multiple steps each with uncertainty.' },
             chart: [
               { year: 2010, us: 23, peer: 12, target: 0 }, { year: 2013, us: 26, peer: 12, target: 0 },
               { year: 2015, us: 28, peer: 13, target: 0 }, { year: 2017, us: 30, peer: 13, target: 0 },
@@ -442,6 +461,7 @@ export const livesLostRing: Ring = {
             why: 'Vaccination rates below 95% allow preventable diseases to re-emerge. Measles — eliminated from the US in 2000 — has returned in communities below the herd immunity threshold.',
             source: 'CDC NIS', unit: '% vaccinated', trend: 'down', trendIsGood: false,
             chartLabel: 'Childhood MMR vaccination rate (%)',
+            trust: { grade: 'A', explanation: 'CDC National Immunization Survey is one of the most methodologically rigorous ongoing surveys in public health. School-level vaccination data independently corroborates findings.' },
             chart: [
               { year: 2010, us: 95, peer: 96, target: 97 }, { year: 2013, us: 95, peer: 96, target: 97 },
               { year: 2015, us: 94, peer: 96, target: 97 }, { year: 2017, us: 94, peer: 97, target: 97 },
@@ -490,6 +510,7 @@ export const livesLostRing: Ring = {
             why: 'More than half of all gun deaths in the US are suicides. A firearm increases the lethality of a suicide attempt from ~5% to 85%. Means restriction — limiting firearm access during mental health crises — is among the most evidence-supported suicide prevention interventions.',
             source: 'CDC WONDER', unit: 'deaths/yr', trend: 'up', trendIsGood: false,
             chartLabel: 'Firearm suicides (K/yr)',
+            trust: { grade: 'A', explanation: 'CDC WONDER firearm death data is among the most reliable mortality statistics collected. Suicide vs homicide classification is made by medical examiners using consistent criteria.' },
             chart: [
               { year: 2000, us: 16, peer: 1.5, target: 0 }, { year: 2005, us: 17, peer: 1.5, target: 0 },
               { year: 2010, us: 17, peer: 1.5, target: 0 }, { year: 2015, us: 21, peer: 1.5, target: 0 },
@@ -502,6 +523,7 @@ export const livesLostRing: Ring = {
             why: 'Firearm homicides are heavily concentrated in communities experiencing poverty, disinvestment, and inadequate mental health services. Community violence intervention programs have strong evidence for effectiveness and receive a fraction of the funding that incarceration receives.',
             source: 'CDC WONDER', unit: 'deaths/yr', trend: 'up', trendIsGood: false,
             chartLabel: 'Firearm homicides (K/yr)',
+            trust: { grade: 'A', explanation: 'CDC WONDER firearm homicide data is collected from death certificates nationwide. Geographic concentration patterns are consistent across FBI, CDC, and academic sources.' },
             chart: [
               { year: 2000, us: 10, peer: 1.2, target: 0 }, { year: 2005, us: 11, peer: 1.2, target: 0 },
               { year: 2010, us: 11, peer: 1.2, target: 0 }, { year: 2015, us: 13, peer: 1.2, target: 0 },
@@ -514,6 +536,7 @@ export const livesLostRing: Ring = {
             why: 'States with universal background check requirements have significantly lower gun death rates than those without. But because state laws vary, firearms trafficked from permissive states undermine restrictive states\' laws. Federal policy is required for full effectiveness.',
             source: 'Everytown for Gun Safety', unit: 'states with UBC', trend: 'up', trendIsGood: true,
             chartLabel: 'States with universal background checks',
+            trust: { grade: 'A', explanation: 'State law status is objective and verifiable. Everytown tracks legislation in real time with primary source citation for every state.' },
             chart: [
               { year: 2000, us: 10, peer: 50, target: 50 }, { year: 2005, us: 12, peer: 50, target: 50 },
               { year: 2010, us: 14, peer: 50, target: 50 }, { year: 2015, us: 16, peer: 50, target: 50 },

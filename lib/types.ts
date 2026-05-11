@@ -12,6 +12,13 @@ export interface ChartPoint {
   target: number
 }
 
+export type TrustGrade = 'A' | 'B' | 'C' | 'D'
+
+export interface TrustRating {
+  grade: TrustGrade
+  explanation: string
+}
+
 export interface DataPoint {
   id: string
   label: string
@@ -25,6 +32,7 @@ export interface DataPoint {
   trendIsGood: boolean
   chart: ChartPoint[]
   chartLabel: string
+  trust: TrustRating
 }
 
 export interface Incentive {
