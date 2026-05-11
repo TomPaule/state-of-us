@@ -8,7 +8,7 @@ import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
 import TrendChart from '@/components/charts/TrendChart'
 
-type CategoryTab = 'data' | 'broken' | 'actions' | 'solutions' | 'news'
+type CategoryTab = 'data' | 'broken' | 'solutions' | 'news'
 
 function TrendArrow({ trend, trendIsGood }: { trend: DataPoint['trend']; trendIsGood: boolean }) {
   const good = (trend === 'up' && trendIsGood) || (trend === 'down' && !trendIsGood)
@@ -109,11 +109,10 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
   const [open, setOpen] = useState(false)
   const [tab, setTab] = useState<CategoryTab>('data')
 
-  const tabs: Array<{ id: CategoryTab; label: string }> = [
+const tabs: Array<{ id: CategoryTab; label: string }> = [
     { id: 'data',      label: 'Data & trends' },
     { id: 'broken',    label: 'What keeps this broken' },
-    { id: 'actions',   label: 'Actions' },
-    { id: 'solutions', label: 'Proximity to solutions' },
+    { id: 'solutions', label: 'Actions & solutions' },
     { id: 'news',      label: 'Recent developments' },
   ]
 
@@ -222,54 +221,71 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
               </div>
             )}
 
-            {tab === 'actions' && (
-              <div className="flex flex-col divide-y divide-stone-100">
-                {cat.actions.map(action => (
-                  <div key={action.id} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
-                    <TierPill tier={action.tier} />
-                    <div className="flex-1">
-                      <div className="text-sm font-medium text-stone-900 mb-0.5">{action.text}</div>
-                      <div className="text-xs text-stone-500 leading-relaxed">{action.detail}</div>
-                      {action.timeEstimate && (
-                        <div className="text-xs text-stone-400 mt-1 font-mono">⏱ {action.timeEstimate}</div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
 
             {tab === 'solutions' && (
-              <div>
-                <p className="text-sm text-stone-600 mb-4 leading-relaxed">
-                  How close are we to meaningful solutions? What would it take — and what can you do to help?
-                </p>
-                <div className="flex flex-col gap-4">
-                  {cat.solutions.map((sol, i) => (
-                    <div key={i} className="border border-stone-200 rounded-xl p-4 bg-stone-50">
-                      <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
-                        <div className="text-sm font-semibold text-stone-900">{sol.name}</div>
-                        <ProximityBadge proximity={sol.proximity} />
-                      </div>
-                      <p className="text-sm text-stone-600 leading-relaxed mb-3">{sol.description}</p>
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="flex-1 h-1.5 bg-stone-200 rounded-full overflow-hidden">
-                          <div className="h-full rounded-full" style={{ width: `${sol.progress}%`, background: sol.progressColor }} />
-                        </div>
-                        <span className="text-xs text-stone-400 font-mono shrink-0">{sol.progress}% ready</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {sol.actions.map((a, j) => (
-                          <button key={j} className="text-xs px-3 py-1 rounded-full border border-stone-300 text-stone-600 hover:bg-stone-100 transition-colors">
-                            {a} ↗
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+  <div>
+    {/* Actions */}
+    <div className="mb-8">
+      <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-4">
+        What you can do
+      </div>
+      <div className="flex flex-col divide-y divide-stone-100">
+        {cat.actions.map(action => (
+          <div key={action.id} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
+            <TierPill tier={action.tier} />
+            <div className="flex-1">
+              <div className="text-sm font-medium text-stone-900 mb-0.5">{action.text}</div>
+              <div className="text-xs text-stone-500 leading-relaxed">{action.detail}</div>
+              {action.timeEstimate && (
+                <div className="text-xs text-stone-400 mt-1 font-mono">⏱ {action.timeEstimate}</div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Solutions */}
+    <div>
+      <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-4">
+        Proximity to solutions
+      </div>
+      <p className="text-sm text-stone-600 mb-4 leading-relaxed">
+        How close are we to meaningful change? What needs to happen — and how can you help move it forward?
+      </p>
+      <div className="flex flex-col gap-4">
+        {cat.solutions.map((sol, i) => (
+          <div key={i} className="border border-stone-200 rounded-xl p-4 bg-stone-50">
+            <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
+              <div className="text-sm font-semibold text-stone-900">{sol.name}</div>
+              <ProximityBadge proximity={sol.proximity} />
+            </div>
+            <p className="text-sm text-stone-600 leading-relaxed mb-3">{sol.description}</p>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex-1 h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full"
+                  style={{ width: `${sol.progress}%`, background: sol.progressColor }}
+                />
               </div>
-            )}
+              <span className="text-xs text-stone-400 font-mono shrink-0">{sol.progress}% ready</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {sol.actions.map((a, j) => (
+                <button
+                  key={j}
+                  className="text-xs px-3 py-1 rounded-full border border-stone-300 text-stone-600 hover:bg-stone-100 transition-colors"
+                >
+                  {a} ↗
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
 
             {tab === 'news' && (
               <div>
