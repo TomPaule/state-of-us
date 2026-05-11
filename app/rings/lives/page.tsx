@@ -40,6 +40,35 @@ function ProximityBadge({ proximity }: { proximity: 'close' | 'medium' | 'far' }
   return <span className={clsx('px-2 py-0.5 rounded text-xs font-medium', styles[proximity])}>{labels[proximity]}</span>
 }
 
+function TrustBadge({ grade, explanation }: { grade: string; explanation: string }) {
+  const colors: Record<string, string> = {
+    A: 'bg-green-50 text-green-700 border-green-200',
+    B: 'bg-blue-50 text-blue-700 border-blue-200',
+    C: 'bg-amber-50 text-amber-700 border-amber-200',
+    D: 'bg-red-50 text-red-700 border-red-200',
+  }
+  const [show, setShow] = useState(false)
+  return (
+    <div className="relative inline-block">
+      <button
+        onClick={e => { e.stopPropagation(); setShow(s => !s) }}
+        className={clsx('inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-xs font-bold', colors[grade])}
+      >
+        {grade}
+      </button>
+      {show && (
+        <div className="absolute right-0 top-6 z-10 w-64 bg-white border border-stone-200 rounded-lg p-3 shadow-card-hover text-xs text-stone-600 leading-relaxed">
+          <div className="font-medium text-stone-900 mb-1">Data quality: {grade}</div>
+          {explanation}
+          <div className="mt-2 pt-2 border-t border-stone-100 text-stone-400">
+            A = official registry · B = peer-reviewed · C = estimated · D = contested
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) {
   const [open, setOpen] = useState(false)
   return (
@@ -48,7 +77,12 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
         onClick={() => setOpen(o => !o)}
         className="w-full text-left p-3 hover:bg-stone-50 rounded-lg transition-colors"
       >
-        <div className="text-xs text-stone-400 mb-1">{dp.label}</div>
+        <div className="flex items-center justify-between mb-1">
+          <div className="text-xs text-stone-400">{dp.label}</div>
+          {dp.trust && (
+            <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />
+          )}
+        </div>
         <div className="flex items-center justify-between gap-2">
           <div className="text-base font-semibold text-stone-900">{dp.value}</div>
           <TrendArrow trend={dp.trend} trendIsGood={dp.trendIsGood} />
