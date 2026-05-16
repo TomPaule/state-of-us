@@ -75,7 +75,7 @@ function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legis
           rel="noopener noreferrer"
           className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0"
         >
-          View bill →
+          View bill &#8594;
         </a>
       </div>
 
