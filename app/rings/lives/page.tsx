@@ -40,6 +40,137 @@ function ProximityBadge({ proximity }: { proximity: 'close' | 'medium' | 'far' }
   return <span className={clsx('px-2 py-0.5 rounded text-xs font-medium', styles[proximity])}>{labels[proximity]}</span>
 }
 
+function DifficultyPill({ difficulty }: { difficulty: string }) {
+  const styles: Record<string, string> = {
+    low:    'bg-green-50 text-green-700',
+    medium: 'bg-amber-50 text-amber-700',
+    high:   'bg-red-50 text-red-700',
+  }
+  const labels: Record<string, string> = {
+    low: 'Easy to start', medium: 'Some effort', high: 'Heavy lift',
+  }
+  return (
+    <span className={clsx('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', styles[difficulty])}>
+      {labels[difficulty]}
+    </span>
+  )
+}
+
+function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legislation']> }) {
+  const statusSteps = ['introduced', 'in-committee', 'passed-house', 'passed-senate', 'signed']
+  const currentStep = statusSteps.indexOf(legislation.status)
+  const isDead = legislation.status === 'dead'
+  const supportPct = Math.round((legislation.supportCount / legislation.totalPossible) * 100)
+
+  return (
+    <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+      <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
+        <div>
+          <div className="text-xs font-semibold text-blue-900">{legislation.billName}</div>
+          <div className="text-xs text-blue-600">{legislation.billNumber}</div>
+        </div>
+        
+          href={legislation.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0"
+        >
+          View bill →
+        </a>
+      </div>
+
+      <p className="text-xs text-blue-700 leading-relaxed mb-3">{legislation.summary}</p>
+
+      {isDead ? (
+        <div className="text-xs text-red-600 font-medium">✗ This bill did not pass</div>
+      ) : (
+        <>
+          {/* Progress through stages */}
+          <div className="flex items-center gap-1 mb-3">
+            {statusSteps.map((step, i) => (
+              <div key={step} className="flex items-center gap-1 flex-1">
+                <div className={clsx(
+                  'h-1.5 rounded-full flex-1',
+                  i <= currentStep ? 'bg-blue-500' : 'bg-blue-100'
+                )} />
+                {i === statusSteps.length - 1 && (
+                  <div className={clsx(
+                    'w-2 h-2 rounded-full shrink-0',
+                    i <= currentStep ? 'bg-blue-500' : 'bg-blue-100'
+                  )} />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between text-xs text-blue-500 mb-3">
+            <span>Introduced</span>
+            <span>Signed</span>
+          </div>
+
+          {/* Support count */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-blue-500 rounded-full"
+                style={{ width: `${supportPct}%` }}
+              />
+            </div>
+            <span className="text-xs text-blue-700 font-medium shrink-0">
+              {legislation.supportCount} of {legislation.totalPossible} supporters
+            </span>
+          </div>
+          <div className="text-xs text-blue-400 mt-1">Updated {legislation.lastUpdated}</div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function SolvedPrecedentBlock({ precedent, color }: { precedent: NonNullable<DataPoint['solvedPrecedent']>; color: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="mt-3 border border-green-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left p-3 bg-green-50 hover:bg-green-100 transition-colors flex items-center justify-between gap-2"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-green-600 font-bold text-sm">✓</span>
+          <div>
+            <div className="text-xs font-semibold text-green-800">We solved something like this before</div>
+            <div className="text-xs text-green-600">{precedent.title}</div>
+          </div>
+        </div>
+        <span className={clsx('text-green-500 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="p-3 bg-white border-t border-green-100">
+          <p className="text-sm text-stone-700 leading-relaxed mb-2">{precedent.description}</p>
+          <div className="flex gap-4 flex-wrap mb-3">
+            <div>
+              <div className="text-xs text-stone-400 uppercase tracking-widest">Outcome</div>
+              <div className="text-xs font-medium text-green-700">{precedent.outcome}</div>
+            </div>
+            <div>
+              <div className="text-xs text-stone-400 uppercase tracking-widest">Time taken</div>
+              <div className="text-xs font-medium text-stone-700">{precedent.timeTaken}</div>
+            </div>
+          </div>
+          {precedent.chart && precedent.chartLabel && (
+            <TrendChart
+              data={precedent.chart}
+              label={precedent.chartLabel}
+              color="#16A34A"
+              height={100}
+              showTarget={false}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function TrustBadge({ grade, explanation }: { grade: string; explanation: string }) {
   const colors: Record<string, string> = {
     A: 'bg-green-50 text-green-700 border-green-200',
@@ -99,6 +230,9 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
           </div>
           <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={120} />
           <div className="mt-2 text-xs text-stone-400">Source: {dp.source}</div>
+          {dp.solvedPrecedent && (
+            <SolvedPrecedentBlock precedent={dp.solvedPrecedent} color={ringColor} />
+          )}
         </div>
       )}
     </div>
@@ -231,16 +365,38 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
       </div>
       <div className="flex flex-col divide-y divide-stone-100">
         {cat.actions.map(action => (
-          <div key={action.id} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
-            <TierPill tier={action.tier} />
-            <div className="flex-1">
-              <div className="text-sm font-medium text-stone-900 mb-0.5">{action.text}</div>
-              <div className="text-xs text-stone-500 leading-relaxed">{action.detail}</div>
-              {action.timeEstimate && (
-                <div className="text-xs text-stone-400 mt-1 font-mono">⏱ {action.timeEstimate}</div>
-              )}
-            </div>
-          </div>
+          <div key={action.id} className="py-4 first:pt-0 border-b border-stone-100 last:border-0">
+  <div className="flex items-start gap-3 mb-2">
+    <TierPill tier={action.tier} />
+    <div className="flex-1">
+      <div className="text-sm font-medium text-stone-900 mb-0.5">{action.text}</div>
+      <div className="text-xs text-stone-500 leading-relaxed">{action.detail}</div>
+    </div>
+  </div>
+
+  {/* Meta row */}
+  <div className="flex items-center gap-2 flex-wrap ml-0 mt-2">
+    {action.timeEstimate && (
+      <span className="text-xs text-stone-400 font-mono">⏱ {action.timeEstimate}</span>
+    )}
+    {action.difficulty && (
+      <DifficultyPill difficulty={action.difficulty} />
+    )}
+  </div>
+
+  {/* Evidence base */}
+  {action.evidenceBase && (
+    <div className="mt-2 text-xs text-stone-500 italic leading-relaxed pl-0">
+      <span className="font-medium not-italic text-stone-600">Why this works: </span>
+      {action.evidenceBase}
+    </div>
+  )}
+
+  {/* Legislation */}
+  {action.legislation && (
+    <BillStatusBar legislation={action.legislation} />
+  )}
+</div>
         ))}
       </div>
     </div>
