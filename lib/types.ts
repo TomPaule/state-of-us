@@ -33,6 +33,7 @@ export interface DataPoint {
   chart: ChartPoint[]
   chartLabel: string
   trust: TrustRating
+  solvedPrecedent?: SolvedPrecedent
 }
 
 export interface Incentive {
@@ -41,15 +42,48 @@ export interface Incentive {
   what: string
 }
 
+export type ActionDifficulty = 'low' | 'medium' | 'high'
+
+export type BillStatus =
+  | 'introduced'
+  | 'in-committee'
+  | 'passed-house'
+  | 'passed-senate'
+  | 'signed'
+  | 'dead'
+
+export interface Legislation {
+  billName: string
+  billNumber: string
+  status: BillStatus
+  supportCount: number
+  totalPossible: number
+  lastUpdated: string
+  url: string
+  summary: string
+}
+
+export interface SolvedPrecedent {
+  title: string
+  description: string
+  outcome: string
+  timeTaken: string
+  chart?: ChartPoint[]
+  chartLabel?: string
+}
+
 export interface Action {
   id: string
   tier: ActionTier
   text: string
   detail: string
+  timeEstimate?: string
+  difficulty?: ActionDifficulty
+  impactScale?: 1 | 2 | 3
+  evidenceBase?: string
+  legislation?: Legislation
   organization?: string
   organizationUrl?: string
-  timeEstimate?: string
-  impactScale?: 1 | 2 | 3
 }
 
 export interface Solution {
