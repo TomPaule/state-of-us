@@ -80,25 +80,25 @@ function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legis
       ) : (
         <>
           {/* Progress through stages */}
-          <div className="flex items-center gap-1 mb-3">
+          {/* Stage indicator */}
+          <div className="flex items-center gap-1 mb-2">
             {statusSteps.map((step, i) => (
-              <div key={step} className="flex items-center gap-1 flex-1">
+              <div key={step} className="flex-1 text-center">
                 <div className={clsx(
-                  'h-1.5 rounded-full flex-1',
+                  'h-1.5 rounded-full mb-1',
                   i <= currentStep ? 'bg-blue-500' : 'bg-blue-100'
                 )} />
-                {i === statusSteps.length - 1 && (
-                  <div className={clsx(
-                    'w-2 h-2 rounded-full shrink-0',
-                    i <= currentStep ? 'bg-blue-500' : 'bg-blue-100'
-                  )} />
-                )}
+                <div className={clsx(
+                  'text-xs hidden sm:block',
+                  i <= currentStep ? 'text-blue-600 font-medium' : 'text-blue-200'
+                )}>
+                  {step === 'in-committee' ? 'Committee' :
+                   step === 'passed-house' ? 'House' :
+                   step === 'passed-senate' ? 'Senate' :
+                   step.charAt(0).toUpperCase() + step.slice(1)}
+                </div>
               </div>
             ))}
-          </div>
-          <div className="flex justify-between text-xs text-blue-500 mb-3">
-            <span>Introduced</span>
-            <span>Signed</span>
           </div>
 
           {/* Support count */}
