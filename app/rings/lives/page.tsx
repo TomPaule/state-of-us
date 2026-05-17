@@ -77,14 +77,8 @@ function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legis
           <div className="text-xs font-semibold text-blue-900">{legislation.billName}</div>
           <div className="text-xs text-blue-600">{legislation.billNumber}</div>
         </div>
-        
-          href={legislation.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0"
-        >
-          View bill
-        </a>
+        <a href={legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0">View bill</a>
+          
       </div>
 
       <p className="text-xs text-blue-700 leading-relaxed mb-3">{legislation.summary}</p>
