@@ -60,7 +60,15 @@ function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legis
   const statusSteps = ['introduced', 'in-committee', 'passed-house', 'passed-senate', 'signed']
   const currentStep = statusSteps.indexOf(legislation.status)
   const isDead = legislation.status === 'dead'
-  const supportPct = Math.round((legislation.supportCount / legislation.totalPossible) * 100)
+  const stepPct = Math.round((legislation.currentStepCount / legislation.currentStepTotal) * 100)
+
+  const stepLabels: Record<string, string> = {
+    'introduced':    'Intro',
+    'in-committee':  'Committee',
+    'passed-house':  'House',
+    'passed-senate': 'Senate',
+    'signed':        'Signed',
+  }
 
   return (
     <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
@@ -70,7 +78,13 @@ function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legis
           <div className="text-xs text-blue-600">{legislation.billNumber}</div>
         </div>
         
-          <a href={legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0">View bill</a>
+          href={legislation.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0"
+        >
+          View bill
+        </a>
       </div>
 
       <p className="text-xs text-blue-700 leading-relaxed mb-3">{legislation.summary}</p>
@@ -79,41 +93,58 @@ function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legis
         <div className="text-xs text-red-600 font-medium">✗ This bill did not pass</div>
       ) : (
         <>
-          {/* Progress through stages */}
-          {/* Stage indicator */}
-          <div className="flex items-center gap-1 mb-2">
-            {statusSteps.map((step, i) => (
-              <div key={step} className="flex-1 text-center">
-                <div className={clsx(
-                  'h-1.5 rounded-full mb-1',
-                  i <= currentStep ? 'bg-blue-500' : 'bg-blue-100'
-                )} />
-                <div className={clsx(
-                  'text-xs hidden sm:block',
-                  i <= currentStep ? 'text-blue-600 font-medium' : 'text-blue-200'
-                )}>
-                  {step === 'in-committee' ? 'Committee' :
-                   step === 'passed-house' ? 'House' :
-                   step === 'passed-senate' ? 'Senate' :
-                   step.charAt(0).toUpperCase() + step.slice(1)}
+          {/* Bar 1 — Where is the bill in the process */}
+          <div className="mb-1">
+            <div className="text-xs text-blue-500 font-medium mb-1">Where is this bill?</div>
+            <div className="flex gap-1 mb-1">
+              {statusSteps.map((step, i) => (
+                <div key={step} className="flex-1">
+                  <div className={clsx(
+                    'h-1.5 rounded-full',
+                    i <= currentStep ? 'bg-blue-500' : 'bg-blue-100'
+                  )} />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex justify-between">
+              {statusSteps.map((step, i) => (
+                <div
+                  key={step}
+                  className={clsx(
+                    'text-xs text-center flex-1',
+                    i === currentStep
+                      ? 'text-blue-700 font-semibold'
+                      : i < currentStep
+                      ? 'text-blue-400'
+                      : 'text-blue-200'
+                  )}
+                >
+                  {stepLabels[step]}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Support count */}
-          <div className="flex items-center gap-2">
-            <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-blue-500 rounded-full"
-                style={{ width: `${supportPct}%` }}
-              />
+          {/* Bar 2 — Where are we in the current step */}
+          <div className="mt-3">
+            <div className="text-xs text-blue-500 font-medium mb-1">
+              Progress in current step
             </div>
-            <span className="text-xs text-blue-700 font-medium shrink-0">
-              {legislation.supportCount} of {legislation.totalPossible} supporters
-            </span>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-blue-500 rounded-full transition-all duration-700"
+                  style={{ width: `${Math.min(stepPct, 100)}%` }}
+                />
+              </div>
+              <span className="text-xs text-blue-700 font-medium shrink-0">
+                {legislation.currentStepCount} of {legislation.currentStepTotal}
+              </span>
+            </div>
+            <div className="text-xs text-blue-400 mt-1">
+              {legislation.currentStepLabel} · Updated {legislation.lastUpdated}
+            </div>
           </div>
-          <div className="text-xs text-blue-400 mt-1">Updated {legislation.lastUpdated}</div>
         </>
       )}
     </div>

@@ -56,11 +56,13 @@ export interface Legislation {
   billName: string
   billNumber: string
   status: BillStatus
-  supportCount: number
-  totalPossible: number
   lastUpdated: string
   url: string
   summary: string
+  // Current step progress
+  currentStepCount: number
+  currentStepTotal: number
+  currentStepLabel: string  // e.g. "committee members", "House votes", "Senate votes"
 }
 
 export interface SolvedPrecedent {
