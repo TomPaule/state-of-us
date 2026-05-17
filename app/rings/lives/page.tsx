@@ -201,10 +201,9 @@ function TrustBadge({ grade, explanation }: { grade: string; explanation: string
   return (
     <div className="relative inline-block">
       <button
-        onClick={e => { e.stopPropagation(); setShow(s => !s) }}
-        className={clsx('inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-xs font-bold', colors[grade])}
+        className={clsx('inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-medium', colors[grade])}
       >
-        {grade}
+        Data Quality: {grade}
       </button>
       {show && (
         <div className="absolute right-0 top-6 z-10 w-64 bg-white border border-stone-200 rounded-lg p-3 shadow-card-hover text-xs text-stone-600 leading-relaxed">
@@ -220,40 +219,36 @@ function TrustBadge({ grade, explanation }: { grade: string; explanation: string
 }
 
 function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) {
-  const [open, setOpen] = useState(false)
   return (
-    <div className={clsx('border rounded-lg transition-all', open ? 'border-stone-300 shadow-card' : 'border-stone-200')}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full text-left p-3 hover:bg-stone-50 rounded-lg transition-colors"
-      >
+    <div className="border border-stone-200 rounded-lg bg-white overflow-hidden">
+      {/* Header */}
+      <div className="p-3 border-b border-stone-100">
         <div className="flex items-center justify-between mb-1">
-          <div className="text-xs text-stone-400">{dp.label}</div>
+          <div className="text-xs font-medium text-stone-500">{dp.label}</div>
           {dp.trust && (
             <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />
           )}
         </div>
         <div className="flex items-center justify-between gap-2">
-          <div className="text-base font-semibold text-stone-900">{dp.value}</div>
+          <div className="text-lg font-semibold text-stone-900">{dp.value}</div>
           <TrendArrow trend={dp.trend} trendIsGood={dp.trendIsGood} />
         </div>
         <div className="text-xs text-stone-500 mt-0.5 leading-relaxed">{dp.note}</div>
-      </button>
-      {open && (
-        <div className="px-3 pb-4 border-t border-stone-100">
-          <div className="bg-stone-50 rounded-lg p-3 mt-3 mb-4">
-            <div className="text-xs font-medium text-stone-500 uppercase tracking-widest mb-1.5">
-              Why this matters to the north star
-            </div>
-            <p className="text-sm text-stone-700 leading-relaxed">{dp.why}</p>
-          </div>
-          <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={120} />
-          <div className="mt-2 text-xs text-stone-400">Source: {dp.source}</div>
-          {dp.solvedPrecedent && (
-            <SolvedPrecedentBlock precedent={dp.solvedPrecedent} color={ringColor} />
-          )}
+      </div>
+
+      {/* Why it matters — always visible */}
+      <div className="px-3 pt-3 pb-1">
+        <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-1.5">
+          How this drives the preventable deaths number
         </div>
-      )}
+        <p className="text-sm text-stone-600 leading-relaxed">{dp.why}</p>
+      </div>
+
+      {/* Chart — always visible */}
+      <div className="px-3 pb-3">
+        <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
+        <div className="mt-1 text-xs text-stone-400">Source: {dp.source}</div>
+      </div>
     </div>
   )
 }
@@ -377,6 +372,23 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
 
             {tab === 'solutions' && (
   <div>
+    {/* Solved precedent */}
+    {cat.dataPoints.some(dp => dp.solvedPrecedent) && (
+      <div className="mb-8">
+        <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-4">
+          Proof this kind of problem can be solved
+        </div>
+        {cat.dataPoints.filter(dp => dp.solvedPrecedent).map(dp => (
+          dp.solvedPrecedent && (
+            <SolvedPrecedentBlock
+              key={dp.id}
+              precedent={dp.solvedPrecedent}
+              color={ringColor}
+            />
+          )
+        ))}
+      </div>
+    )}
     {/* Actions */}
     <div className="mb-8">
       <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-4">
