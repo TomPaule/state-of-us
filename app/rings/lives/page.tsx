@@ -3,11 +3,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import { getRingById } from '@/lib/data/rings'
-import type { Category, DataPoint, Action } from '@/lib/types'
+import type { Category, DataPoint, Action, ChartPoint } from '@/lib/types'
 import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
 import TrendChart from '@/components/charts/TrendChart'
-
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer,
+} from 'recharts'
 type CategoryTab = 'data' | 'solutions'
 
 function TrendArrow({ trend, trendIsGood }: { trend: DataPoint['trend']; trendIsGood: boolean }) {
@@ -236,7 +239,37 @@ function ImpactWeightBadge({ weight }: { weight: string }) {
     </span>
   )
 }
-
+function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="border border-stone-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2.5 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
+      >
+        <div>
+          <div className="text-xs font-semibold text-stone-700">{driver.label}</div>
+          <div className="text-xs text-stone-500 mt-0.5">{driver.stat}</div>
+        </div>
+        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="px-3 py-3 border-t border-stone-100">
+          <p className="text-xs text-stone-600 leading-relaxed mb-3">{driver.why}</p>
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">What you can do</div>
+          <div className="flex flex-col gap-1.5">
+            {driver.actions.map((a, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <TierPill tier={a.tier} />
+                <span className="text-xs text-stone-600 leading-relaxed">{a.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) {
   return (
     <div className="border border-stone-200 rounded-xl bg-white overflow-hidden">
@@ -259,8 +292,18 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
         <div className="text-xs text-stone-500 mt-1 leading-relaxed">{dp.note}</div>
       </div>
 
-      {/* Why it matters */}
-      <div className="px-4 pt-4 pb-2">
+      {/* Mechanism */}
+      {dp.mechanism && (
+        <div className="px-4 pt-4 pb-2">
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
+            How this kills — the mechanism
+          </div>
+          <p className="text-sm text-stone-600 leading-relaxed">{dp.mechanism}</p>
+        </div>
+      )}
+
+      {/* Why the US gap exists */}
+      <div className="px-4 pt-3 pb-2">
         <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
           How this drives the preventable deaths number
         </div>
@@ -293,10 +336,89 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
           <p className="text-xs text-amber-800 leading-relaxed">{dp.incentiveNote}</p>
         </div>
       )}
+
+      {/* Structural drivers */}
+      {dp.drivers && dp.drivers.length > 0 && (
+        <div className="px-4 pb-4">
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
+            Structural drivers — what causes this risk factor
+          </div>
+          <div className="flex flex-col gap-2">
+            {dp.drivers.map(driver => (
+              <DriverCard key={driver.id} driver={driver} />
+            ))}
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
+function TotalVsPreventableChart({
+  totalData,
+  preventableData,
+  color,
+  height,
+}: {
+  totalData: ChartPoint[]
+  preventableData: ChartPoint[]
+  color: string
+  height: number
+}) {
+  const combined = totalData.map((d, i) => ({
+    year: d.year,
+    total: d.us,
+    preventable: preventableData[i]?.us ?? 0,
+    peer: d.peer,
+    target: d.target,
+  }))
 
+  return (
+    <div>
+      <ResponsiveContainer width="100%" height={height}>
+        <LineChart data={combined} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F4" vertical={false} />
+          <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} tickCount={5} />
+          <YAxis tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} width={40} />
+          <Tooltip
+            content={({ active, payload, label }) => {
+              if (!active || !payload?.length) return null
+              return (
+                <div style={{ background: 'white', border: '1px solid #E7E5E4', borderRadius: 8, padding: '8px 12px', fontSize: 12 }}>
+                  <div style={{ fontWeight: 500, marginBottom: 4 }}>{label}</div>
+                  {payload.map((p: any) => (
+                    <div key={p.dataKey} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 8, height: 2, background: p.color, display: 'inline-block' }} />
+                      <span style={{ color: p.color }}>{p.name}:</span>
+                      <span style={{ fontWeight: 500 }}>{Number(p.value).toFixed(0)}K</span>
+                    </div>
+                  ))}
+                </div>
+              )
+            }}
+          />
+          <Line type="monotone" dataKey="total" name="Total US deaths" stroke="#D6D3D1" strokeWidth={2} dot={false} strokeDasharray="4 2" />
+          <Line type="monotone" dataKey="preventable" name="Preventable US deaths" stroke={color} strokeWidth={2.5} dot={false} />
+          <Line type="monotone" dataKey="peer" name="Peer nations total" stroke="#A8A29E" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
+        </LineChart>
+      </ResponsiveContainer>
+      <div style={{ display: 'flex', gap: 16, marginTop: 8, flexWrap: 'wrap' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#A8A29E' }}>
+          <span style={{ width: 16, height: 2, background: '#D6D3D1', display: 'inline-block' }} />
+          Total US deaths
+        </span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#A8A29E' }}>
+          <span style={{ width: 16, height: 2, background: color, display: 'inline-block' }} />
+          Preventable US deaths
+        </span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#A8A29E' }}>
+          <span style={{ width: 16, height: 2, background: '#A8A29E', display: 'inline-block' }} />
+          Peer nations total
+        </span>
+      </div>
+    </div>
+  )
+}
 function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: string }) {
   const [open, setOpen] = useState(false)
   const [tab, setTab] = useState<CategoryTab>('data')
@@ -374,9 +496,29 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
                 <div className="bg-stone-50 border-l-4 rounded-r-lg p-4 mb-5" style={{ borderLeftColor: ringColor }}>
                   <p className="text-sm text-stone-700 leading-relaxed">{cat.why}</p>
                 </div>
-                <div className="mb-6">
-                  <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} />
-                </div>
+                {/* Main chart — total vs preventable vs peer */}
+        <div className="mb-4">
+          {cat.totalChart ? (
+            <div>
+              <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-3">
+                Full picture — total deaths, preventable deaths, and peer nations
+              </div>
+              <TotalVsPreventableChart
+                totalData={cat.totalChart}
+                preventableData={cat.chart}
+                color={ringColor}
+                height={180}
+              />
+              <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
+                <p className="text-xs text-stone-500 leading-relaxed">
+                  <span className="font-medium text-stone-600">The gap between total and preventable deaths</span> represents cardiovascular mortality from genetic conditions, advanced age, and causes not yet addressable with current medicine. We are not claiming all cardiovascular death is preventable — only the portion where peer nations demonstrate better outcomes are included in our north star goal.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} />
+          )}
+        </div>
                 <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-3">
                   Data points — click any to see its individual chart and explanation
                 </div>
