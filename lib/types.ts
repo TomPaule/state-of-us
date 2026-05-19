@@ -19,11 +19,23 @@ export interface TrustRating {
   explanation: string
 }
 
+export interface Driver {
+  id: string
+  label: string
+  stat: string
+  why: string
+  actions: Array<{
+    tier: ActionTier
+    text: string
+  }>
+}
+
 export interface DataPoint {
   id: string
   label: string
   value: string
   note: string
+  mechanism?: string
   why: string
   source: string
   sourceUrl?: string
@@ -38,6 +50,7 @@ export interface DataPoint {
   impactWeight?: 'primary' | 'secondary' | 'supporting'
   livesSaved?: string
   incentiveNote?: string
+  drivers?: Driver[]
 }
 
 export interface Incentive {
@@ -121,6 +134,7 @@ export interface Category {
   why: string
   chartLabel: string
   chart: ChartPoint[]
+  totalChart?: ChartPoint[]
   dataPoints: DataPoint[]
   systemicIncentive?: string
   actions: Action[]
