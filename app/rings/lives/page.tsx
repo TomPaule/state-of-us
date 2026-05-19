@@ -8,7 +8,7 @@ import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
 import TrendChart from '@/components/charts/TrendChart'
 
-type CategoryTab = 'data' | 'broken' | 'solutions' | 'news'
+type CategoryTab = 'data' | 'solutions'
 
 function TrendArrow({ trend, trendIsGood }: { trend: DataPoint['trend']; trendIsGood: boolean }) {
   const good = (trend === 'up' && trendIsGood) || (trend === 'down' && !trendIsGood)
@@ -258,11 +258,9 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
   const [tab, setTab] = useState<CategoryTab>('data')
 
 const tabs: Array<{ id: CategoryTab; label: string }> = [
-    { id: 'data',      label: 'Data & trends' },
-    { id: 'broken',    label: 'What keeps this broken' },
-    { id: 'solutions', label: 'Actions & solutions' },
-    { id: 'news',      label: 'Recent developments' },
-  ]
+  { id: 'data',      label: 'Data & trends' },
+  { id: 'solutions', label: 'Actions & solutions' },
+]
 
   return (
     <div className="border border-stone-200 rounded-xl bg-white shadow-card overflow-hidden">
@@ -337,37 +335,7 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
               </div>
             )}
 
-            {tab === 'broken' && (
-              <div>
-                <div className="flex gap-4 mb-4 flex-wrap">
-                  <span className="flex items-center gap-1.5 text-xs text-stone-500">
-                    <span className="w-3 h-3 rounded-sm" style={{ background: '#E24B4A40', border: '2px solid #E24B4A' }} />
-                    Market failure
-                  </span>
-                  <span className="flex items-center gap-1.5 text-xs text-stone-500">
-                    <span className="w-3 h-3 rounded-sm" style={{ background: '#534AB740', border: '2px solid #534AB7' }} />
-                    Government failure
-                  </span>
-                </div>
-                <div className="flex flex-col gap-3">
-                  {cat.incentives.map((inc, i) => (
-                    <div
-                      key={i}
-                      className="border-l-4 rounded-r-lg p-4 bg-stone-50"
-                      style={{ borderLeftColor: inc.type === 'market' ? '#E24B4A' : '#534AB7' }}
-                    >
-                      <div
-                        className="text-xs font-semibold uppercase tracking-widest mb-1.5"
-                        style={{ color: inc.type === 'market' ? '#A32D2D' : '#3C3489' }}
-                      >
-                        {inc.type === 'market' ? 'Market failure' : 'Government failure'} — {inc.who}
-                      </div>
-                      <p className="text-sm text-stone-700 leading-relaxed">{inc.what}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            
 
 
             {tab === 'solutions' && (
@@ -474,22 +442,6 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
   </div>
 )}
 
-            {tab === 'news' && (
-              <div>
-                <div className="flex flex-col gap-3 mb-4">
-                  {cat.news.map((item, i) => (
-                    <div key={i} className="border border-stone-200 rounded-lg p-4 bg-stone-50">
-                      <div className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-1">{item.source}</div>
-                      <div className="text-sm font-medium text-stone-900 mb-1 leading-snug">{item.title}</div>
-                      <div className="text-xs text-stone-600 leading-relaxed">{item.description}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="text-xs text-stone-400 italic px-1">
-                  Recent developments pull from primary government, research, and institutional sources — not news outlets.
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}

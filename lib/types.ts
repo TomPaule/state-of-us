@@ -27,6 +27,7 @@ export interface DataPoint {
   why: string
   source: string
   sourceUrl?: string
+  nextDataRelease?: string
   unit: string
   trend: 'up' | 'down' | 'stable'
   trendIsGood: boolean
@@ -34,6 +35,9 @@ export interface DataPoint {
   chartLabel: string
   trust: TrustRating
   solvedPrecedent?: SolvedPrecedent
+  impactWeight?: 'primary' | 'secondary' | 'supporting'
+  livesSaved?: string
+  incentiveNote?: string
 }
 
 export interface Incentive {
@@ -83,6 +87,7 @@ export interface Action {
   difficulty?: ActionDifficulty
   impactScale?: 1 | 2 | 3
   evidenceBase?: string
+  livesSaved?: string
   legislation?: Legislation
   organization?: string
   organizationUrl?: string
@@ -117,10 +122,9 @@ export interface Category {
   chartLabel: string
   chart: ChartPoint[]
   dataPoints: DataPoint[]
-  incentives: Incentive[]
+  systemicIncentive?: string
   actions: Action[]
   solutions: Solution[]
-  news: NewsItem[]
 }
 
 export interface Ring {
