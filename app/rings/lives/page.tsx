@@ -218,37 +218,81 @@ function TrustBadge({ grade, explanation }: { grade: string; explanation: string
   )
 }
 
+function ImpactWeightBadge({ weight }: { weight: string }) {
+  const styles: Record<string, string> = {
+    primary:   'bg-red-50 text-red-700 border border-red-200',
+    secondary: 'bg-amber-50 text-amber-700 border border-amber-200',
+    supporting:'bg-stone-50 text-stone-600 border border-stone-200',
+  }
+  const labels: Record<string, string> = {
+    primary:   'Primary driver',
+    secondary: 'Contributing factor',
+    supporting:'Supporting metric',
+  }
+  if (!weight) return null
+  return (
+    <span className={clsx('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', styles[weight])}>
+      {labels[weight]}
+    </span>
+  )
+}
+
 function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) {
   return (
-    <div className="border border-stone-200 rounded-lg bg-white overflow-hidden">
+    <div className="border border-stone-200 rounded-xl bg-white overflow-hidden">
+
       {/* Header */}
-      <div className="p-3 border-b border-stone-100">
-        <div className="flex items-center justify-between mb-1">
-          <div className="text-xs font-medium text-stone-500">{dp.label}</div>
+      <div className="p-4 border-b border-stone-100">
+        <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
+            {dp.impactWeight && <ImpactWeightBadge weight={dp.impactWeight} />}
+          </div>
           {dp.trust && (
             <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />
           )}
         </div>
+        <div className="text-xs font-medium text-stone-500 mb-1">{dp.label}</div>
         <div className="flex items-center justify-between gap-2">
-          <div className="text-lg font-semibold text-stone-900">{dp.value}</div>
+          <div className="text-xl font-semibold text-stone-900">{dp.value}</div>
           <TrendArrow trend={dp.trend} trendIsGood={dp.trendIsGood} />
         </div>
-        <div className="text-xs text-stone-500 mt-0.5 leading-relaxed">{dp.note}</div>
+        <div className="text-xs text-stone-500 mt-1 leading-relaxed">{dp.note}</div>
       </div>
 
-      {/* Why it matters — always visible */}
-      <div className="px-3 pt-3 pb-1">
-        <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-1.5">
+      {/* Why it matters */}
+      <div className="px-4 pt-4 pb-2">
+        <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
           How this drives the preventable deaths number
         </div>
         <p className="text-sm text-stone-600 leading-relaxed">{dp.why}</p>
       </div>
 
-      {/* Chart — always visible */}
-      <div className="px-3 pb-3">
+      {/* Chart */}
+      <div className="px-4 pb-3">
         <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
-        <div className="mt-1 text-xs text-stone-400">Source: {dp.source}</div>
       </div>
+
+      {/* Source + next release */}
+      <div className="px-4 pb-3 flex items-start justify-between gap-4 flex-wrap">
+        <div className="text-xs text-stone-400">
+          <span className="font-medium text-stone-500">Source:</span> {dp.source}
+        </div>
+        {dp.nextDataRelease && (
+          <div className="text-xs text-stone-400">
+            <span className="font-medium text-stone-500">Next release:</span> {dp.nextDataRelease}
+          </div>
+        )}
+      </div>
+
+      {/* Incentive note */}
+      {dp.incentiveNote && (
+        <div className="mx-4 mb-4 px-3 py-2.5 bg-amber-50 border border-amber-100 rounded-lg">
+          <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-1">
+            Why this persists
+          </div>
+          <p className="text-xs text-amber-800 leading-relaxed">{dp.incentiveNote}</p>
+        </div>
+      )}
     </div>
   )
 }
@@ -318,6 +362,15 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
           <div className="p-5">
             {tab === 'data' && (
               <div>
+                {/* Systemic incentive callout */}
+    {cat.systemicIncentive && (
+      <div className="mb-5 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
+        <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-1.5">
+          Why the system produces this outcome
+        </div>
+        <p className="text-sm text-amber-800 leading-relaxed">{cat.systemicIncentive}</p>
+      </div>
+    )}
                 <div className="bg-stone-50 border-l-4 rounded-r-lg p-4 mb-5" style={{ borderLeftColor: ringColor }}>
                   <p className="text-sm text-stone-700 leading-relaxed">{cat.why}</p>
                 </div>
@@ -388,6 +441,15 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
     <div className="mt-2 text-xs text-stone-500 italic leading-relaxed pl-0">
       <span className="font-medium not-italic text-stone-600">Why this works: </span>
       {action.evidenceBase}
+    </div>
+  )}
+  {/* Lives saved */}
+  {action.livesSaved && (
+    <div className="mt-2 px-3 py-2 bg-green-50 border border-green-100 rounded-lg">
+      <div className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-0.5">
+        Estimated impact
+      </div>
+      <p className="text-xs text-green-800 leading-relaxed">{action.livesSaved}</p>
     </div>
   )}
 
