@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import { getRingById } from '@/lib/data/rings'
-import type { Category, DataPoint, Action, ChartPoint } from '@/lib/types'
+import type { Category, DataPoint, Action, ChartPoint, ActionTier } from '@/lib/types'
 import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
 import TrendChart from '@/components/charts/TrendChart'
@@ -35,12 +35,6 @@ function TierPill({ tier }: { tier: Action['tier'] }) {
       {labels[tier]}
     </span>
   )
-}
-
-function ProximityBadge({ proximity }: { proximity: 'close' | 'medium' | 'far' }) {
-  const styles = { close: 'bg-green-50 text-green-700', medium: 'bg-amber-50 text-amber-700', far: 'bg-red-50 text-red-700' }
-  const labels = { close: 'Close', medium: 'Medium term', far: 'Long term' }
-  return <span className={clsx('px-2 py-0.5 rounded text-xs font-medium', styles[proximity])}>{labels[proximity]}</span>
 }
 
 function DifficultyPill({ difficulty }: { difficulty: string }) {
@@ -419,14 +413,101 @@ function TotalVsPreventableChart({
     </div>
   )
 }
+
+function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
+  const [done, setDone] = useState(false)
+
+  const tierStyles: Record<string, string> = {
+    personal:  'border-blue-100 bg-blue-50/40',
+    community: 'border-green-100 bg-green-50/40',
+    systemic:  'border-amber-100 bg-amber-50/40',
+  }
+
+  const buttonStyles: Record<string, string> = {
+    personal:  'bg-blue-600 hover:bg-blue-700 text-white',
+    community: 'bg-green-600 hover:bg-green-700 text-white',
+    systemic:  'bg-amber-600 hover:bg-amber-700 text-white',
+  }
+
+  return (
+    <div className={clsx('border rounded-xl p-4 transition-all', tierStyles[tier], done && 'opacity-60')}>
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <div className="flex-1">
+          <div className="text-sm font-medium text-stone-900 mb-1">{action.text}</div>
+          <div className="text-xs text-stone-500 leading-relaxed">{action.detail}</div>
+        </div>
+      </div>
+
+      {/* Meta */}
+      <div className="flex items-center gap-2 flex-wrap mt-2 mb-3">
+        {action.timeEstimate && (
+          <span className="text-xs text-stone-400 font-mono">⏱ {action.timeEstimate}</span>
+        )}
+        {action.difficulty && (
+          <DifficultyPill difficulty={action.difficulty} />
+        )}
+      </div>
+
+      {/* Evidence */}
+      {action.evidenceBase && (
+        <div className="mb-3 text-xs text-stone-500 leading-relaxed">
+          <span className="font-medium text-stone-600">Why it works: </span>
+          {action.evidenceBase}
+        </div>
+      )}
+
+      {/* Lives saved */}
+      {action.livesSaved && (
+        <div className="mb-3 px-3 py-2 bg-green-50 border border-green-100 rounded-lg">
+          <div className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-0.5">Estimated impact</div>
+          <p className="text-xs text-green-800 leading-relaxed">{action.livesSaved}</p>
+        </div>
+      )}
+
+      {/* Legislation */}
+      {action.legislation && (
+        <BillStatusBar legislation={action.legislation} />
+      )}
+
+      {/* Action buttons */}
+      <div className="flex items-center gap-2 flex-wrap mt-3">
+        {tier === 'personal' && (
+          <button
+            onClick={() => setDone(d => !d)}
+            className={clsx(
+              'text-xs px-4 py-2 rounded-lg font-medium transition-colors',
+              done
+                ? 'bg-green-100 text-green-700 border border-green-200'
+                : buttonStyles[tier]
+            )}
+          >
+            {done ? '✓ Added to civic record' : "I'll do this"}
+          </button>
+        )}
+        {tier === 'community' && (
+          <button className={clsx('text-xs px-4 py-2 rounded-lg font-medium transition-colors', buttonStyles[tier])}>
+            Learn more
+          </button>
+        )}
+        {tier === 'systemic' && action.legislation && (
+          <a href={action.legislation.url} target="_blank" rel="noopener noreferrer" className={clsx('text-xs px-4 py-2 rounded-lg font-medium transition-colors', buttonStyles[tier])}>View bill</a>
+        )}
+        {tier === 'systemic' && (
+          <button className="text-xs px-4 py-2 rounded-lg font-medium border border-stone-200 text-stone-600 hover:bg-stone-50 transition-colors">Contact your rep</button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: string }) {
   const [open, setOpen] = useState(false)
   const [tab, setTab] = useState<CategoryTab>('data')
 
 const tabs: Array<{ id: CategoryTab; label: string }> = [
-  { id: 'data',      label: 'Data & trends' },
-  { id: 'solutions', label: 'Actions & solutions' },
-]
+    { id: 'data',    label: 'Data & trends' },
+    { id: 'solutions', label: 'Actions' },
+  ]
 
   return (
     <div className="border border-stone-200 rounded-xl bg-white shadow-card overflow-hidden">
@@ -533,13 +614,13 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
             
 
 
-            {tab === 'solutions' && (
+           {tab === 'solutions' && (
   <div>
-    {/* Solved precedent */}
+    {/* Solved precedent — moved from data tab */}
     {cat.dataPoints.some(dp => dp.solvedPrecedent) && (
-      <div className="mb-8">
-        <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-4">
-          Proof this kind of problem can be solved
+      <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+        <div className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-3">
+          We solved something like this before
         </div>
         {cat.dataPoints.filter(dp => dp.solvedPrecedent).map(dp => (
           dp.solvedPrecedent && (
@@ -552,101 +633,71 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
         ))}
       </div>
     )}
-    {/* Actions */}
-    <div className="mb-8">
-      <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-4">
-        What you can do
+
+    {/* Personal actions */}
+    <div className="mb-6">
+      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-blue-400" />
+        Personal — things you can do today
       </div>
-      <div className="flex flex-col divide-y divide-stone-100">
-        {cat.actions.map(action => (
-          <div key={action.id} className="py-4 first:pt-0 border-b border-stone-100 last:border-0">
-  <div className="flex items-start gap-3 mb-2">
-    <TierPill tier={action.tier} />
-    <div className="flex-1">
-      <div className="text-sm font-medium text-stone-900 mb-0.5">{action.text}</div>
-      <div className="text-xs text-stone-500 leading-relaxed">{action.detail}</div>
-    </div>
-  </div>
-
-  {/* Meta row */}
-  <div className="flex items-center gap-2 flex-wrap ml-0 mt-2">
-    {action.timeEstimate && (
-      <span className="text-xs text-stone-400 font-mono">⏱ {action.timeEstimate}</span>
-    )}
-    {action.difficulty && (
-      <DifficultyPill difficulty={action.difficulty} />
-    )}
-  </div>
-
-  {/* Evidence base */}
-  {action.evidenceBase && (
-    <div className="mt-2 text-xs text-stone-500 italic leading-relaxed pl-0">
-      <span className="font-medium not-italic text-stone-600">Why this works: </span>
-      {action.evidenceBase}
-    </div>
-  )}
-  {/* Lives saved */}
-  {action.livesSaved && (
-    <div className="mt-2 px-3 py-2 bg-green-50 border border-green-100 rounded-lg">
-      <div className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-0.5">
-        Estimated impact
-      </div>
-      <p className="text-xs text-green-800 leading-relaxed">{action.livesSaved}</p>
-    </div>
-  )}
-
-  {/* Legislation */}
-  {action.legislation && (
-    <BillStatusBar legislation={action.legislation} />
-  )}
-</div>
+      <div className="flex flex-col gap-3">
+        {cat.actions.filter(a => a.tier === 'personal').map(action => (
+          <ActionCard key={action.id} action={action} tier="personal" />
         ))}
       </div>
     </div>
 
-    {/* Solutions */}
-    <div>
-      <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-4">
-        Proximity to solutions
+    {/* Community actions */}
+    <div className="mb-6">
+      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-green-400" />
+        Community — organize and advocate locally
       </div>
-      <p className="text-sm text-stone-600 mb-4 leading-relaxed">
-        How close are we to meaningful change? What needs to happen — and how can you help move it forward?
-      </p>
-      <div className="flex flex-col gap-4">
-        {cat.solutions.map((sol, i) => (
-          <div key={i} className="border border-stone-200 rounded-xl p-4 bg-stone-50">
-            <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
-              <div className="text-sm font-semibold text-stone-900">{sol.name}</div>
-              <ProximityBadge proximity={sol.proximity} />
-            </div>
-            <p className="text-sm text-stone-600 leading-relaxed mb-3">{sol.description}</p>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="flex-1 h-1.5 bg-stone-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full"
-                  style={{ width: `${sol.progress}%`, background: sol.progressColor }}
-                />
-              </div>
-              <span className="text-xs text-stone-400 font-mono shrink-0">{sol.progress}% ready</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {sol.actions.map((a, j) => (
-                <button
-                  key={j}
-                  className="text-xs px-3 py-1 rounded-full border border-stone-300 text-stone-600 hover:bg-stone-100 transition-colors"
-                >
-                  {a} ↗
-                </button>
-              ))}
-            </div>
-          </div>
+      <div className="flex flex-col gap-3">
+        {cat.actions.filter(a => a.tier === 'community').map(action => (
+          <ActionCard key={action.id} action={action} tier="community" />
         ))}
+      </div>
+      {/* Paywall hint */}
+      <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-stone-200 border-dashed rounded-xl">
+        <span className="text-stone-400 text-base">🔒</span>
+        <div className="flex-1">
+          <div className="text-xs font-medium text-stone-500">Local opportunities near you</div>
+          <div className="text-xs text-stone-400">Verified organizations, volunteer opportunities, and community events within 10 miles of you.</div>
+        </div>
+        <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-400 cursor-not-allowed shrink-0">
+          Coming soon
+        </button>
+      </div>
+    </div>
+
+    {/* Systemic actions */}
+    <div className="mb-2">
+      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-amber-400" />
+        Systemic — policy and structural change
+      </div>
+      <div className="flex flex-col gap-3">
+        {cat.actions.filter(a => a.tier === 'systemic').map(action => (
+          <ActionCard key={action.id} action={action} tier="systemic" />
+        ))}
+      </div>
+      {/* State/local paywall hint */}
+      <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-stone-200 border-dashed rounded-xl">
+        <span className="text-stone-400 text-base">🔒</span>
+        <div className="flex-1">
+          <div className="text-xs font-medium text-stone-500">State and local policy actions</div>
+          <div className="text-xs text-stone-400">Your state legislators, local ballot initiatives, and city council votes relevant to this issue.</div>
+        </div>
+        <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-400 cursor-not-allowed shrink-0">
+          Coming soon
+        </button>
       </div>
     </div>
   </div>
 )}
 
-          </div>
+  </div>
         </div>
       )}
     </div>
@@ -698,7 +749,26 @@ export default function LivesLostPage() {
           </div>
         </div>
       </div>
-
+{/* Total vs preventable callout */}
+      <div className="flex items-center gap-4 flex-wrap mb-8 p-4 bg-stone-50 border border-stone-200 rounded-xl">
+        <div>
+          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">Total US deaths per year</div>
+          <div className="text-3xl font-semibold text-stone-600">~2.5M</div>
+          <div className="text-xs text-stone-400 mt-0.5">All causes combined</div>
+        </div>
+        <div className="text-2xl text-stone-300 font-light">→</div>
+        <div>
+          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">Preventable deaths per year</div>
+          <div className="text-3xl font-semibold" style={{ color: ring.color }}>~700K</div>
+          <div className="text-xs text-stone-400 mt-0.5">Deaths peer nations demonstrate we can prevent</div>
+        </div>
+        <div className="text-2xl text-stone-300 font-light">→</div>
+        <div>
+          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">North star</div>
+          <div className="text-3xl font-semibold text-green-600">Zero</div>
+          <div className="text-xs text-stone-400 mt-0.5">Preventable deaths — the goal</div>
+        </div>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {ring.summaryStats.map((stat, i) => (
           <div key={i} className="bg-white border border-stone-200 rounded-xl p-4 shadow-card">
