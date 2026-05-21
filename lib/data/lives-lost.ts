@@ -102,8 +102,8 @@ export const livesLostRing: Ring = {
       why: 'The most profitable foods to produce are also the most harmful. This creates a structural incentive for the food industry to produce, distribute, and lobby to protect products that drive obesity. The industry has successfully opposed every meaningful nutritional regulation for 40 years — not because the science is unclear, but because the financial stakes are enormous. Child-directed marketing is particularly profitable because brand loyalty established in childhood generates decades of consumer value.',
       actions: [
         { tier: 'personal', text: 'Learn to identify ultra-processed foods using the NOVA classification system' },
-        { tier: 'community', text: 'Advocate for stronger school food standards in your district' },
-        { tier: 'systemic', text: 'Support mandatory restrictions on food marketing to children and sugar tax legislation' },
+        { tier: 'local', text: 'Advocate for stronger school food standards in your district' },
+        { tier: 'national', text: 'Support mandatory restrictions on food marketing to children and sugar tax legislation' },
       ],
     },
     {
@@ -113,8 +113,8 @@ export const livesLostRing: Ring = {
       why: 'Grocery chains make location decisions based on projected profit. Wealthy neighborhoods have higher disposable income and more reliable customer bases — making them significantly more profitable to serve. Without zoning requirements or financial incentives to serve low-income areas, the market systematically underserves the communities that most need healthy food. This is not malice — it is the rational behavior of profit-maximizing firms operating without regulation.',
       actions: [
         { tier: 'personal', text: 'Cook from whole ingredients when possible — reduces processed food consumption regardless of location' },
-        { tier: 'community', text: 'Advocate for grocery store zoning reform and support farmers markets at city planning meetings' },
-        { tier: 'systemic', text: 'Support SNAP expansion for farmers markets and produce incentive programs' },
+        { tier: 'local', text: 'Advocate for grocery store zoning reform and support farmers markets at city planning meetings' },
+        { tier: 'national', text: 'Support SNAP expansion for farmers markets and produce incentive programs' },
       ],
     },
     {
@@ -124,8 +124,8 @@ export const livesLostRing: Ring = {
       why: 'US agricultural subsidies were restructured in the 1970s to incentivize maximum commodity production. Three forces keep them in place: First, a small number of large agricultural corporations receive the majority of payments and have enormous financial incentive to lobby for preservation. Second, corn and soy states have disproportionate Senate power in Farm Bill negotiations. Third, the revolving door between USDA leadership and agribusiness means the people writing the rules are the same people who benefit from them.',
       actions: [
         { tier: 'personal', text: 'Buy whole foods over processed — reduces the demand signal for commodity-derived ultra-processed products' },
-        { tier: 'community', text: 'Attend Farm Bill advocacy events and support local farms directly' },
-        { tier: 'systemic', text: 'Contact your senators during Farm Bill reauthorization — next cycle 2028. Support the Healthy Food Policy Act (HR 4107)' },
+        { tier: 'local', text: 'Attend Farm Bill advocacy events and support local farms directly' },
+        { tier: 'national', text: 'Contact your senators during Farm Bill reauthorization — next cycle 2028. Support the Healthy Food Policy Act (HR 4107)' },
       ],
     },
     {
@@ -135,7 +135,7 @@ export const livesLostRing: Ring = {
       why: 'Chronic psychological stress from poverty, housing insecurity, and economic precarity elevates cortisol chronically, which promotes fat storage — particularly visceral fat. Stress also drives comfort eating, disrupts sleep, and reduces the cognitive bandwidth needed to make consistent healthy choices. Economic stress is a cross-cutting driver that amplifies every other cardiovascular risk factor simultaneously.',
       actions: [
         { tier: 'personal', text: 'Recognize that stress management is cardiovascular disease prevention — not a luxury' },
-        { tier: 'systemic', text: 'Support economic security legislation — poverty reduction is cardiovascular disease prevention' },
+        { tier: 'national', text: 'Support economic security legislation — poverty reduction is cardiovascular disease prevention' },
       ],
     },
   ],
@@ -175,8 +175,8 @@ export const livesLostRing: Ring = {
           why: 'The US is the only wealthy nation without universal healthcare coverage — the result of sustained lobbying by insurance and pharmaceutical industries against every serious universal coverage proposal since the 1940s. People without insurance delay seeking care until conditions become acute. By which point hypertension has already caused years of arterial damage that could have been prevented with a $10 monthly medication.',
           actions: [
             { tier: 'personal', text: 'Get a blood pressure check — free at most pharmacies, no insurance needed' },
-            { tier: 'community', text: 'Support community health worker programs and federally qualified health centers in your area' },
-            { tier: 'systemic', text: 'Advocate for Medicaid expansion in your state and support the Preventive Health Savings Act (S. 2952)' },
+            { tier: 'local', text: 'Support community health worker programs and federally qualified health centers in your area' },
+            { tier: 'national', text: 'Advocate for Medicaid expansion in your state and support the Preventive Health Savings Act (S. 2952)' },
           ],
         },
         {
@@ -186,7 +186,7 @@ export const livesLostRing: Ring = {
           why: 'American medicine pays for procedures, not outcomes. This is not the behavior of individual physicians — it is the rational response to a payment system designed by insurance companies and hospital systems to maximize revenue from interventions. The financial incentive structure of American medicine actively discourages the preventive care that would reduce cardiovascular death most effectively.',
           actions: [
             { tier: 'personal', text: 'Establish a relationship with a primary care physician — the single most impactful healthcare access action available' },
-            { tier: 'systemic', text: 'Advocate for value-based care payment reform and primary care investment legislation' },
+            { tier: 'national', text: 'Advocate for value-based care payment reform and primary care investment legislation' },
           ],
         },
         {
@@ -196,7 +196,7 @@ export const livesLostRing: Ring = {
           why: 'Salt is the cheapest preservative and flavor enhancer available, making it ubiquitous in processed food. The food industry has successfully opposed mandatory sodium reduction targets for decades, funding research designed to create scientific controversy about the sodium-hypertension link — a controversy that does not exist in the independent literature. The FDA proposed voluntary sodium reduction targets in 2021; industry compliance has been minimal.',
           actions: [
             { tier: 'personal', text: 'Cook from whole ingredients — the single most effective way to control sodium intake' },
-            { tier: 'systemic', text: 'Support FDA mandatory sodium reduction targets for processed foods' },
+            { tier: 'national', text: 'Support FDA mandatory sodium reduction targets for processed foods' },
           ],
         },
       ],
@@ -253,8 +253,8 @@ export const livesLostRing: Ring = {
           why: 'The tobacco industry spent decades funding research designed to create doubt about health risks — fully documented in the 1998 Master Settlement Agreement court records. Beyond disinformation, cigarettes are designed as optimized nicotine delivery devices. The addiction that makes quitting so difficult is an intentional product feature, not an unfortunate side effect. This context matters for how we think about smoking — as a freely chosen behavior or as the predictable outcome of a deliberately addictive product combined with a vulnerable nervous system.',
           actions: [
             { tier: 'personal', text: 'If you smoke, talk to your doctor about cessation support — combination therapy (medication + counseling) has 25-30% success rates vs 5% for willpower alone' },
-            { tier: 'community', text: 'Support smoke-free housing policies in your building or neighborhood' },
-            { tier: 'systemic', text: 'Support tobacco tax increases — every 10% price increase reduces smoking 3-5%, with the largest effect among youth and low-income smokers' },
+            { tier: 'local', text: 'Support smoke-free housing policies in your building or neighborhood' },
+            { tier: 'national', text: 'Support tobacco tax increases — every 10% price increase reduces smoking 3-5%, with the largest effect among youth and low-income smokers' },
           ],
         },
         {
@@ -264,7 +264,7 @@ export const livesLostRing: Ring = {
           why: 'Low-income Americans know smoking is harmful. The higher rates are explained by the stress-relief function of nicotine, the deliberate targeting of low-income communities by tobacco marketing, the concentration of tobacco retail in lower-income neighborhoods, and the reality that quitting requires cognitive bandwidth that chronic stress depletes. Addressing smoking without addressing economic stress treats the symptom rather than the cause.',
           actions: [
             { tier: 'personal', text: 'Support friends attempting cessation — social support doubles success rates' },
-            { tier: 'systemic', text: 'Support economic security legislation — poverty reduction is cardiovascular disease prevention' },
+            { tier: 'national', text: 'Support economic security legislation — poverty reduction is cardiovascular disease prevention' },
           ],
         },
       ],
@@ -304,8 +304,8 @@ export const livesLostRing: Ring = {
           why: 'Between 1940 and 1970, the US federal government invested hundreds of billions in the interstate highway system and suburban development — a deliberate policy choice to build an automobile-dependent economy. General Motors, Standard Oil, and Firestone bought and dismantled streetcar systems in dozens of cities between 1938 and 1950 and were convicted of criminal conspiracy in 1949 — though this was one factor among several driving car dependency, alongside genuine consumer preference and federal highway subsidies. The result is a built environment where physical activity requires deliberate scheduled effort rather than being built into daily life.',
           actions: [
             { tier: 'personal', text: 'Walk or cycle for any trip under 2 miles where safe to do so' },
-            { tier: 'community', text: 'Attend city transportation planning meetings — advocate for sidewalks, bike lanes, and mixed-use zoning' },
-            { tier: 'systemic', text: 'Support Vision Zero road design in your city and advocate for federal transit investment' },
+            { tier: 'local', text: 'Attend city transportation planning meetings — advocate for sidewalks, bike lanes, and mixed-use zoning' },
+            { tier: 'national', text: 'Support Vision Zero road design in your city and advocate for federal transit investment' },
           ],
         },
         {
@@ -315,7 +315,7 @@ export const livesLostRing: Ring = {
           why: 'Time poverty — not having discretionary time — is the primary barrier to exercise for working adults with children. This is a policy choice: every other wealthy democracy has decided that workers deserve protected time, and their populations are measurably more physically active as a result. The absence of mandated paid leave is not a natural condition — it is the outcome of employer lobbying against every paid leave proposal for 80 years.',
           actions: [
             { tier: 'personal', text: 'Treat exercise time as non-negotiable — schedule it like a meeting and protect it' },
-            { tier: 'systemic', text: 'Support federal paid leave legislation and the right to disconnect from work outside work hours' },
+            { tier: 'national', text: 'Support federal paid leave legislation and the right to disconnect from work outside work hours' },
           ],
         },
       ],
@@ -347,21 +347,21 @@ export const livesLostRing: Ring = {
       livesSaved: 'If physical inactivity rates matched peer nations, an estimated 25,000 cardiovascular deaths could be prevented annually.',
     },
     {
-      id: 'cv-a4', tier: 'community',
+      id: 'cv-a4', tier: 'local',
       text: 'Advocate for healthy food access in your zip code.',
       detail: 'Attend local planning meetings. Support community gardens, farmers markets, and zoning for grocery stores in food deserts. Push for SNAP acceptance at farmers markets.',
       timeEstimate: '2 hrs/month', difficulty: 'medium', impactScale: 2,
       evidenceBase: 'Communities with farmers markets show measurably higher fruit and vegetable consumption. Source: USDA Economic Research Service.',
     },
     {
-      id: 'cv-a5', tier: 'community',
+      id: 'cv-a5', tier: 'local',
       text: 'Support community health worker programs.',
       detail: 'Community health workers — trusted community members trained in preventive care — are among the most cost-effective cardiovascular disease prevention interventions that exist. Donate, volunteer, or advocate for funding.',
       timeEstimate: 'Donate or volunteer', difficulty: 'low', impactScale: 2,
       evidenceBase: 'Community health worker programs reduce cardiovascular hospitalizations by 20-30% in target populations. Source: American Journal of Public Health.',
     },
     {
-      id: 'cv-a6', tier: 'systemic',
+      id: 'cv-a6', tier: 'national',
       text: 'Advocate for universal preventive care coverage.',
       detail: 'Preventive screenings and medications that prevent heart attacks cost a fraction of treating them. Contact your representatives and urge them to support preventive care mandates.',
       timeEstimate: '10 min', difficulty: 'low', impactScale: 3,
@@ -380,7 +380,7 @@ export const livesLostRing: Ring = {
       },
     },
     {
-      id: 'cv-a7', tier: 'systemic',
+      id: 'cv-a7', tier: 'national',
       text: 'Push to redirect agricultural subsidies toward fruits and vegetables.',
       detail: 'The Farm Bill is renegotiated every 5 years — the single highest-leverage food policy change available. The next cycle is 2028. Contact your senators and representatives now.',
       timeEstimate: '10 min', difficulty: 'low', impactScale: 3,
@@ -493,8 +493,8 @@ export const livesLostRing: Ring = {
       actions: [
         { id: 'ca-a1', tier: 'personal', text: 'Stay current on recommended cancer screenings.', detail: 'Colonoscopy at 45, mammography per your risk profile, cervical screening, and lung CT if you are a current or former heavy smoker.', timeEstimate: 'Annual', impactScale: 3 },
         { id: 'ca-a2', tier: 'personal', text: 'Know and reduce your modifiable risk factors.', detail: 'Tobacco cessation has the largest single impact. Beyond that: maintain a healthy weight, limit alcohol, protect from UV, and get vaccinated against HPV and hepatitis B.', timeEstimate: 'Ongoing', impactScale: 3 },
-        { id: 'ca-a3', tier: 'community', text: 'Support cancer screening access in underserved communities.', detail: 'Volunteer with mobile screening programs, support community health centers, and advocate for Medicaid screening coverage in your state.', timeEstimate: '2 hrs/month', impactScale: 2 },
-        { id: 'ca-a4', tier: 'systemic', text: 'Advocate for doubled NIH cancer research funding.', detail: 'A political commitment comparable to the National Cancer Act of 1971 would have measurable impact on survival rates within a decade.', timeEstimate: '10 min', impactScale: 3 },
+        { id: 'ca-a3', tier: 'local', text: 'Support cancer screening access in underserved communities.', detail: 'Volunteer with mobile screening programs, support community health centers, and advocate for Medicaid screening coverage in your state.', timeEstimate: '2 hrs/month', impactScale: 2 },
+        { id: 'ca-a4', tier: 'national', text: 'Advocate for doubled NIH cancer research funding.', detail: 'A political commitment comparable to the National Cancer Act of 1971 would have measurable impact on survival rates within a decade.', timeEstimate: '10 min', impactScale: 3 },
       ],
       solutions: [
         { name: 'Immunotherapy expansion', proximity: 'close', description: 'CAR-T, checkpoint inhibitors, and cancer vaccines are producing remarkable results in previously untreatable cancers. Access and cost are the barriers — not the science.', progress: 70, progressColor: '#1D9E75', actions: ['Support drug price negotiation authority', 'Advocate for NIH funding'] },
@@ -555,8 +555,8 @@ export const livesLostRing: Ring = {
       actions: [
         { id: 'acc-a1', tier: 'personal', text: 'Never drive impaired — alcohol is involved in 30% of traffic fatalities.', detail: 'Designate a driver, use rideshare, or plan alternative transportation before drinking.', timeEstimate: 'Every time', impactScale: 3 },
         { id: 'acc-a2', tier: 'personal', text: 'Exercise for balance if you\'re over 65 or caring for someone who is.', detail: 'Programs like Tai Chi reduce fall risk by 20–30%. Ask your doctor about a fall risk assessment.', timeEstimate: '30 min 3×/week', impactScale: 2 },
-        { id: 'acc-a3', tier: 'community', text: 'Advocate for Vision Zero road design in your city.', detail: 'Attend city transportation planning meetings. Support lower speed limits, protected crosswalks, and separated bike infrastructure.', timeEstimate: '2 hrs/month', impactScale: 2 },
-        { id: 'acc-a4', tier: 'systemic', text: 'Support OSHA funding and enforcement expansion.', detail: 'OSHA\'s budget needs roughly tripling to achieve meaningful inspection frequency. Contact your representatives.', timeEstimate: '10 min', impactScale: 3 },
+        { id: 'acc-a3', tier: 'local', text: 'Advocate for Vision Zero road design in your city.', detail: 'Attend city transportation planning meetings. Support lower speed limits, protected crosswalks, and separated bike infrastructure.', timeEstimate: '2 hrs/month', impactScale: 2 },
+        { id: 'acc-a4', tier: 'national', text: 'Support OSHA funding and enforcement expansion.', detail: 'OSHA\'s budget needs roughly tripling to achieve meaningful inspection frequency. Contact your representatives.', timeEstimate: '10 min', impactScale: 3 },
       ],
       solutions: [
         { name: 'Vision Zero road design', proximity: 'close', description: 'Sweden reduced road fatalities by 80% over 30 years by redesigning roads to assume human error. US cities adopting Vision Zero are seeing measurable results.', progress: 25, progressColor: '#1D9E75', actions: ['Attend city transportation meetings', 'Support Vision Zero ballot measures'] },
@@ -618,9 +618,9 @@ export const livesLostRing: Ring = {
           { id: 'od-a1', tier: 'personal', text: 'Carry naloxone and learn to use it.', detail: 'Get naloxone free or cheap at most pharmacies — no prescription needed in all 50 states. NEXT Distro mails it for free. One dose reverses an overdose in minutes.', timeEstimate: '30 min setup', impactScale: 3 },
           { id: 'od-a2', tier: 'personal', text: 'If you use any illicit substance, use fentanyl test strips.', detail: 'FTS can detect fentanyl in any drug supply before use. Never use alone — the Never Use Alone hotline (1-800-484-3731) stays on the phone until you\'re safe.', timeEstimate: 'Every time', impactScale: 3 },
           { id: 'od-a3', tier: 'personal', text: 'Reduce stigma in your own language and conversations.', detail: 'Person-first language ("person with a substance use disorder") is associated with better treatment-seeking outcomes than stigmatizing language.', timeEstimate: 'Ongoing', impactScale: 2 },
-          { id: 'od-a4', tier: 'community', text: 'Advocate for harm reduction programs in your city.', detail: 'Safe consumption sites, needle exchanges, and community naloxone distribution have decades of evidence. No safe consumption site has ever had a death inside it.', timeEstimate: '2 hrs/month', impactScale: 3 },
-          { id: 'od-a5', tier: 'systemic', text: 'Advocate for decriminalization of personal drug use.', detail: 'Portugal\'s 2001 decriminalization reduced drug deaths by 85% within a decade. Push for treatment over incarceration at the state and federal level.', timeEstimate: '10 min', impactScale: 3 },
-          { id: 'od-a6', tier: 'systemic', text: 'Push for expanded methadone and buprenorphine access.', detail: 'The US is the only developed country requiring daily in-person clinic visits for methadone. Telehealth buprenorphine and take-home methadone save lives.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'od-a4', tier: 'local', text: 'Advocate for harm reduction programs in your city.', detail: 'Safe consumption sites, needle exchanges, and community naloxone distribution have decades of evidence. No safe consumption site has ever had a death inside it.', timeEstimate: '2 hrs/month', impactScale: 3 },
+          { id: 'od-a5', tier: 'national', text: 'Advocate for decriminalization of personal drug use.', detail: 'Portugal\'s 2001 decriminalization reduced drug deaths by 85% within a decade. Push for treatment over incarceration at the state and federal level.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'od-a6', tier: 'national', text: 'Push for expanded methadone and buprenorphine access.', detail: 'The US is the only developed country requiring daily in-person clinic visits for methadone. Telehealth buprenorphine and take-home methadone save lives.', timeEstimate: '10 min', impactScale: 3 },
         ],
         solutions: [
           { name: 'Evidence-based treatment on demand', proximity: 'close', description: 'Same-day access to buprenorphine or methadone would immediately reduce overdose deaths. The barrier is not the medicine — it is prescriber access and regulatory restrictions.', progress: 35, progressColor: '#1D9E75', actions: ['Advocate for telehealth buprenorphine permanence', 'Support methadone reform legislation'] },
@@ -682,9 +682,9 @@ export const livesLostRing: Ring = {
         actions: [
           { id: 'mat-a1', tier: 'personal', text: 'Know your rights as an obstetric patient and advocate for yourself.', detail: 'The Joint Commission has materials on patient rights. ACOG has guidelines on what care you should receive.', timeEstimate: '1 hr to read', impactScale: 2 },
           { id: 'mat-a2', tier: 'personal', text: 'Support doula care for yourself or someone you know.', detail: 'Research consistently shows doulas improve maternal outcomes. Several states now allow Medicaid coverage of doula services.', timeEstimate: 'Varies', impactScale: 2 },
-          { id: 'mat-a3', tier: 'community', text: 'Support community birth centers and midwifery care.', detail: 'Community birth centers, especially those serving Black mothers, have demonstrated dramatically better outcomes for low-risk pregnancies.', timeEstimate: 'Donate or volunteer', impactScale: 2 },
-          { id: 'mat-a4', tier: 'systemic', text: 'Advocate for 12-month postpartum Medicaid coverage in your state.', detail: 'Contact your state legislators. The American Rescue Plan gave states the option — advocacy is what pushes states to take it.', timeEstimate: '10 min', impactScale: 3 },
-          { id: 'mat-a5', tier: 'systemic', text: 'Support the Black Maternal Health Momnibus Act.', detail: 'Addresses systemic drivers of maternal mortality including housing, transportation, and healthcare access.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'mat-a3', tier: 'local', text: 'Support community birth centers and midwifery care.', detail: 'Community birth centers, especially those serving Black mothers, have demonstrated dramatically better outcomes for low-risk pregnancies.', timeEstimate: 'Donate or volunteer', impactScale: 2 },
+          { id: 'mat-a4', tier: 'national', text: 'Advocate for 12-month postpartum Medicaid coverage in your state.', detail: 'Contact your state legislators. The American Rescue Plan gave states the option — advocacy is what pushes states to take it.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'mat-a5', tier: 'national', text: 'Support the Black Maternal Health Momnibus Act.', detail: 'Addresses systemic drivers of maternal mortality including housing, transportation, and healthcare access.', timeEstimate: '10 min', impactScale: 3 },
         ],
         solutions: [
           { name: 'Universal 12-month postpartum coverage', proximity: 'close', description: 'Extending Medicaid from 60 days to 12 months is the single highest-impact near-term maternal mortality intervention. Most maternal deaths occur after 60 days.', progress: 45, progressColor: '#1D9E75', actions: ['Contact your state legislators', 'Support maternal health advocacy organizations'] },
@@ -747,9 +747,9 @@ export const livesLostRing: Ring = {
         actions: [
           { id: 'inf-a1', tier: 'personal', text: 'Stay current on all recommended vaccinations for your age group.', detail: 'The CDC Adult Immunization Schedule at cdc.gov/vaccines is updated annually. Flu, COVID, RSV (over 60), Shingrix (over 50), and Tdap are the most commonly missed.', timeEstimate: 'Annual', impactScale: 3 },
           { id: 'inf-a2', tier: 'personal', text: 'Only use antibiotics when prescribed for bacterial infections.', detail: 'Antibiotics do not treat viral infections. Every unnecessary course contributes to resistance.', timeEstimate: 'Every time', impactScale: 2 },
-          { id: 'inf-a3', tier: 'community', text: 'Counter vaccine misinformation when you see it.', detail: 'Proactive inoculation against misinformation — explaining how it works before it\'s encountered — is more effective than correction after the fact.', timeEstimate: 'Ongoing', impactScale: 2 },
-          { id: 'inf-a4', tier: 'systemic', text: 'Advocate for antibiotic stewardship legislation in agriculture.', detail: 'The PRESERVE Act would restrict routine preventive antibiotic use in livestock without a veterinary prescription. Contact your representatives.', timeEstimate: '10 min', impactScale: 3 },
-          { id: 'inf-a5', tier: 'systemic', text: 'Support permanent public health infrastructure investment.', detail: 'Advocate for CDC and state public health funding that maintains emergency preparedness between crises — not just during them.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'inf-a3', tier: 'local', text: 'Counter vaccine misinformation when you see it.', detail: 'Proactive inoculation against misinformation — explaining how it works before it\'s encountered — is more effective than correction after the fact.', timeEstimate: 'Ongoing', impactScale: 2 },
+          { id: 'inf-a4', tier: 'national', text: 'Advocate for antibiotic stewardship legislation in agriculture.', detail: 'The PRESERVE Act would restrict routine preventive antibiotic use in livestock without a veterinary prescription. Contact your representatives.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'inf-a5', tier: 'national', text: 'Support permanent public health infrastructure investment.', detail: 'Advocate for CDC and state public health funding that maintains emergency preparedness between crises — not just during them.', timeEstimate: '10 min', impactScale: 3 },
         ],
         solutions: [
           { name: 'Vaccine confidence restoration', proximity: 'close', description: 'Trusted messenger programs have demonstrated 15–25% vaccination uptake improvements. Combined with platform accountability for health misinformation, meaningful improvement is achievable within 5 years.', progress: 40, progressColor: '#1D9E75', actions: ['Share accurate vaccine information', 'Support Vaccinate Your Family'] },
@@ -813,10 +813,10 @@ export const livesLostRing: Ring = {
         actions: [
           { id: 'gun-a1', tier: 'personal', text: 'Store firearms safely if you own them.', detail: 'Unloaded, locked, with ammunition stored separately. This prevents the majority of unintentional shootings and significantly reduces both suicide and theft risk.', timeEstimate: 'One-time setup', impactScale: 3 },
           { id: 'gun-a2', tier: 'personal', text: 'Have a conversation about gun safety with your family.', detail: 'The ASK (Asking Saves Kids) approach — asking about firearm storage in homes your children visit — is effective and socially acceptable.', timeEstimate: '30 min', impactScale: 2 },
-          { id: 'gun-a3', tier: 'community', text: 'Support community violence intervention programs.', detail: 'CVIs employ credible messengers with lived experience to interrupt cycles of retaliation. READI Chicago, Cure Violence, and similar programs have strong evidence.', timeEstimate: 'Donate or volunteer', impactScale: 3 },
-          { id: 'gun-a4', tier: 'community', text: 'Engage with Everytown, Moms Demand Action, or Giffords.', detail: 'These organizations coordinate advocacy at state and local levels where most effective legislation is currently passing.', timeEstimate: '2 hrs/month', impactScale: 2 },
-          { id: 'gun-a5', tier: 'systemic', text: 'Advocate for universal background checks at the federal level.', detail: 'The Bipartisan Background Checks Act has passed the House multiple times. Senate action requires consistent constituent pressure. Contact your senators.', timeEstimate: '10 min', impactScale: 3 },
-          { id: 'gun-a6', tier: 'systemic', text: 'Support red flag law expansion.', detail: 'Extreme Risk Protection Orders allow temporary firearm removal from people in mental health crisis. Strong evidence for suicide prevention and majority support across party lines.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'gun-a3', tier: 'local', text: 'Support community violence intervention programs.', detail: 'CVIs employ credible messengers with lived experience to interrupt cycles of retaliation. READI Chicago, Cure Violence, and similar programs have strong evidence.', timeEstimate: 'Donate or volunteer', impactScale: 3 },
+          { id: 'gun-a4', tier: 'local', text: 'Engage with Everytown, Moms Demand Action, or Giffords.', detail: 'These organizations coordinate advocacy at state and local levels where most effective legislation is currently passing.', timeEstimate: '2 hrs/month', impactScale: 2 },
+          { id: 'gun-a5', tier: 'national', text: 'Advocate for universal background checks at the federal level.', detail: 'The Bipartisan Background Checks Act has passed the House multiple times. Senate action requires consistent constituent pressure. Contact your senators.', timeEstimate: '10 min', impactScale: 3 },
+          { id: 'gun-a6', tier: 'national', text: 'Support red flag law expansion.', detail: 'Extreme Risk Protection Orders allow temporary firearm removal from people in mental health crisis. Strong evidence for suicide prevention and majority support across party lines.', timeEstimate: '10 min', impactScale: 3 },
         ],
         solutions: [
           { name: 'Universal background checks', proximity: 'close', description: 'Universal background checks have majority support across party lines and strong evidence for effectiveness. Federal legislation has passed the House. Senate action is the only barrier.', progress: 35, progressColor: '#1D9E75', actions: ['Contact your senators', 'Support Everytown and Moms Demand Action'] },

@@ -29,12 +29,18 @@ function TrendArrow({ trend, trendIsGood }: { trend: DataPoint['trend']; trendIs
 }
 
 function TierPill({ tier }: { tier: Action['tier'] }) {
-  const styles = {
-    personal:  'bg-blue-50 text-blue-700',
-    community: 'bg-green-50 text-green-700',
-    systemic:  'bg-amber-50 text-amber-700',
+  const styles: Record<string, string> = {
+    personal: 'bg-blue-50 text-blue-700',
+    local:    'bg-green-50 text-green-700',
+    state:    'bg-purple-50 text-purple-700',
+    national: 'bg-amber-50 text-amber-700',
   }
-  const labels = { personal: 'Personal', community: 'Community', systemic: 'Systemic' }
+  const labels: Record<string, string> = {
+    personal: 'Personal',
+    local:    'Local',
+    state:    'State',
+    national: 'National',
+  }
   return (
     <span className={clsx('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium shrink-0', styles[tier])}>
       {labels[tier]}
@@ -229,7 +235,7 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
       <ResponsiveContainer width="100%" height={height}>
         <LineChart data={combined} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F4" vertical={false} />
-          <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} tickCount={5} />
+          <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} tickCount={5} tickFormatter={(v) => Math.round(v).toString()} />
           <YAxis tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} width={40} />
           <Tooltip content={({ active, payload, label }) => {
             if (!active || !payload?.length) return null
@@ -248,8 +254,7 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
           }} />
           <Line type="monotone" dataKey="total" name="Total US deaths" stroke="#D6D3D1" strokeWidth={2} dot={false} strokeDasharray="4 2" />
           <Line type="monotone" dataKey="preventable" name="Preventable US deaths" stroke={color} strokeWidth={2.5} dot={false} />
-          <Line type="monotone" dataKey="peer" name="Peer nations avg" stroke="#A8A29E" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
-        </LineChart>
+          <Line type="monotone" dataKey="peer" name="Peer nations total deaths" stroke="#A8A29E" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />        </LineChart>
       </ResponsiveContainer>
       <div className="flex gap-4 mt-2 flex-wrap">
         <span className="flex items-center gap-1.5 text-xs text-stone-400">
@@ -262,7 +267,7 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
         </span>
         <span className="flex items-center gap-1.5 text-xs text-stone-400">
           <span className="inline-block w-4 h-0.5 rounded" style={{ background: '#A8A29E' }} />
-          Peer nations avg
+          Peer nations total deaths
         </span>
       </div>
       <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
@@ -309,13 +314,17 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
               <div key={i} className="flex items-center gap-2">
                 <TierPill tier={a.tier} />
                 <span className="text-xs text-stone-600 leading-relaxed flex-1">{a.text}</span>
-                <button className={clsx(
+              <button className={clsx(
                   'text-xs px-2.5 py-1 rounded-lg font-medium shrink-0 transition-colors',
-                  a.tier === 'personal'  ? 'bg-blue-600 text-white hover:bg-blue-700' :
-                  a.tier === 'community' ? 'bg-green-600 text-white hover:bg-green-700' :
+                  a.tier === 'personal' ? 'bg-blue-600 text-white hover:bg-blue-700' :
+                  a.tier === 'local'    ? 'bg-green-600 text-white hover:bg-green-700' :
+                  a.tier === 'state'    ? 'bg-purple-600 text-white hover:bg-purple-700' :
                   'bg-amber-600 text-white hover:bg-amber-700'
                 )}>
-                  {a.tier === 'personal' ? "I'll do this" : a.tier === 'community' ? 'Learn more' : 'Take action'}
+                  {a.tier === 'personal' ? "I'll do this" :
+                   a.tier === 'local'    ? 'Find local opportunities' :
+                   a.tier === 'state'    ? 'Find your state rep' :
+                   'Take action'}
                 </button>
               </div>
             ))}
@@ -373,28 +382,23 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
         </div>
       )}
 
-      {/* Why the US gap — as bullets */}
-      <div className="px-4 pt-3 pb-2">
-        <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-          Why the US is worse than peer nations
+    
+      {/* Why the US gap — only show if whyBullets exists, otherwise skip */}
+      {dp.whyBullets && (
+        <div className="px-4 pt-3 pb-2">
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+            Why the US is worse than peer nations
+          </div>
+          <ul className="space-y-2">
+            {dp.whyBullets.map((bullet, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="space-y-2">
-          {dp.whyBullets
-            ? dp.whyBullets.map((bullet, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-                  <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
-                  <span>{bullet}</span>
-                </li>
-              ))
-            : dp.why.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-                  <span className="text-stone-300 shrink-0 mt-0.5">→</span>
-                  <span>{sentence.trim().replace(/\.$/, '')}.</span>
-                </li>
-              ))
-          }
-        </ul>
-      </div>
+      )}
 
       {/* Why the US gap — as bullets */}
       <div className="px-4 pt-3 pb-2">
@@ -415,19 +419,28 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
       <div className="px-4 pb-3 pt-2">
         <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
       </div>
-
+      {/* Source block — inline with the data */}
+      <div className="mx-4 mb-3 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="text-xs text-stone-400">
+            <span className="font-medium text-stone-500">Source:</span> {dp.source}
+          </div>
+          <div className="flex items-center gap-2">
+            {dp.trust && <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />}
+          </div>
+        </div>
+        {dp.nextDataRelease && (
+          <div className="text-xs text-stone-400 mt-1">
+            <span className="font-medium text-stone-500">Next release:</span> {dp.nextDataRelease}
+          </div>
+        )}
+      </div>
       {/* Structural drivers — incentive note merged in */}
       {dp.drivers && dp.drivers.length > 0 && (
         <div className="px-4 pb-4">
           <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
             What keeps this stuck — structural drivers
           </div>
-          {dp.incentiveNote && (
-            <div className="mb-2 px-3 py-2 bg-amber-50 border border-amber-100 rounded-lg">
-              <div className="text-xs font-semibold text-amber-700 mb-0.5">Financial incentive</div>
-              <p className="text-xs text-amber-800 leading-relaxed">{dp.incentiveNote}</p>
-            </div>
-          )}
           <div className="flex flex-col gap-2">
             {dp.drivers.map(driver => (
               <DriverCard key={driver.id} driver={driver} />
@@ -436,18 +449,6 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
         </div>
       )}
 
-      {/* Source + trust + next release — at the bottom */}
-      <div className="px-4 pb-4 pt-2 border-t border-stone-100 flex items-start justify-between gap-4 flex-wrap">
-        <div className="text-xs text-stone-400">
-          <span className="font-medium text-stone-500">Source:</span> {dp.source}
-          {dp.nextDataRelease && (
-            <span className="ml-2 text-stone-300">· Next release: {dp.nextDataRelease}</span>
-          )}
-        </div>
-        {dp.trust && (
-          <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />
-        )}
-      </div>
     </div>
   )
 }
@@ -458,11 +459,11 @@ function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
   const [done, setDone] = useState(false)
 
   const tierStyles: Record<string, string> = {
-    personal:  'border-blue-100 bg-blue-50/30',
-    community: 'border-green-100 bg-green-50/30',
-    systemic:  'border-amber-100 bg-amber-50/30',
+    personal: 'border-blue-100 bg-blue-50/30',
+    local:    'border-green-100 bg-green-50/30',
+    state:    'border-purple-100 bg-purple-50/30',
+    national: 'border-amber-100 bg-amber-50/30',
   }
-
   return (
     <div className={clsx('border rounded-xl p-4 transition-all', tierStyles[tier], done && 'opacity-60')}>
       <div className="text-sm font-medium text-stone-900 mb-1">{action.text}</div>
@@ -503,17 +504,22 @@ function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
             {done ? '✓ Added to civic record' : "I'll do this"}
           </button>
         )}
-        {tier === 'community' && (
+        {tier === 'local' && (
           <button className="text-xs px-4 py-2 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700 transition-colors">
-            Learn more
+            Find local opportunities
           </button>
         )}
-        {tier === 'systemic' && action.legislation && (
+        {tier === 'state' && (
+          <button className="text-xs px-4 py-2 rounded-lg font-medium bg-purple-600 text-white hover:bg-purple-700 transition-colors">
+            Find your state rep
+          </button>
+        )}
+        {tier === 'national' && action.legislation && (
           <a href={action.legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs px-4 py-2 rounded-lg font-medium bg-amber-600 text-white hover:bg-amber-700 transition-colors">
             View bill
           </a>
         )}
-        {tier === 'systemic' && (
+        {tier === 'national' && (
           <button className="text-xs px-4 py-2 rounded-lg font-medium border border-stone-200 text-stone-600 hover:bg-stone-50 transition-colors">
             Contact your rep
           </button>
@@ -603,6 +609,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                 </div>
 
                 {/* Main chart */}
+                {/* Main chart */}
                 <div className="mb-6">
                   {cat.totalChart ? (
                     <div>
@@ -615,6 +622,14 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                         color={ringColor}
                         height={180}
                       />
+                      <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
+                        <div className="text-xs text-stone-400">
+                          <span className="font-medium text-stone-500">Sources:</span> CDC WONDER (US mortality) · WHO Global Health Observatory (peer nations) · IHME Global Burden of Disease (preventable fractions)
+                        </div>
+                        <div className="text-xs text-stone-400 mt-0.5">
+                          <span className="font-medium text-stone-500">Peer nations:</span> G7 plus Australia, Netherlands, Sweden, Norway, Denmark — adjusted to deaths per 100,000 population for fair comparison
+                        </div>
+                      </div>
                     </div>
                   ) : (
                     <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} />
@@ -674,11 +689,11 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
-                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Community — organize and advocate locally</div>
+                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Local — organize and advocate in your community</div>
                   </div>
                   <div className="flex flex-col gap-3">
-                    {cat.actions.filter(a => a.tier === 'community').map(action => (
-                      <ActionCard key={action.id} action={action} tier="community" />
+                    {cat.actions.filter(a => a.tier === 'local').map(action => (
+                      <ActionCard key={action.id} action={action} tier="local" />
                     ))}
                   </div>
                   <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">
@@ -708,11 +723,11 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Systemic — policy and structural change</div>
+                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">National — federal policy and structural change</div>
                   </div>
                   <div className="flex flex-col gap-3">
-                    {cat.actions.filter(a => a.tier === 'systemic').map(action => (
-                      <ActionCard key={action.id} action={action} tier="systemic" />
+                    {cat.actions.filter(a => a.tier === 'national').map(action => (
+                      <ActionCard key={action.id} action={action} tier="national" />
                     ))}
                   </div>
                   <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">

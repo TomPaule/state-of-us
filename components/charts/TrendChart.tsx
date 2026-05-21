@@ -60,6 +60,7 @@ export default function TrendChart({
             axisLine={false}
             tickLine={false}
             width={40}
+            tickFormatter={(v) => Math.round(v).toString()}
           />
           <Tooltip content={<CustomTooltip />} />
 

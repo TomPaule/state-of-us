@@ -1,5 +1,5 @@
 export type RingStatus = 'critical' | 'concerning' | 'moderate' | 'improving' | 'declining'
-export type ActionTier = 'personal' | 'community' | 'systemic'
+export type ActionTier = 'personal' | 'local' | 'state' | 'national'
 export type IncentiveType = 'market' | 'government'
 export type SolutionProximity = 'close' | 'medium' | 'far'
 export type PolicyDirection = 'toward' | 'away' | 'mixed'
