@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import { getRingById } from '@/lib/data/rings'
+import { scoreToGrade } from '@/lib/types'
 import type { Category, DataPoint, Action, ChartPoint, ActionTier } from '@/lib/types'
 import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
@@ -348,21 +349,52 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
       </div>
 
       {/* The problem — mechanism as bullets */}
-      {dp.mechanism && (
+      {(dp.mechanismBullets || dp.mechanism) && (
         <div className="px-4 pt-4 pb-2">
           <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
             The problem — how this causes death
           </div>
-          <ul className="space-y-1.5">
-            {dp.mechanism.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-                <span className="text-red-300 shrink-0 mt-0.5">→</span>
-                <span>{sentence.trim().replace(/\.$/, '')}.</span>
-              </li>
-            ))}
+          <ul className="space-y-2">
+            {dp.mechanismBullets
+              ? dp.mechanismBullets.map((bullet, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                    <span className="text-red-300 shrink-0 mt-0.5 font-bold">→</span>
+                    <span>{bullet}</span>
+                  </li>
+                ))
+              : dp.mechanism!.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                    <span className="text-red-300 shrink-0 mt-0.5">→</span>
+                    <span>{sentence.trim().replace(/\.$/, '')}.</span>
+                  </li>
+                ))
+            }
           </ul>
         </div>
       )}
+
+      {/* Why the US gap — as bullets */}
+      <div className="px-4 pt-3 pb-2">
+        <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+          Why the US is worse than peer nations
+        </div>
+        <ul className="space-y-2">
+          {dp.whyBullets
+            ? dp.whyBullets.map((bullet, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                  <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
+                  <span>{bullet}</span>
+                </li>
+              ))
+            : dp.why.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                  <span className="text-stone-300 shrink-0 mt-0.5">→</span>
+                  <span>{sentence.trim().replace(/\.$/, '')}.</span>
+                </li>
+              ))
+          }
+        </ul>
+      </div>
 
       {/* Why the US gap — as bullets */}
       <div className="px-4 pt-3 pb-2">
@@ -652,10 +684,23 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                   <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">
                     <span className="text-stone-300 text-sm">🔒</span>
                     <div className="flex-1">
-                      <div className="text-xs font-medium text-stone-500">Local opportunities near you</div>
-                      <div className="text-xs text-stone-400">Verified organizations and volunteer opportunities within 10 miles.</div>
+                      <div className="text-xs font-medium text-stone-500">State and local policy actions</div>
+                      <div className="text-xs text-stone-400">Your state legislators, local ballot initiatives, and city council votes relevant to this issue.</div>
                     </div>
                     <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-200 text-stone-400 cursor-not-allowed shrink-0">Coming soon</button>
+                  </div>
+
+                  {/* See all actions */}
+                  <div className="mt-4 pt-4 border-t border-stone-100 text-center">
+                    <p className="text-xs text-stone-400 mb-3">
+                      More actions available — personal habits, community organizing, and legislative campaigns across all 12 rings.
+                    </p>
+                    <Link
+                      href="/actions"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-stone-900 text-white rounded-lg text-xs font-medium hover:bg-stone-700 transition-colors"
+                    >
+                      See all actions for Lives Lost
+                    </Link>
                   </div>
                 </div>
 
@@ -677,6 +722,19 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                       <div className="text-xs text-stone-400">Your state legislators, local ballot initiatives, and city council votes relevant to this issue.</div>
                     </div>
                     <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-200 text-stone-400 cursor-not-allowed shrink-0">Coming soon</button>
+                  </div>
+
+                  {/* See all actions */}
+                  <div className="mt-4 pt-4 border-t border-stone-100 text-center">
+                    <p className="text-xs text-stone-400 mb-3">
+                      More actions available across all 12 rings — personal habits, community organizing, and legislative campaigns.
+                    </p>
+                    <Link
+                      href="/actions"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-stone-900 text-white rounded-lg text-xs font-medium hover:bg-stone-700 transition-colors"
+                    >
+                      See all actions for Lives Lost
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -712,9 +770,17 @@ export default function LivesLostPage() {
           <h1 className="font-display text-3xl font-medium text-stone-900 mb-3">{ring.name}</h1>
           <div className="flex items-center gap-3 flex-wrap">
             <StatusBadge status={ring.status} />
-            <span className="text-xs text-stone-400 font-mono">
-              Score: {ring.score} / 100 — calculated from 7 leading causes of preventable death, each weighted by contribution to total mortality
-            </span>
+            <div className="flex items-center gap-2">
+              <span
+                className="text-2xl font-bold px-3 py-1 rounded-lg"
+                style={{ background: ring.color + '15', color: ring.color }}
+              >
+                {scoreToGrade(ring.score)}
+              </span>
+              <span className="text-xs text-stone-400 leading-relaxed">
+                Grade {scoreToGrade(ring.score)} · Score {ring.score}/100 · Calculated from 7 leading causes of preventable death, each weighted by contribution to total mortality
+              </span>
+            </div>
           </div>
         </div>
       </div>
