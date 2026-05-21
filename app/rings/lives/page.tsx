@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import { getRingById } from '@/lib/data/rings'
@@ -11,14 +12,17 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer,
 } from 'recharts'
-type CategoryTab = 'data' | 'solutions'
+
+type CategoryTab = 'data' | 'actions'
+
+// ── Utility components ────────────────────────────────────────────────────────
 
 function TrendArrow({ trend, trendIsGood }: { trend: DataPoint['trend']; trendIsGood: boolean }) {
   const good = (trend === 'up' && trendIsGood) || (trend === 'down' && !trendIsGood)
   const bad  = (trend === 'up' && !trendIsGood) || (trend === 'down' && trendIsGood)
   return (
     <span className={clsx('text-sm font-medium', good ? 'text-green-600' : bad ? 'text-red-500' : 'text-stone-400')}>
-      {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'}
+      {trend === 'up' ? 'Worsening' : trend === 'down' ? 'Improving' : 'Stable'}
     </span>
   )
 }
@@ -53,168 +57,6 @@ function DifficultyPill({ difficulty }: { difficulty: string }) {
   )
 }
 
-function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legislation']> }) {
-  const statusSteps = ['introduced', 'in-committee', 'passed-house', 'passed-senate', 'signed']
-  const currentStep = statusSteps.indexOf(legislation.status)
-  const isDead = legislation.status === 'dead'
-  const stepPct = Math.round((legislation.currentStepCount / legislation.currentStepTotal) * 100)
-
-  const stepLabels: Record<string, string> = {
-    'introduced':    'Intro',
-    'in-committee':  'Committee',
-    'passed-house':  'House',
-    'passed-senate': 'Senate',
-    'signed':        'Signed',
-  }
-
-  return (
-    <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
-      <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
-        <div>
-          <div className="text-xs font-semibold text-blue-900">{legislation.billName}</div>
-          <div className="text-xs text-blue-600">{legislation.billNumber}</div>
-        </div>
-        <a href={legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0">View bill</a>
-          
-      </div>
-
-      <p className="text-xs text-blue-700 leading-relaxed mb-3">{legislation.summary}</p>
-
-      {isDead ? (
-        <div className="text-xs text-red-600 font-medium">✗ This bill did not pass</div>
-      ) : (
-        <>
-          {/* Bar 1 — Where is the bill in the process */}
-          <div className="mb-1">
-            <div className="text-xs text-blue-500 font-medium mb-1">Where is this bill?</div>
-            <div className="flex gap-1 mb-1">
-              {statusSteps.map((step, i) => (
-                <div key={step} className="flex-1">
-                  <div className={clsx(
-                    'h-1.5 rounded-full',
-                    i <= currentStep ? 'bg-blue-500' : 'bg-blue-100'
-                  )} />
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-between">
-              {statusSteps.map((step, i) => (
-                <div
-                  key={step}
-                  className={clsx(
-                    'text-xs text-center flex-1',
-                    i === currentStep
-                      ? 'text-blue-700 font-semibold'
-                      : i < currentStep
-                      ? 'text-blue-400'
-                      : 'text-blue-200'
-                  )}
-                >
-                  {stepLabels[step]}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bar 2 — Where are we in the current step */}
-          <div className="mt-3">
-            <div className="text-xs text-blue-500 font-medium mb-1">
-              Progress in current step
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-blue-500 rounded-full transition-all duration-700"
-                  style={{ width: `${Math.min(stepPct, 100)}%` }}
-                />
-              </div>
-              <span className="text-xs text-blue-700 font-medium shrink-0">
-                {legislation.currentStepCount} of {legislation.currentStepTotal}
-              </span>
-            </div>
-            <div className="text-xs text-blue-400 mt-1">
-              {legislation.currentStepLabel} · Updated {legislation.lastUpdated}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  )
-}
-
-function SolvedPrecedentBlock({ precedent, color }: { precedent: NonNullable<DataPoint['solvedPrecedent']>; color: string }) {
-  const [open, setOpen] = useState(false)
-  return (
-    <div className="mt-3 border border-green-200 rounded-lg overflow-hidden">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full text-left p-3 bg-green-50 hover:bg-green-100 transition-colors flex items-center justify-between gap-2"
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-green-600 font-bold text-sm">✓</span>
-          <div>
-            <div className="text-xs font-semibold text-green-800">We solved something like this before</div>
-            <div className="text-xs text-green-600">{precedent.title}</div>
-          </div>
-        </div>
-        <span className={clsx('text-green-500 transition-transform duration-200', open && 'rotate-180')}>▾</span>
-      </button>
-      {open && (
-        <div className="p-3 bg-white border-t border-green-100">
-          <p className="text-sm text-stone-700 leading-relaxed mb-2">{precedent.description}</p>
-          <div className="flex gap-4 flex-wrap mb-3">
-            <div>
-              <div className="text-xs text-stone-400 uppercase tracking-widest">Outcome</div>
-              <div className="text-xs font-medium text-green-700">{precedent.outcome}</div>
-            </div>
-            <div>
-              <div className="text-xs text-stone-400 uppercase tracking-widest">Time taken</div>
-              <div className="text-xs font-medium text-stone-700">{precedent.timeTaken}</div>
-            </div>
-          </div>
-          {precedent.chart && precedent.chartLabel && (
-            <TrendChart
-              data={precedent.chart}
-              label={precedent.chartLabel}
-              color="#16A34A"
-              height={100}
-              showTarget={false}
-            />
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function TrustBadge({ grade, explanation }: { grade: string; explanation: string }) {
-  const colors: Record<string, string> = {
-    A: 'bg-green-50 text-green-700 border-green-200',
-    B: 'bg-blue-50 text-blue-700 border-blue-200',
-    C: 'bg-amber-50 text-amber-700 border-amber-200',
-    D: 'bg-red-50 text-red-700 border-red-200',
-  }
-  const [show, setShow] = useState(false)
-  return (
-    <div className="relative inline-block">
-      <button
-        className={clsx('inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-medium', colors[grade])}
-      >
-        Data Quality: {grade}
-      </button>
-      {show && (
-        <div className="absolute right-0 top-6 z-10 w-64 bg-white border border-stone-200 rounded-lg p-3 shadow-card-hover text-xs text-stone-600 leading-relaxed">
-          <div className="font-medium text-stone-900 mb-1">Data quality: {grade}</div>
-          {explanation}
-          <div className="mt-2 pt-2 border-t border-stone-100 text-stone-400">
-            A = official registry · B = peer-reviewed · C = estimated · D = contested
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
 function ImpactWeightBadge({ weight }: { weight: string }) {
   const styles: Record<string, string> = {
     primary:   'bg-red-50 text-red-700 border border-red-200',
@@ -233,127 +75,143 @@ function ImpactWeightBadge({ weight }: { weight: string }) {
     </span>
   )
 }
-function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }) {
+
+function TrustBadge({ grade, explanation }: { grade: string; explanation: string }) {
+  const colors: Record<string, string> = {
+    A: 'bg-green-50 text-green-700 border-green-200',
+    B: 'bg-blue-50 text-blue-700 border-blue-200',
+    C: 'bg-amber-50 text-amber-700 border-amber-200',
+    D: 'bg-red-50 text-red-700 border-red-200',
+  }
+  const [show, setShow] = useState(false)
+  return (
+    <div className="relative inline-block">
+      <button
+        onClick={e => { e.stopPropagation(); setShow(s => !s) }}
+        className={clsx('inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-medium', colors[grade])}
+      >
+        Data Quality: {grade}
+      </button>
+      {show && (
+        <div className="absolute right-0 top-6 z-10 w-64 bg-white border border-stone-200 rounded-lg p-3 shadow-lg text-xs text-stone-600 leading-relaxed">
+          <div className="font-medium text-stone-900 mb-1">Data quality: {grade}</div>
+          {explanation}
+          <div className="mt-2 pt-2 border-t border-stone-100 text-stone-400">
+            A = official registry · B = peer-reviewed · C = estimated · D = contested
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Bill status bar ───────────────────────────────────────────────────────────
+
+function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legislation']> }) {
+  const statusSteps = ['introduced', 'in-committee', 'passed-house', 'passed-senate', 'signed']
+  const currentStep = statusSteps.indexOf(legislation.status)
+  const isDead = legislation.status === 'dead'
+  const stepPct = Math.round((legislation.currentStepCount / legislation.currentStepTotal) * 100)
+  const stepLabels: Record<string, string> = {
+    'introduced':    'Intro',
+    'in-committee':  'Committee',
+    'passed-house':  'House',
+    'passed-senate': 'Senate',
+    'signed':        'Signed',
+  }
+  return (
+    <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+      <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
+        <div>
+          <div className="text-xs font-semibold text-blue-900">{legislation.billName}</div>
+          <div className="text-xs text-blue-600">{legislation.billNumber}</div>
+        </div>
+        <a href={legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0">View bill</a>
+      </div>
+      <p className="text-xs text-blue-700 leading-relaxed mb-3">{legislation.summary}</p>
+      {isDead ? (
+        <div className="text-xs text-red-600 font-medium">This bill did not pass</div>
+      ) : (
+        <>
+          <div className="mb-1">
+            <div className="text-xs text-blue-500 font-medium mb-1">Where is this bill?</div>
+            <div className="flex gap-1 mb-1">
+              {statusSteps.map((step, i) => (
+                <div key={step} className="flex-1">
+                  <div className={clsx('h-1.5 rounded-full', i <= currentStep ? 'bg-blue-500' : 'bg-blue-100')} />
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between">
+              {statusSteps.map((step, i) => (
+                <div key={step} className={clsx('text-xs text-center flex-1', i === currentStep ? 'text-blue-700 font-semibold' : i < currentStep ? 'text-blue-400' : 'text-blue-200')}>
+                  {stepLabels[step]}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-xs text-blue-500 font-medium mb-1">Progress in current step</div>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500 rounded-full" style={{ width: `${Math.min(stepPct, 100)}%` }} />
+              </div>
+              <span className="text-xs text-blue-700 font-medium shrink-0">
+                {legislation.currentStepCount} of {legislation.currentStepTotal}
+              </span>
+            </div>
+            <div className="text-xs text-blue-400 mt-1">{legislation.currentStepLabel} · Updated {legislation.lastUpdated}</div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+// ── Solved precedent ──────────────────────────────────────────────────────────
+
+function SolvedPrecedentBlock({ precedent, color }: { precedent: NonNullable<DataPoint['solvedPrecedent']>; color: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border border-stone-200 rounded-lg overflow-hidden">
+    <div className="border border-green-200 rounded-lg overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full text-left px-3 py-2.5 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
+        className="w-full text-left p-3 bg-green-50 hover:bg-green-100 transition-colors flex items-center justify-between gap-2"
       >
-        <div>
-          <div className="text-xs font-semibold text-stone-700">{driver.label}</div>
-          <div className="text-xs text-stone-500 mt-0.5">{driver.stat}</div>
+        <div className="flex items-center gap-2">
+          <span className="text-green-600 font-bold text-sm">✓</span>
+          <div>
+            <div className="text-xs font-semibold text-green-800">We solved something like this before</div>
+            <div className="text-xs text-green-600">{precedent.title}</div>
+          </div>
         </div>
-        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+        <span className={clsx('text-green-500 transition-transform duration-200', open && 'rotate-180')}>▾</span>
       </button>
       {open && (
-        <div className="px-3 py-3 border-t border-stone-100">
-          <p className="text-xs text-stone-600 leading-relaxed mb-3">{driver.why}</p>
-          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">What you can do</div>
-          <div className="flex flex-col gap-1.5">
-            {driver.actions.map((a, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <TierPill tier={a.tier} />
-                <span className="text-xs text-stone-600 leading-relaxed">{a.text}</span>
-              </div>
-            ))}
+        <div className="p-3 bg-white border-t border-green-100">
+          <p className="text-sm text-stone-700 leading-relaxed mb-3">{precedent.description}</p>
+          <div className="flex gap-4 flex-wrap mb-3">
+            <div>
+              <div className="text-xs text-stone-400 uppercase tracking-widest">Outcome</div>
+              <div className="text-xs font-medium text-green-700">{precedent.outcome}</div>
+            </div>
+            <div>
+              <div className="text-xs text-stone-400 uppercase tracking-widest">Time taken</div>
+              <div className="text-xs font-medium text-stone-700">{precedent.timeTaken}</div>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  )
-}
-function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) {
-  return (
-    <div className="border border-stone-200 rounded-xl bg-white overflow-hidden">
-
-      {/* Header */}
-      <div className="p-4 border-b border-stone-100">
-        <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
-          <div className="flex items-center gap-2 flex-wrap">
-            {dp.impactWeight && <ImpactWeightBadge weight={dp.impactWeight} />}
-          </div>
-          {dp.trust && (
-            <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />
+          {precedent.chart && precedent.chartLabel && (
+            <TrendChart data={precedent.chart} label={precedent.chartLabel} color="#16A34A" height={100} showTarget={false} />
           )}
         </div>
-        <div className="text-xs font-medium text-stone-500 mb-1">{dp.label}</div>
-        <div className="flex items-center justify-between gap-2">
-          <div className="text-xl font-semibold text-stone-900">{dp.value}</div>
-          <TrendArrow trend={dp.trend} trendIsGood={dp.trendIsGood} />
-        </div>
-        <div className="text-xs text-stone-500 mt-1 leading-relaxed">{dp.note}</div>
-      </div>
-
-      {/* Mechanism */}
-      {dp.mechanism && (
-        <div className="px-4 pt-4 pb-2">
-          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
-            How this kills — the mechanism
-          </div>
-          <p className="text-sm text-stone-600 leading-relaxed">{dp.mechanism}</p>
-        </div>
       )}
-
-      {/* Why the US gap exists */}
-      <div className="px-4 pt-3 pb-2">
-        <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
-          How this drives the preventable deaths number
-        </div>
-        <p className="text-sm text-stone-600 leading-relaxed">{dp.why}</p>
-      </div>
-
-      {/* Chart */}
-      <div className="px-4 pb-3">
-        <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
-      </div>
-
-      {/* Source + next release */}
-      <div className="px-4 pb-3 flex items-start justify-between gap-4 flex-wrap">
-        <div className="text-xs text-stone-400">
-          <span className="font-medium text-stone-500">Source:</span> {dp.source}
-        </div>
-        {dp.nextDataRelease && (
-          <div className="text-xs text-stone-400">
-            <span className="font-medium text-stone-500">Next release:</span> {dp.nextDataRelease}
-          </div>
-        )}
-      </div>
-
-      {/* Incentive note */}
-      {dp.incentiveNote && (
-        <div className="mx-4 mb-4 px-3 py-2.5 bg-amber-50 border border-amber-100 rounded-lg">
-          <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-1">
-            Why this persists
-          </div>
-          <p className="text-xs text-amber-800 leading-relaxed">{dp.incentiveNote}</p>
-        </div>
-      )}
-
-      {/* Structural drivers */}
-      {dp.drivers && dp.drivers.length > 0 && (
-        <div className="px-4 pb-4">
-          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
-            Structural drivers — what causes this risk factor
-          </div>
-          <div className="flex flex-col gap-2">
-            {dp.drivers.map(driver => (
-              <DriverCard key={driver.id} driver={driver} />
-            ))}
-          </div>
-        </div>
-      )}
-
     </div>
   )
 }
-function TotalVsPreventableChart({
-  totalData,
-  preventableData,
-  color,
-  height,
-}: {
+
+// ── Total vs preventable chart ────────────────────────────────────────────────
+
+function TotalVsPreventableChart({ totalData, preventableData, color, height }: {
   totalData: ChartPoint[]
   preventableData: ChartPoint[]
   color: string
@@ -364,9 +222,7 @@ function TotalVsPreventableChart({
     total: d.us,
     preventable: preventableData[i]?.us ?? 0,
     peer: d.peer,
-    target: d.target,
   }))
-
   return (
     <div>
       <ResponsiveContainer width="100%" height={height}>
@@ -374,89 +230,226 @@ function TotalVsPreventableChart({
           <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F4" vertical={false} />
           <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} tickCount={5} />
           <YAxis tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} width={40} />
-          <Tooltip
-            content={({ active, payload, label }) => {
-              if (!active || !payload?.length) return null
-              return (
-                <div style={{ background: 'white', border: '1px solid #E7E5E4', borderRadius: 8, padding: '8px 12px', fontSize: 12 }}>
-                  <div style={{ fontWeight: 500, marginBottom: 4 }}>{label}</div>
-                  {payload.map((p: any) => (
-                    <div key={p.dataKey} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <span style={{ width: 8, height: 2, background: p.color, display: 'inline-block' }} />
-                      <span style={{ color: p.color }}>{p.name}:</span>
-                      <span style={{ fontWeight: 500 }}>{Number(p.value).toFixed(0)}K</span>
-                    </div>
-                  ))}
-                </div>
-              )
-            }}
-          />
+          <Tooltip content={({ active, payload, label }) => {
+            if (!active || !payload?.length) return null
+            return (
+              <div style={{ background: 'white', border: '1px solid #E7E5E4', borderRadius: 8, padding: '8px 12px', fontSize: 12 }}>
+                <div style={{ fontWeight: 500, marginBottom: 4 }}>{label}</div>
+                {payload.map((p: any) => (
+                  <div key={p.dataKey} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ width: 8, height: 2, background: p.color, display: 'inline-block' }} />
+                    <span style={{ color: p.color }}>{p.name}:</span>
+                    <span style={{ fontWeight: 500 }}>{Number(p.value).toFixed(0)}K</span>
+                  </div>
+                ))}
+              </div>
+            )
+          }} />
           <Line type="monotone" dataKey="total" name="Total US deaths" stroke="#D6D3D1" strokeWidth={2} dot={false} strokeDasharray="4 2" />
           <Line type="monotone" dataKey="preventable" name="Preventable US deaths" stroke={color} strokeWidth={2.5} dot={false} />
-          <Line type="monotone" dataKey="peer" name="Peer nations total" stroke="#A8A29E" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
+          <Line type="monotone" dataKey="peer" name="Peer nations avg" stroke="#A8A29E" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
         </LineChart>
       </ResponsiveContainer>
-      <div style={{ display: 'flex', gap: 16, marginTop: 8, flexWrap: 'wrap' }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#A8A29E' }}>
-          <span style={{ width: 16, height: 2, background: '#D6D3D1', display: 'inline-block' }} />
+      <div className="flex gap-4 mt-2 flex-wrap">
+        <span className="flex items-center gap-1.5 text-xs text-stone-400">
+          <span className="inline-block w-4 h-0.5 rounded" style={{ background: '#D6D3D1' }} />
           Total US deaths
         </span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#A8A29E' }}>
-          <span style={{ width: 16, height: 2, background: color, display: 'inline-block' }} />
+        <span className="flex items-center gap-1.5 text-xs text-stone-400">
+          <span className="inline-block w-4 h-0.5 rounded" style={{ background: color }} />
           Preventable US deaths
         </span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#A8A29E' }}>
-          <span style={{ width: 16, height: 2, background: '#A8A29E', display: 'inline-block' }} />
-          Peer nations total
+        <span className="flex items-center gap-1.5 text-xs text-stone-400">
+          <span className="inline-block w-4 h-0.5 rounded" style={{ background: '#A8A29E' }} />
+          Peer nations avg
         </span>
+      </div>
+      <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
+        <p className="text-xs text-stone-500 leading-relaxed">
+          <span className="font-medium text-stone-600">Peer nations:</span> Average of G7 plus comparable wealthy democracies (Australia, Netherlands, Sweden, Norway, Denmark), adjusted to deaths per 100,000 population for fair comparison across different country sizes.
+          <span className="ml-1 font-medium text-stone-600">The gap between total and preventable deaths</span> represents mortality from genetic conditions, advanced age, and causes not yet addressable with current medicine.
+        </p>
+      </div>
+    </div>
+  )
+}
+// ── Driver card ───────────────────────────────────────────────────────────────
+
+function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="border border-stone-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2.5 hover:bg-stone-50 transition-colors flex items-center justify-between gap-2"
+      >
+        <div className="flex-1 min-w-0">
+          <div className="text-xs font-semibold text-stone-700">{driver.label}</div>
+          <div className="text-xs text-stone-500 mt-0.5 leading-relaxed">{driver.stat}</div>
+        </div>
+        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200 ml-2', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="px-3 py-3 border-t border-stone-100 bg-stone-50">
+          {/* Why it exists — bullets */}
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Why this exists</div>
+          <ul className="space-y-1.5 mb-4">
+            {driver.why.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                <span className="text-stone-300 shrink-0 mt-0.5">→</span>
+                <span>{sentence.trim().replace(/\.$/, '')}.</span>
+              </li>
+            ))}
+          </ul>
+          {/* Actions */}
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">What you can do</div>
+          <div className="flex flex-col gap-2">
+            {driver.actions.map((a, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <TierPill tier={a.tier} />
+                <span className="text-xs text-stone-600 leading-relaxed flex-1">{a.text}</span>
+                <button className={clsx(
+                  'text-xs px-2.5 py-1 rounded-lg font-medium shrink-0 transition-colors',
+                  a.tier === 'personal'  ? 'bg-blue-600 text-white hover:bg-blue-700' :
+                  a.tier === 'community' ? 'bg-green-600 text-white hover:bg-green-700' :
+                  'bg-amber-600 text-white hover:bg-amber-700'
+                )}>
+                  {a.tier === 'personal' ? "I'll do this" : a.tier === 'community' ? 'Learn more' : 'Take action'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Data point card ───────────────────────────────────────────────────────────
+
+function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) {
+  return (
+    <div className="border border-stone-200 rounded-xl bg-white overflow-hidden">
+
+      {/* Header — label is biggest */}
+      <div className="p-4 border-b border-stone-100">
+        <div className="flex items-start justify-between gap-2 mb-1">
+          {dp.impactWeight && <ImpactWeightBadge weight={dp.impactWeight} />}
+        </div>
+        <div className="text-base font-semibold text-stone-900 mb-0.5">{dp.label}</div>
+        {dp.note && (
+          <div className="text-sm font-medium mb-1" style={{ color: ringColor }}>{dp.note}</div>
+        )}
+        <div className="flex items-center gap-2">
+          <div className="text-sm text-stone-500">{dp.value}</div>
+          <span className="text-stone-300">·</span>
+          <TrendArrow trend={dp.trend} trendIsGood={dp.trendIsGood} />
+        </div>
+      </div>
+
+      {/* The problem — mechanism as bullets */}
+      {dp.mechanism && (
+        <div className="px-4 pt-4 pb-2">
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+            The problem — how this causes death
+          </div>
+          <ul className="space-y-1.5">
+            {dp.mechanism.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                <span className="text-red-300 shrink-0 mt-0.5">→</span>
+                <span>{sentence.trim().replace(/\.$/, '')}.</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Why the US gap — as bullets */}
+      <div className="px-4 pt-3 pb-2">
+        <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+          Why the US is worse than peer nations
+        </div>
+        <ul className="space-y-1.5">
+          {dp.why.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
+            <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+              <span className="text-stone-300 shrink-0 mt-0.5">→</span>
+              <span>{sentence.trim().replace(/\.$/, '')}.</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Chart */}
+      <div className="px-4 pb-3 pt-2">
+        <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
+      </div>
+
+      {/* Structural drivers — incentive note merged in */}
+      {dp.drivers && dp.drivers.length > 0 && (
+        <div className="px-4 pb-4">
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+            What keeps this stuck — structural drivers
+          </div>
+          {dp.incentiveNote && (
+            <div className="mb-2 px-3 py-2 bg-amber-50 border border-amber-100 rounded-lg">
+              <div className="text-xs font-semibold text-amber-700 mb-0.5">Financial incentive</div>
+              <p className="text-xs text-amber-800 leading-relaxed">{dp.incentiveNote}</p>
+            </div>
+          )}
+          <div className="flex flex-col gap-2">
+            {dp.drivers.map(driver => (
+              <DriverCard key={driver.id} driver={driver} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Source + trust + next release — at the bottom */}
+      <div className="px-4 pb-4 pt-2 border-t border-stone-100 flex items-start justify-between gap-4 flex-wrap">
+        <div className="text-xs text-stone-400">
+          <span className="font-medium text-stone-500">Source:</span> {dp.source}
+          {dp.nextDataRelease && (
+            <span className="ml-2 text-stone-300">· Next release: {dp.nextDataRelease}</span>
+          )}
+        </div>
+        {dp.trust && (
+          <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />
+        )}
       </div>
     </div>
   )
 }
 
+// ── Action card ───────────────────────────────────────────────────────────────
+
 function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
   const [done, setDone] = useState(false)
 
   const tierStyles: Record<string, string> = {
-    personal:  'border-blue-100 bg-blue-50/40',
-    community: 'border-green-100 bg-green-50/40',
-    systemic:  'border-amber-100 bg-amber-50/40',
-  }
-
-  const buttonStyles: Record<string, string> = {
-    personal:  'bg-blue-600 hover:bg-blue-700 text-white',
-    community: 'bg-green-600 hover:bg-green-700 text-white',
-    systemic:  'bg-amber-600 hover:bg-amber-700 text-white',
+    personal:  'border-blue-100 bg-blue-50/30',
+    community: 'border-green-100 bg-green-50/30',
+    systemic:  'border-amber-100 bg-amber-50/30',
   }
 
   return (
     <div className={clsx('border rounded-xl p-4 transition-all', tierStyles[tier], done && 'opacity-60')}>
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <div className="flex-1">
-          <div className="text-sm font-medium text-stone-900 mb-1">{action.text}</div>
-          <div className="text-xs text-stone-500 leading-relaxed">{action.detail}</div>
-        </div>
-      </div>
+      <div className="text-sm font-medium text-stone-900 mb-1">{action.text}</div>
+      <div className="text-xs text-stone-500 leading-relaxed mb-2">{action.detail}</div>
 
-      {/* Meta */}
-      <div className="flex items-center gap-2 flex-wrap mt-2 mb-3">
+      <div className="flex items-center gap-2 flex-wrap mb-2">
         {action.timeEstimate && (
           <span className="text-xs text-stone-400 font-mono">⏱ {action.timeEstimate}</span>
         )}
-        {action.difficulty && (
-          <DifficultyPill difficulty={action.difficulty} />
-        )}
+        {action.difficulty && <DifficultyPill difficulty={action.difficulty} />}
       </div>
 
-      {/* Evidence */}
       {action.evidenceBase && (
-        <div className="mb-3 text-xs text-stone-500 leading-relaxed">
+        <div className="mb-2 text-xs text-stone-500 leading-relaxed">
           <span className="font-medium text-stone-600">Why it works: </span>
           {action.evidenceBase}
         </div>
       )}
 
-      {/* Lives saved */}
       {action.livesSaved && (
         <div className="mb-3 px-3 py-2 bg-green-50 border border-green-100 rounded-lg">
           <div className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-0.5">Estimated impact</div>
@@ -464,53 +457,54 @@ function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
         </div>
       )}
 
-      {/* Legislation */}
-      {action.legislation && (
-        <BillStatusBar legislation={action.legislation} />
-      )}
+      {action.legislation && <BillStatusBar legislation={action.legislation} />}
 
-      {/* Action buttons */}
       <div className="flex items-center gap-2 flex-wrap mt-3">
         {tier === 'personal' && (
           <button
             onClick={() => setDone(d => !d)}
             className={clsx(
               'text-xs px-4 py-2 rounded-lg font-medium transition-colors',
-              done
-                ? 'bg-green-100 text-green-700 border border-green-200'
-                : buttonStyles[tier]
+              done ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-blue-600 text-white hover:bg-blue-700'
             )}
           >
             {done ? '✓ Added to civic record' : "I'll do this"}
           </button>
         )}
         {tier === 'community' && (
-          <button className={clsx('text-xs px-4 py-2 rounded-lg font-medium transition-colors', buttonStyles[tier])}>
+          <button className="text-xs px-4 py-2 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700 transition-colors">
             Learn more
           </button>
         )}
         {tier === 'systemic' && action.legislation && (
-          <a href={action.legislation.url} target="_blank" rel="noopener noreferrer" className={clsx('text-xs px-4 py-2 rounded-lg font-medium transition-colors', buttonStyles[tier])}>View bill</a>
+          <a href={action.legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs px-4 py-2 rounded-lg font-medium bg-amber-600 text-white hover:bg-amber-700 transition-colors">
+            View bill
+          </a>
         )}
         {tier === 'systemic' && (
-          <button className="text-xs px-4 py-2 rounded-lg font-medium border border-stone-200 text-stone-600 hover:bg-stone-50 transition-colors">Contact your rep</button>
+          <button className="text-xs px-4 py-2 rounded-lg font-medium border border-stone-200 text-stone-600 hover:bg-stone-50 transition-colors">
+            Contact your rep
+          </button>
         )}
       </div>
     </div>
   )
 }
 
+// ── Category accordion ────────────────────────────────────────────────────────
+
 function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: string }) {
   const [open, setOpen] = useState(false)
   const [tab, setTab] = useState<CategoryTab>('data')
 
-const tabs: Array<{ id: CategoryTab; label: string }> = [
+  const tabs: Array<{ id: CategoryTab; label: string }> = [
     { id: 'data',    label: 'Data & trends' },
-    { id: 'solutions', label: 'Actions' },
+    { id: 'actions', label: 'Actions' },
   ]
 
   return (
     <div className="border border-stone-200 rounded-xl bg-white shadow-card overflow-hidden">
+      {/* Header */}
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full text-left px-5 py-4 hover:bg-stone-50 transition-colors"
@@ -518,12 +512,16 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
         <div className="flex items-start gap-4">
           <div className="flex-1 min-w-0">
             <div className="text-base font-medium text-stone-900 mb-1">{cat.name}</div>
-            <div className="text-xs text-stone-500 mb-2">{cat.driver}</div>
+            {cat.driver && (
+              <div className="text-xs text-stone-500 mb-2">
+                <span className="font-medium text-stone-600">Causes: </span>{cat.driver}
+              </div>
+            )}
             {cat.totalDeaths && (
               <div className="flex gap-6 flex-wrap mb-2">
                 <div>
                   <div className="text-2xs text-stone-400 uppercase tracking-widest">Total deaths/yr</div>
-                  <div className="text-sm font-semibold text-stone-900">{cat.totalDeaths}</div>
+                  <div className="text-sm font-semibold text-stone-700">{cat.totalDeaths}</div>
                 </div>
                 <div>
                   <div className="text-2xs text-stone-400 uppercase tracking-widest">Preventable</div>
@@ -545,13 +543,14 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
 
       {open && (
         <div className="border-t border-stone-100">
-          <div className="flex border-b border-stone-100 overflow-x-auto bg-stone-50">
+          {/* Tabs */}
+          <div className="flex border-b border-stone-100 bg-stone-50">
             {tabs.map(t => (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
                 className={clsx(
-                  'px-4 py-3 text-xs font-medium whitespace-nowrap transition-colors border-b-2 -mb-px',
+                  'px-5 py-3 text-xs font-medium whitespace-nowrap transition-colors border-b-2 -mb-px',
                   tab === t.id
                     ? 'border-stone-900 text-stone-900 bg-white'
                     : 'border-transparent text-stone-500 hover:text-stone-700'
@@ -563,47 +562,44 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
           </div>
 
           <div className="p-5">
+            {/* DATA TAB */}
             {tab === 'data' && (
               <div>
-                {/* Systemic incentive callout */}
-    {cat.systemicIncentive && (
-      <div className="mb-5 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
-        <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-1.5">
-          Why the system produces this outcome
-        </div>
-        <p className="text-sm text-amber-800 leading-relaxed">{cat.systemicIncentive}</p>
-      </div>
-    )}
+                {/* Category why */}
                 <div className="bg-stone-50 border-l-4 rounded-r-lg p-4 mb-5" style={{ borderLeftColor: ringColor }}>
                   <p className="text-sm text-stone-700 leading-relaxed">{cat.why}</p>
                 </div>
-                {/* Main chart — total vs preventable vs peer */}
-        <div className="mb-4">
-          {cat.totalChart ? (
-            <div>
-              <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-3">
-                Full picture — total deaths, preventable deaths, and peer nations
-              </div>
-              <TotalVsPreventableChart
-                totalData={cat.totalChart}
-                preventableData={cat.chart}
-                color={ringColor}
-                height={180}
-              />
-              <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
-                <p className="text-xs text-stone-500 leading-relaxed">
-                  <span className="font-medium text-stone-600">The gap between total and preventable deaths</span> represents cardiovascular mortality from genetic conditions, advanced age, and causes not yet addressable with current medicine. We are not claiming all cardiovascular death is preventable — only the portion where peer nations demonstrate better outcomes are included in our north star goal.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} />
-          )}
-        </div>
-                <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-3">
-                  Data points — click any to see its individual chart and explanation
+
+                {/* Main chart */}
+                <div className="mb-6">
+                  {cat.totalChart ? (
+                    <div>
+                      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3">
+                        Full picture — total deaths, preventable deaths, and peer nations
+                      </div>
+                      <TotalVsPreventableChart
+                        totalData={cat.totalChart}
+                        preventableData={cat.chart}
+                        color={ringColor}
+                        height={180}
+                      />
+                    </div>
+                  ) : (
+                    <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} />
+                  )}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                {/* Data points section header */}
+                <div className="mb-4 p-3 bg-stone-900 rounded-lg">
+                  <div className="text-xs font-semibold text-white mb-0.5">
+                    What drives this number — {cat.dataPoints.length} contributing factors
+                  </div>
+                  <div className="text-xs text-stone-400">
+                    Each factor below contributes to the preventable deaths count. Click any to see the mechanism, data, structural drivers, and what you can do.
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-4">
                   {cat.dataPoints.map(dp => (
                     <DataPointCard key={dp.id} dp={dp} ringColor={ringColor} />
                   ))}
@@ -611,190 +607,155 @@ const tabs: Array<{ id: CategoryTab; label: string }> = [
               </div>
             )}
 
-            
+            {/* ACTIONS TAB */}
+            {tab === 'actions' && (
+              <div>
+                {/* Solved precedent */}
+                {cat.dataPoints.some(dp => dp.solvedPrecedent) && (
+                  <div className="mb-6">
+                    {cat.dataPoints.filter(dp => dp.solvedPrecedent).map(dp => (
+                      dp.solvedPrecedent && (
+                        <SolvedPrecedentBlock
+                          key={dp.id}
+                          precedent={dp.solvedPrecedent}
+                          color={ringColor}
+                        />
+                      )
+                    ))}
+                  </div>
+                )}
 
+                {/* Personal */}
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
+                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Personal — things you can do today</div>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {cat.actions.filter(a => a.tier === 'personal').map(action => (
+                      <ActionCard key={action.id} action={action} tier="personal" />
+                    ))}
+                  </div>
+                </div>
 
-           {tab === 'solutions' && (
-  <div>
-    {/* Solved precedent — moved from data tab */}
-    {cat.dataPoints.some(dp => dp.solvedPrecedent) && (
-      <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-        <div className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-3">
-          We solved something like this before
-        </div>
-        {cat.dataPoints.filter(dp => dp.solvedPrecedent).map(dp => (
-          dp.solvedPrecedent && (
-            <SolvedPrecedentBlock
-              key={dp.id}
-              precedent={dp.solvedPrecedent}
-              color={ringColor}
-            />
-          )
-        ))}
-      </div>
-    )}
+                {/* Community */}
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Community — organize and advocate locally</div>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {cat.actions.filter(a => a.tier === 'community').map(action => (
+                      <ActionCard key={action.id} action={action} tier="community" />
+                    ))}
+                  </div>
+                  <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">
+                    <span className="text-stone-300 text-sm">🔒</span>
+                    <div className="flex-1">
+                      <div className="text-xs font-medium text-stone-500">Local opportunities near you</div>
+                      <div className="text-xs text-stone-400">Verified organizations and volunteer opportunities within 10 miles.</div>
+                    </div>
+                    <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-200 text-stone-400 cursor-not-allowed shrink-0">Coming soon</button>
+                  </div>
+                </div>
 
-    {/* Personal actions */}
-    <div className="mb-6">
-      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-blue-400" />
-        Personal — things you can do today
-      </div>
-      <div className="flex flex-col gap-3">
-        {cat.actions.filter(a => a.tier === 'personal').map(action => (
-          <ActionCard key={action.id} action={action} tier="personal" />
-        ))}
-      </div>
-    </div>
-
-    {/* Community actions */}
-    <div className="mb-6">
-      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-green-400" />
-        Community — organize and advocate locally
-      </div>
-      <div className="flex flex-col gap-3">
-        {cat.actions.filter(a => a.tier === 'community').map(action => (
-          <ActionCard key={action.id} action={action} tier="community" />
-        ))}
-      </div>
-      {/* Paywall hint */}
-      <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-stone-200 border-dashed rounded-xl">
-        <span className="text-stone-400 text-base">🔒</span>
-        <div className="flex-1">
-          <div className="text-xs font-medium text-stone-500">Local opportunities near you</div>
-          <div className="text-xs text-stone-400">Verified organizations, volunteer opportunities, and community events within 10 miles of you.</div>
-        </div>
-        <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-400 cursor-not-allowed shrink-0">
-          Coming soon
-        </button>
-      </div>
-    </div>
-
-    {/* Systemic actions */}
-    <div className="mb-2">
-      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-amber-400" />
-        Systemic — policy and structural change
-      </div>
-      <div className="flex flex-col gap-3">
-        {cat.actions.filter(a => a.tier === 'systemic').map(action => (
-          <ActionCard key={action.id} action={action} tier="systemic" />
-        ))}
-      </div>
-      {/* State/local paywall hint */}
-      <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-stone-200 border-dashed rounded-xl">
-        <span className="text-stone-400 text-base">🔒</span>
-        <div className="flex-1">
-          <div className="text-xs font-medium text-stone-500">State and local policy actions</div>
-          <div className="text-xs text-stone-400">Your state legislators, local ballot initiatives, and city council votes relevant to this issue.</div>
-        </div>
-        <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-400 cursor-not-allowed shrink-0">
-          Coming soon
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
-  </div>
+                {/* Systemic */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Systemic — policy and structural change</div>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {cat.actions.filter(a => a.tier === 'systemic').map(action => (
+                      <ActionCard key={action.id} action={action} tier="systemic" />
+                    ))}
+                  </div>
+                  <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">
+                    <span className="text-stone-300 text-sm">🔒</span>
+                    <div className="flex-1">
+                      <div className="text-xs font-medium text-stone-500">State and local policy actions</div>
+                      <div className="text-xs text-stone-400">Your state legislators, local ballot initiatives, and city council votes relevant to this issue.</div>
+                    </div>
+                    <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-200 text-stone-400 cursor-not-allowed shrink-0">Coming soon</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
   )
 }
+// ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function LivesLostPage() {
   const ring = getRingById('lives')!
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
+
+      {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-stone-400 mb-8">
         <Link href="/" className="hover:text-stone-700 transition-colors">Vital Signs</Link>
         <span>/</span>
         <span className="text-stone-900">Ring {ring.order} — {ring.name}</span>
       </div>
 
-      <div className="flex items-start gap-6 mb-8 flex-wrap">
+      {/* Ring header */}
+      <div className="flex items-start gap-6 mb-6 flex-wrap">
         <RingArc score={ring.score} color={ring.color} bgColor={ring.bgColor} size={72} strokeWidth={5} />
         <div className="flex-1 min-w-64">
-          <div className="text-xs font-mono text-stone-400 uppercase tracking-widest mb-1">Ring {ring.order} of 12 · Survival cluster</div>
-          <h1 className="font-display text-3xl font-medium text-stone-900 mb-1">{ring.name}</h1>
-          <div className="text-2xl font-semibold mb-0.5" style={{ color: ring.color }}>{ring.humanMetric}</div>
-          <div className="text-stone-500 text-sm mb-3">{ring.humanMetricLabel}</div>
-          <p className="text-stone-600 text-sm leading-relaxed mb-3">{ring.tagline}</p>
+          <div className="text-xs font-mono text-stone-400 uppercase tracking-widest mb-1">
+            Ring {ring.order} of 12 · Survival cluster
+          </div>
+          <h1 className="font-display text-3xl font-medium text-stone-900 mb-3">{ring.name}</h1>
           <div className="flex items-center gap-3 flex-wrap">
             <StatusBadge status={ring.status} />
-            <span className="text-xs text-stone-400 font-mono">Score: {ring.score} / 100</span>
-            <span className="text-xs text-stone-400">{ring.updateCadence}</span>
+            <span className="text-xs text-stone-400 font-mono">
+              Score: {ring.score} / 100 — calculated from 7 leading causes of preventable death, each weighted by contribution to total mortality
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="border border-stone-200 rounded-xl bg-white shadow-card p-5 mb-8">
-        <div className="flex items-start gap-3">
-          <div className="w-5 h-5 rounded-full bg-stone-100 flex items-center justify-center text-xs font-medium text-stone-600 shrink-0 mt-0.5">ℹ</div>
-          <div>
-            <div className="text-sm font-medium text-stone-900 mb-1">Why you can trust this data — and where its limits are</div>
-            <p className="text-xs text-stone-600 leading-relaxed mb-3">{ring.trustStatement}</p>
-            <div className="flex flex-wrap gap-2">
-              {ring.trustSources.map(src => (
-                <div key={src.name} className="flex items-center gap-1.5 px-2.5 py-1 bg-green-50 border border-green-100 rounded-full">
-                  <span className="text-green-600 text-xs font-medium">✓</span>
-                  <span className="text-xs text-stone-600">{src.name}</span>
-                  <span className="text-xs text-stone-400">— {src.description}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-{/* Total vs preventable callout */}
-      <div className="flex items-center gap-4 flex-wrap mb-8 p-4 bg-stone-50 border border-stone-200 rounded-xl">
-        <div>
-          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">Total US deaths per year</div>
-          <div className="text-3xl font-semibold text-stone-600">~2.5M</div>
+      {/* Total → Preventable → Trend → North star bar */}
+      <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-stone-200 border border-stone-200 rounded-xl mb-8 bg-white shadow-card overflow-hidden">
+        <div className="px-5 py-4">
+          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">Total US deaths/yr</div>
+          <div className="text-2xl font-semibold text-stone-500">~2.5M</div>
           <div className="text-xs text-stone-400 mt-0.5">All causes combined</div>
         </div>
-        <div className="text-2xl text-stone-300 font-light">→</div>
-        <div>
-          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">Preventable deaths per year</div>
-          <div className="text-3xl font-semibold" style={{ color: ring.color }}>~700K</div>
-          <div className="text-xs text-stone-400 mt-0.5">Deaths peer nations demonstrate we can prevent</div>
+        <div className="px-5 py-4">
+          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">Preventable deaths/yr</div>
+          <div className="text-2xl font-semibold" style={{ color: ring.color }}>~700K</div>
+          <div className="text-xs text-stone-400 mt-0.5">Peer nations demonstrate we can prevent these</div>
         </div>
-        <div className="text-2xl text-stone-300 font-light">→</div>
-        <div>
+        <div className="px-5 py-4">
+          <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">Trend</div>
+          <div className="text-2xl font-semibold text-red-500">Worsening</div>
+          <div className="text-xs text-stone-400 mt-0.5">Life expectancy declined 3 of last 5 years</div>
+        </div>
+        <div className="px-5 py-4">
           <div className="text-xs text-stone-400 uppercase tracking-widest font-mono mb-1">North star</div>
-          <div className="text-3xl font-semibold text-green-600">Zero</div>
+          <div className="text-2xl font-semibold text-green-600">Zero</div>
           <div className="text-xs text-stone-400 mt-0.5">Preventable deaths — the goal</div>
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {ring.summaryStats.map((stat, i) => (
-          <div key={i} className="bg-white border border-stone-200 rounded-xl p-4 shadow-card">
-            <div className="text-xs text-stone-500 leading-snug mb-1">{stat.label}</div>
-            <div className={clsx('text-xl font-semibold mb-0.5', stat.value.includes('↑') ? 'text-red-500' : 'text-stone-900')}>
-              {stat.value}
-            </div>
-            <div className="text-xs text-stone-400 leading-relaxed">{stat.note}</div>
-          </div>
-        ))}
+
+      {/* Tagline */}
+      <div className="mb-8">
+        <p className="text-stone-600 leading-relaxed">{ring.tagline}</p>
       </div>
 
-      <div
-        className="rounded-xl p-5 mb-8 flex items-center gap-4"
-        style={{ background: ring.color + '10', border: `1px solid ${ring.color}30` }}
-      >
-        <div className="text-2xl shrink-0">🎯</div>
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-widest mb-0.5" style={{ color: ring.color }}>North star</div>
-          <div className="font-display text-lg font-medium text-stone-900">{ring.northStar}</div>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <h2 className="font-display text-xl font-medium text-stone-900 mb-1">Leading causes of preventable death</h2>
-        <p className="text-sm text-stone-500">Ordered by total annual deaths. Click any category to explore.</p>
+      {/* Categories */}
+      <div className="mb-4">
+        <h2 className="font-display text-xl font-medium text-stone-900 mb-1">
+          Leading causes of preventable death
+        </h2>
+        <p className="text-sm text-stone-500">
+          Ordered by total annual deaths. Click any cause to explore the data, drivers, and actions.
+        </p>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -813,9 +774,14 @@ export default function LivesLostPage() {
         ))}
       </div>
 
+      {/* Footer nav */}
       <div className="flex justify-between mt-12 pt-8 border-t border-stone-200">
-        <Link href="/" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">← All vital signs</Link>
-        <Link href="/rings/disease" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">Next: Disease Burden →</Link>
+        <Link href="/" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">
+          All vital signs
+        </Link>
+        <Link href="/rings/disease" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">
+          Next: Disease Burden
+        </Link>
       </div>
     </div>
   )
