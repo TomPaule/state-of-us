@@ -137,6 +137,8 @@ export interface Category {
   chartLabel: string
   chart: ChartPoint[]
   totalChart?: ChartPoint[]
+  peerRateChart?: ChartPoint[]
+  peerRateLabel?: string
   dataPoints: DataPoint[]
   systemicIncentive?: string
   actions: Action[]

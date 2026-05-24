@@ -56,6 +56,17 @@ export const livesLostRing: Ring = {
     { year: 2019, us: 550, peer: 280, target: 200 },
     { year: 2022, us: 700, peer: 270, target: 200 },
   ],
+  peerRateLabel: 'Cardiovascular death rate (per 100,000 population)',
+  peerRateChart: [
+    { year: 1990, us: 212, peer: 155, target: 90 },
+    { year: 1995, us: 205, peer: 148, target: 90 },
+    { year: 2000, us: 195, peer: 140, target: 90 },
+    { year: 2005, us: 185, peer: 130, target: 90 },
+    { year: 2010, us: 168, peer: 118, target: 90 },
+    { year: 2015, us: 155, peer: 108, target: 90 },
+    { year: 2019, us: 148, peer: 100, target: 90 },
+    { year: 2022, us: 172, peer: 96, target: 90 },
+  ],
   dataPoints: [
     {
   id: 'cv-obesity',

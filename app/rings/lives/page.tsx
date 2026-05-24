@@ -613,13 +613,17 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                   <p className="text-sm text-stone-700 leading-relaxed">{cat.why}</p>
                 </div>
 
+              
                 {/* Main chart */}
-                {/* Main chart */}
-                <div className="mb-6">
+                {/* Main chart — US picture */}
+                <div className="mb-4">
                   {cat.totalChart ? (
                     <div>
-                      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3">
-                        Full picture — total deaths, preventable deaths, and peer nations
+                      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">
+                        The US picture — total vs preventable deaths
+                      </div>
+                      <div className="text-xs text-stone-400 mb-3">
+                        The gap between total and preventable deaths represents mortality from genetic conditions, advanced age, and causes not yet addressable with current medicine.
                       </div>
                       <TotalVsPreventableChart
                         totalData={cat.totalChart}
@@ -629,10 +633,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                       />
                       <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
                         <div className="text-xs text-stone-400">
-                          <span className="font-medium text-stone-500">Sources:</span> CDC WONDER (US mortality) · WHO Global Health Observatory (peer nations) · IHME Global Burden of Disease (preventable fractions)
-                        </div>
-                        <div className="text-xs text-stone-400 mt-0.5">
-                          <span className="font-medium text-stone-500">Peer nations:</span> G7 plus Australia, Netherlands, Sweden, Norway, Denmark. <span className="text-amber-600 font-medium">Important note:</span> Total death counts are not directly comparable across countries of different sizes. The US has a larger population than most peer nations — so raw death totals will naturally be higher. The more meaningful comparison is the preventable fraction: what proportion of deaths peer nations avoid that the US does not. Phase 2 will switch all comparisons to deaths per 100,000 population for full accuracy.
+                          <span className="font-medium text-stone-500">Sources:</span> CDC WONDER (US mortality) · IHME Global Burden of Disease (preventable fractions)
                         </div>
                       </div>
                     </div>
@@ -640,6 +641,33 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                     <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} />
                   )}
                 </div>
+
+                {/* Peer comparison chart — rates per 100K */}
+                {cat.peerRateChart && (
+                  <div className="mb-6">
+                    <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">
+                      How we compare — death rate per 100,000 population
+                    </div>
+                    <div className="text-xs text-stone-400 mb-3">
+                      Using rates instead of totals makes countries of different sizes directly comparable. A country of 10 million and a country of 330 million are both measured on the same scale.
+                    </div>
+                    <TrendChart
+                      data={cat.peerRateChart}
+                      label={cat.peerRateLabel ?? 'Death rate per 100,000 population'}
+                      color={ringColor}
+                      height={160}
+                      showTarget={true}
+                    />
+                    <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
+                      <div className="text-xs text-stone-400">
+                        <span className="font-medium text-stone-500">Sources:</span> WHO Global Health Observatory · OECD Health Statistics
+                      </div>
+                      <div className="text-xs text-stone-400 mt-0.5">
+                        <span className="font-medium text-stone-500">Peer nations:</span> G7 plus Australia, Netherlands, Sweden, Norway, Denmark — all adjusted to deaths per 100,000 population for fair comparison regardless of country size.
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Data points section header */}
                 <div className="mb-4 p-3 bg-stone-900 rounded-lg">
