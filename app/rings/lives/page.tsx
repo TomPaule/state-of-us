@@ -256,7 +256,7 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
           }} />
           <Line type="monotone" dataKey="total" name="Total US deaths" stroke="#D6D3D1" strokeWidth={2} dot={false} strokeDasharray="4 2" />
           <Line type="monotone" dataKey="preventable" name="Preventable US deaths" stroke={color} strokeWidth={2.5} dot={false} />
-          <Line type="monotone" dataKey="peer" name="Peer nations total deaths" stroke="#A8A29E" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />        </LineChart>
+                 </LineChart>
       </ResponsiveContainer>
       <div className="flex gap-4 mt-2 flex-wrap">
         <span className="flex items-center gap-1.5 text-xs text-stone-400">
@@ -266,10 +266,6 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
         <span className="flex items-center gap-1.5 text-xs text-stone-400">
           <span className="inline-block w-4 h-0.5 rounded" style={{ background: color }} />
           Preventable US deaths
-        </span>
-        <span className="flex items-center gap-1.5 text-xs text-stone-400">
-          <span className="inline-block w-4 h-0.5 rounded" style={{ background: '#A8A29E' }} />
-          Peer nations total deaths
         </span>
       </div>
       <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
@@ -632,8 +628,15 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                         height={180}
                       />
                       <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
-                        <div className="text-xs text-stone-400">
+                        <div className="text-xs text-stone-400 mb-1">
                           <span className="font-medium text-stone-500">Sources:</span> CDC WONDER (US mortality) · IHME Global Burden of Disease (preventable fractions)
+                        </div>
+                        <div className="text-xs text-stone-400 mb-1">
+                          <span className="font-medium text-stone-500">Next release:</span> January 2026 — CDC WONDER annual mortality update
+                        </div>
+                        <div className="flex items-center gap-2 pt-1 border-t border-stone-200 mt-1">
+                          <span className="text-xs font-bold px-2 py-0.5 rounded bg-green-50 text-green-700">Data Quality: A</span>
+                          <span className="text-xs text-stone-400">Official death certificate registry — highest confidence</span>
                         </div>
                       </div>
                     </div>
@@ -659,11 +662,18 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                       showTarget={true}
                     />
                     <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
-                      <div className="text-xs text-stone-400">
+                      <div className="text-xs text-stone-400 mb-1">
                         <span className="font-medium text-stone-500">Sources:</span> WHO Global Health Observatory · OECD Health Statistics
                       </div>
-                      <div className="text-xs text-stone-400 mt-0.5">
-                        <span className="font-medium text-stone-500">Peer nations:</span> G7 plus Australia, Netherlands, Sweden, Norway, Denmark — all adjusted to deaths per 100,000 population for fair comparison regardless of country size.
+                      <div className="text-xs text-stone-400 mb-1">
+                        <span className="font-medium text-stone-500">Peer nations:</span> G7 plus Australia, Netherlands, Sweden, Norway, Denmark — adjusted to deaths per 100,000 population for fair comparison regardless of country size.
+                      </div>
+                      <div className="text-xs text-stone-400 mb-1">
+                        <span className="font-medium text-stone-500">Next release:</span> June 2026 — WHO Global Health Observatory annual update
+                      </div>
+                      <div className="flex items-center gap-2 pt-1 border-t border-stone-200 mt-1">
+                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700">Data Quality: B</span>
+                        <span className="text-xs text-stone-400">Peer-reviewed international data — high confidence, some methodology variation across countries</span>
                       </div>
                     </div>
                   </div>
