@@ -268,12 +268,6 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
           Preventable US deaths
         </span>
       </div>
-      <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
-        <p className="text-xs text-stone-500 leading-relaxed">
-          <span className="font-medium text-stone-600">Peer nations:</span> Average of G7 plus comparable wealthy democracies (Australia, Netherlands, Sweden, Norway, Denmark), adjusted to deaths per 100,000 population for fair comparison across different country sizes.
-          <span className="ml-1 font-medium text-stone-600">The gap between total and preventable deaths</span> represents mortality from genetic conditions, advanced age, and causes not yet addressable with current medicine.
-        </p>
-      </div>
     </div>
   )
 }
