@@ -236,7 +236,7 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
         <LineChart data={combined} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F4" vertical={false} />
           <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} tickCount={5} tickFormatter={(v) => Math.round(v).toString()} />
-          <YAxis tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} width={40} />
+          <YAxis tick={{ fontSize: 10, fill: '#A8A29E' }} axisLine={false} tickLine={false} width={40} tickFormatter={(v) => Math.round(v).toString()} />
           <Tooltip content={({ active, payload, label }) => {
             if (!active || !payload?.length) return null
             return (
@@ -400,20 +400,6 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
         </div>
       )}
 
-      {/* Why the US gap — as bullets */}
-      <div className="px-4 pt-3 pb-2">
-        <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-          Why the US is worse than peer nations
-        </div>
-        <ul className="space-y-1.5">
-          {dp.why.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
-            <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-              <span className="text-stone-300 shrink-0 mt-0.5">→</span>
-              <span>{sentence.trim().replace(/\.$/, '')}.</span>
-            </li>
-          ))}
-        </ul>
-      </div>
 
       {/* Chart */}
       <div className="px-4 pb-3 pt-2">
@@ -627,7 +613,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                           <span className="font-medium text-stone-500">Sources:</span> CDC WONDER (US mortality) · WHO Global Health Observatory (peer nations) · IHME Global Burden of Disease (preventable fractions)
                         </div>
                         <div className="text-xs text-stone-400 mt-0.5">
-                          <span className="font-medium text-stone-500">Peer nations:</span> G7 plus Australia, Netherlands, Sweden, Norway, Denmark — adjusted to deaths per 100,000 population for fair comparison
+                          <span className="font-medium text-stone-500">Peer nations:</span> G7 plus Australia, Netherlands, Sweden, Norway, Denmark. <span className="text-amber-600 font-medium">Important note:</span> Total death counts are not directly comparable across countries of different sizes. The US has a larger population than most peer nations — so raw death totals will naturally be higher. The more meaningful comparison is the preventable fraction: what proportion of deaths peer nations avoid that the US does not. Phase 2 will switch all comparisons to deaths per 100,000 population for full accuracy.
                         </div>
                       </div>
                     </div>
