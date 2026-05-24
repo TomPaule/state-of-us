@@ -21,9 +21,11 @@ type CategoryTab = 'data' | 'actions'
 function TrendArrow({ trend, trendIsGood }: { trend: DataPoint['trend']; trendIsGood: boolean }) {
   const good = (trend === 'up' && trendIsGood) || (trend === 'down' && !trendIsGood)
   const bad  = (trend === 'up' && !trendIsGood) || (trend === 'down' && trendIsGood)
+  const label = good ? 'Improving' : bad ? 'Worsening' : 'Stable'
+  const color = good ? 'text-green-600 bg-green-50' : bad ? 'text-red-600 bg-red-50' : 'text-purple-600 bg-purple-50'
   return (
-    <span className={clsx('text-sm font-medium', good ? 'text-green-600' : bad ? 'text-red-500' : 'text-stone-400')}>
-      {trend === 'up' ? 'Worsening' : trend === 'down' ? 'Improving' : 'Stable'}
+    <span className={clsx('text-xs font-semibold px-2 py-0.5 rounded-full', color)}>
+      {label}
     </span>
   )
 }
@@ -405,19 +407,36 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
       <div className="px-4 pb-3 pt-2">
         <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
       </div>
-      {/* Source block — inline with the data */}
-      <div className="mx-4 mb-3 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="text-xs text-stone-400">
-            <span className="font-medium text-stone-500">Source:</span> {dp.source}
-          </div>
-          <div className="flex items-center gap-2">
-            {dp.trust && <TrustBadge grade={dp.trust.grade} explanation={dp.trust.explanation} />}
-          </div>
+      {/* Source + data quality — always visible */}
+      <div className="mx-4 mb-3 px-3 py-2.5 bg-stone-50 border border-stone-100 rounded-lg">
+        <div className="text-xs text-stone-400 mb-1.5">
+          <span className="font-medium text-stone-500">Source:</span> {dp.source}
         </div>
         {dp.nextDataRelease && (
-          <div className="text-xs text-stone-400 mt-1">
+          <div className="text-xs text-stone-400 mb-2">
             <span className="font-medium text-stone-500">Next release:</span> {dp.nextDataRelease}
+          </div>
+        )}
+        {dp.trust && (
+          <div className="border-t border-stone-200 pt-2 mt-1">
+            <div className="flex items-center gap-2 mb-1">
+              <span className={clsx(
+                'text-xs font-bold px-2 py-0.5 rounded',
+                dp.trust.grade === 'A' ? 'bg-green-50 text-green-700' :
+                dp.trust.grade === 'B' ? 'bg-blue-50 text-blue-700' :
+                dp.trust.grade === 'C' ? 'bg-amber-50 text-amber-700' :
+                'bg-red-50 text-red-700'
+              )}>
+                Data Quality: {dp.trust.grade}
+              </span>
+              <span className="text-xs text-stone-400">
+                {dp.trust.grade === 'A' ? 'Official registry — highest confidence' :
+                 dp.trust.grade === 'B' ? 'Peer-reviewed — high confidence' :
+                 dp.trust.grade === 'C' ? 'Estimated — moderate confidence' :
+                 'Contested — use with caution'}
+              </span>
+            </div>
+            <p className="text-xs text-stone-400 leading-relaxed">{dp.trust.explanation}</p>
           </div>
         )}
       </div>

@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           <div key={p.dataKey} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ width: 8, height: 2, background: p.color, display: 'inline-block', borderRadius: 1 }} />
             <span style={{ color: p.color }}>{p.name}:</span>
-            <span style={{ color: '#1C1917', fontWeight: 500 }}>{Number(p.value).toFixed(1)}</span>
+            <span className="text-stone-900 font-medium">{Number(p.value).toFixed(0)}</span>
           </div>
         ) : null
       ))}
