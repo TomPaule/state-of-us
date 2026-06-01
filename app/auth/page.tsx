@@ -17,7 +17,7 @@ export default function AuthPage() {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: `https://state-of-us-git-main-tommy-lehner-s-projects.vercel.app/auth/callback`,
       },
     })
 
