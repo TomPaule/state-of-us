@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import type { Ring } from '@/lib/types'
+import { scoreToGrade } from '@/lib/types'
 import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
 
@@ -62,11 +63,16 @@ export default function RingCard({ ring, animationIndex = 0, isProofOfConcept = 
         </div>
       </div>
 
-      <div className="mb-3">
-        <div className="text-xs text-stone-400 uppercase tracking-widest font-mono">Score</div>
-        <div className="text-2xl font-semibold leading-tight" style={{ color: ring.color }}>
-          {ring.score}
-          <span className="text-sm font-normal text-stone-400"> / 100</span>
+      <div className="mb-3 flex items-center gap-3">
+        <div
+          className="text-3xl font-bold px-3 py-1 rounded-lg"
+          style={{ background: ring.bgColor, color: ring.color }}
+        >
+          {scoreToGrade(ring.score)}
+        </div>
+        <div>
+          <div className="text-xs text-stone-400 font-mono">{ring.score} / 100</div>
+          <div className="text-xs text-stone-400">Score</div>
         </div>
       </div>
 
