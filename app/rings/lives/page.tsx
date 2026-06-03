@@ -9,6 +9,7 @@ import type { Category, DataPoint, Action, ChartPoint, ActionTier } from '@/lib/
 import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
 import TrendChart from '@/components/charts/TrendChart'
+import ContactRepModal from '@/components/ui/ContactRepModal'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer,
@@ -116,7 +117,13 @@ function TrustBadge({ grade, explanation }: { grade: string; explanation: string
 
 // ── Bill status bar ───────────────────────────────────────────────────────────
 
-function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legislation']> }) {
+function BillStatusBar({ legislation, ringId, categoryId, actionId }: {
+  legislation: NonNullable<Action['legislation']>
+  ringId: string
+  categoryId: string
+  actionId: string
+}) {
+  const [showModal, setShowModal] = useState(false)
   const statusSteps = ['introduced', 'in-committee', 'passed-house', 'passed-senate', 'signed']
   const currentStep = statusSteps.indexOf(legislation.status)
   const isDead = legislation.status === 'dead'
@@ -128,52 +135,91 @@ function BillStatusBar({ legislation }: { legislation: NonNullable<Action['legis
     'passed-senate': 'Senate',
     'signed':        'Signed',
   }
+
+  const defaultMessage = `Dear Representative,
+
+My name is [Your Name] and I am a constituent writing to urge you to support ${legislation.billName} (${legislation.billNumber}).
+
+${legislation.summary}
+
+This legislation directly addresses one of the most preventable causes of harm in our country. Peer nations that have implemented similar policies have demonstrated measurably better outcomes for their citizens.
+
+I am asking you to co-sponsor and support this bill. Your constituents are counting on you to take action on issues that directly affect our health and wellbeing.
+
+Thank you for your service and your consideration.
+
+Sincerely,
+[Your Name]
+[Your City, State]`
+
   return (
-    <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
-      <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
-        <div>
-          <div className="text-xs font-semibold text-blue-900">{legislation.billName}</div>
-          <div className="text-xs text-blue-600">{legislation.billNumber}</div>
-        </div>
-        <a href={legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0">View bill</a>
-      </div>
-      <p className="text-xs text-blue-700 leading-relaxed mb-3">{legislation.summary}</p>
-      {isDead ? (
-        <div className="text-xs text-red-600 font-medium">This bill did not pass</div>
-      ) : (
-        <>
-          <div className="mb-1">
-            <div className="text-xs text-blue-500 font-medium mb-1">Where is this bill?</div>
-            <div className="flex gap-1 mb-1">
-              {statusSteps.map((step, i) => (
-                <div key={step} className="flex-1">
-                  <div className={clsx('h-1.5 rounded-full', i <= currentStep ? 'bg-blue-500' : 'bg-blue-100')} />
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-between">
-              {statusSteps.map((step, i) => (
-                <div key={step} className={clsx('text-xs text-center flex-1', i === currentStep ? 'text-blue-700 font-semibold' : i < currentStep ? 'text-blue-400' : 'text-blue-200')}>
-                  {stepLabels[step]}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-3">
-            <div className="text-xs text-blue-500 font-medium mb-1">Progress in current step</div>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-500 rounded-full" style={{ width: `${Math.min(stepPct, 100)}%` }} />
-              </div>
-              <span className="text-xs text-blue-700 font-medium shrink-0">
-                {legislation.currentStepCount} of {legislation.currentStepTotal}
-              </span>
-            </div>
-            <div className="text-xs text-blue-400 mt-1">{legislation.currentStepLabel} · Updated {legislation.lastUpdated}</div>
-          </div>
-        </>
+    <>
+      {showModal && (
+        <ContactRepModal
+          billName={legislation.billName}
+          billNumber={legislation.billNumber}
+          ringId={ringId}
+          categoryId={categoryId}
+          actionId={actionId}
+          defaultMessage={defaultMessage}
+          onClose={() => setShowModal(false)}
+        />
       )}
-    </div>
+
+      <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+        <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
+          <div>
+            <div className="text-xs font-semibold text-blue-900">{legislation.billName}</div>
+            <div className="text-xs text-blue-600">{legislation.billNumber}</div>
+          </div>
+          <a href={legislation.url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-800 underline shrink-0">View bill</a>
+        </div>
+        <p className="text-xs text-blue-700 leading-relaxed mb-3">{legislation.summary}</p>
+        {isDead ? (
+          <div className="text-xs text-red-600 font-medium">This bill did not pass</div>
+        ) : (
+          <>
+            <div className="mb-1">
+              <div className="text-xs text-blue-500 font-medium mb-1">Where is this bill?</div>
+              <div className="flex gap-1 mb-1">
+                {statusSteps.map((step, i) => (
+                  <div key={step} className="flex-1">
+                    <div className={clsx('h-1.5 rounded-full', i <= currentStep ? 'bg-blue-500' : 'bg-blue-100')} />
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between">
+                {statusSteps.map((step, i) => (
+                  <div key={step} className={clsx('text-xs text-center flex-1', i === currentStep ? 'text-blue-700 font-semibold' : i < currentStep ? 'text-blue-400' : 'text-blue-200')}>
+                    {stepLabels[step]}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-3">
+              <div className="text-xs text-blue-500 font-medium mb-1">Progress in current step</div>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 rounded-full" style={{ width: `${Math.min(stepPct, 100)}%` }} />
+                </div>
+                <span className="text-xs text-blue-700 font-medium shrink-0">
+                  {legislation.currentStepCount} of {legislation.currentStepTotal}
+                </span>
+              </div>
+              <div className="text-xs text-blue-400 mt-1">{legislation.currentStepLabel} · Updated {legislation.lastUpdated}</div>
+            </div>
+
+            {/* Contact rep button */}
+            <button
+              onClick={() => setShowModal(true)}
+              className="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors"
+            >
+              Contact your representative about this bill
+            </button>
+          </>
+        )}
+      </div>
+    </>
   )
 }
 
@@ -485,7 +531,14 @@ function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
         </div>
       )}
 
-      {action.legislation && <BillStatusBar legislation={action.legislation} />}
+      {action.legislation && (
+        <BillStatusBar
+          legislation={action.legislation}
+          ringId="lives"
+          categoryId="cardiovascular"
+          actionId={action.id}
+        />
+      )}
 
       <div className="flex items-center gap-2 flex-wrap mt-3">
         {tier === 'personal' && (
