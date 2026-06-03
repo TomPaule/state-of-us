@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
@@ -8,6 +8,19 @@ export default function AuthPage() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    const handleHashAuth = async () => {
+      const hash = window.location.hash
+      if (hash && hash.includes('access_token')) {
+        const { data } = await supabase.auth.getSession()
+        if (data.session) {
+          window.location.href = '/'
+        }
+      }
+    }
+    handleHashAuth()
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
