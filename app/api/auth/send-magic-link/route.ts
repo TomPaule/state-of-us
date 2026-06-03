@@ -1,8 +1,19 @@
 import { Resend } from 'resend'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  }
+)
 
 export async function POST(request: Request) {
   const { email } = await request.json()
@@ -11,10 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Email required' }, { status: 400 })
   }
 
-  const supabase = await createSupabaseServerClient()
-
-  // Generate the magic link via Supabase
-  const { data, error } = await supabase.auth.admin.generateLink({
+  const { data, error } = await supabaseAdmin.auth.admin.generateLink({
     type: 'magiclink',
     email,
     options: {
