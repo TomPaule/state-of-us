@@ -42,18 +42,22 @@ export default function AuthPage() {
     setLoading(true)
     setError('')
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `https://state-of-us-git-main-tommy-lehner-s-projects.vercel.app/auth/callback`,
-      },
-    })
-
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-    } else {
-      setSubmitted(true)
+    try {
+      const res = await fetch('/api/auth/send-magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? 'Failed to send magic link')
+        setLoading(false)
+      } else {
+        setSubmitted(true)
+        setLoading(false)
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.')
       setLoading(false)
     }
   }
