@@ -13,9 +13,24 @@ export default function AuthPage() {
     const handleHashAuth = async () => {
       const hash = window.location.hash
       if (hash && hash.includes('access_token')) {
-        const { data } = await supabase.auth.getSession()
+        // Set the session from the hash
+        const { data, error } = await supabase.auth.getSession()
         if (data.session) {
-          window.location.href = '/'
+          window.location.replace('/')
+          return
+        }
+        // If getSession didn't work, try setting it manually
+        const params = new URLSearchParams(hash.replace('#', ''))
+        const access_token = params.get('access_token')
+        const refresh_token = params.get('refresh_token')
+        if (access_token && refresh_token) {
+          const { data: sessionData } = await supabase.auth.setSession({
+            access_token,
+            refresh_token,
+          })
+          if (sessionData.session) {
+            window.location.replace('/')
+          }
         }
       }
     }
