@@ -43,6 +43,7 @@ export interface Driver {
   label: string
   stat: string
   why: string
+  whyBullets?: string[]
   actions: DriverAction[]
 }
 

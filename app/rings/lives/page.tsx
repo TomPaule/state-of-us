@@ -425,11 +425,11 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
         <div className="px-3 py-3 border-t border-stone-100 bg-stone-50">
           {/* Why it exists */}
           <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Why this exists</div>
-          <ul className="space-y-1.5 mb-4">
-            {driver.why.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
+          <ul className="space-y-2 mb-4">
+            {(driver.whyBullets ?? driver.why.split('. ').filter(s => s.trim().length > 10)).map((sentence, i) => (
               <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-                <span className="text-stone-300 shrink-0 mt-0.5">→</span>
-                <span>{sentence.trim().replace(/\.$/, '')}.</span>
+                <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
+                <span>{driver.whyBullets ? sentence : sentence.trim().replace(/\.$/, '') + '.'}</span>
               </li>
             ))}
           </ul>

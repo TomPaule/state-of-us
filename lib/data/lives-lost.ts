@@ -111,6 +111,12 @@ export const livesLostRing: Ring = {
       label: 'Financial incentive — ultra-processed food profit model',
       stat: 'Ultra-processed foods carry 3x the profit margin of whole foods. Food companies spend $1.8B annually marketing to children under 12.',
       why: 'The most profitable foods to produce are also the most harmful. This creates a structural incentive for the food industry to produce, distribute, and lobby to protect products that drive obesity. The industry has successfully opposed every meaningful nutritional regulation for 40 years — not because the science is unclear, but because the financial stakes are enormous. Child-directed marketing is particularly profitable because brand loyalty established in childhood generates decades of consumer value.',
+      whyBullets: [
+  'Ultra-processed foods carry 3x the profit margin of whole foods — making them the most financially rewarding products to manufacture and sell',
+  'The food industry spends $1.8B annually marketing directly to children under 12, establishing brand loyalty before critical thinking develops',
+  'Industry has successfully lobbied against every meaningful nutritional regulation for 40 years — not because the science is unclear, but because the financial stakes are enormous',
+  'The same playbook used by tobacco to create doubt about health risks has been adopted by the food industry on sugar and ultra-processed foods',
+],
       actions: [
   {
     tier: 'personal',
@@ -144,6 +150,12 @@ export const livesLostRing: Ring = {
       label: 'Food desert exposure',
       stat: '23.5 million Americans live without reasonable access to fresh, affordable food',
       why: 'Grocery chains make location decisions based on projected profit. Wealthy neighborhoods have higher disposable income and more reliable customer bases — making them significantly more profitable to serve. Without zoning requirements or financial incentives to serve low-income areas, the market systematically underserves the communities that most need healthy food. This is not malice — it is the rational behavior of profit-maximizing firms operating without regulation.',
+      whyBullets: [
+  'Grocery chains make location decisions based on projected profit per square foot — wealthy neighborhoods are simply more profitable to serve',
+  'Without zoning requirements or subsidies, the market has no mechanism to serve communities that need healthy food most',
+  'This is not malice — it is the rational behavior of profit-maximizing firms in an unregulated market',
+  'The result is a two-tier food system: abundant healthy options in wealthy areas, convenience stores and fast food in low-income areas',
+],
       actions: [
   {
     tier: 'personal',
@@ -179,6 +191,13 @@ export const livesLostRing: Ring = {
       label: 'Agricultural subsidy misalignment',
       stat: '$14-20B in annual US farm subsidies flow to corn, soy, wheat, and cotton — less than 1% goes to fruits and vegetables',
       why: 'US agricultural subsidies were restructured in the 1970s to incentivize maximum commodity production. Three forces keep them in place: First, a small number of large agricultural corporations receive the majority of payments and have enormous financial incentive to lobby for preservation. Second, corn and soy states have disproportionate Senate power in Farm Bill negotiations. Third, the revolving door between USDA leadership and agribusiness means the people writing the rules are the same people who benefit from them.',
+      whyBullets: [
+  'US agricultural subsidies were restructured in the 1970s to incentivize maximum commodity production — corn, soy, wheat — not nutrition',
+  'A small number of large agricultural corporations receive the majority of subsidy payments and have enormous financial incentive to preserve the current system',
+  'Corn and soy states have disproportionate Senate power — the same two senators regardless of population — giving commodity crop states outsized influence in Farm Bill negotiations',
+  'The revolving door between USDA leadership and agribusiness means the people writing the rules are the same people who benefit from them',
+  'Less than 1% of $20B in annual subsidies goes to fruits and vegetables — making unhealthy food artificially cheap',
+],
       actions: [
   {
     tier: 'personal',
@@ -225,6 +244,12 @@ export const livesLostRing: Ring = {
       label: 'Economic stress and allostatic load',
       stat: 'Adults in poverty have obesity rates 2x higher than high-income adults — not explained by knowledge or preference differences',
       why: 'Chronic psychological stress from poverty, housing insecurity, and economic precarity elevates cortisol chronically, which promotes fat storage — particularly visceral fat. Stress also drives comfort eating, disrupts sleep, and reduces the cognitive bandwidth needed to make consistent healthy choices. Economic stress is a cross-cutting driver that amplifies every other cardiovascular risk factor simultaneously.',
+      whyBullets: [
+  'Chronic stress from poverty and housing insecurity elevates cortisol chronically — directly promoting visceral fat storage around organs',
+  'Economic stress depletes the cognitive bandwidth needed to make consistent healthy choices — this is documented neurologically, not a character failing',
+  'Adults in poverty have obesity rates 2x higher than high-income adults with similar nutritional knowledge — the difference is stress, not information',
+  'Stress drives comfort eating as a neurological coping mechanism — the same mechanism that makes addiction harder to overcome under stress',
+],
       actions: [
   {
     tier: 'personal',
