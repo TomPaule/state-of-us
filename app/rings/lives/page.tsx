@@ -434,20 +434,25 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
             ))}
           </ul>
 
-          {/* Actions */}
-          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
-            What you can do about this specific driver
+          {/* Actions — clearly separated */}
+          <div className="mt-4 pt-4 border-t-2 border-stone-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-px flex-1 bg-stone-200" />
+              <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
+                What you can do about this
+              </div>
+              <div className="h-px flex-1 bg-stone-200" />
+            </div>
+            <div className="flex flex-col gap-2">
+              {driver.actions.map((a, i) => (
+                <DriverActionCard
+                  key={i}
+                  action={a}
+                  isLocked={a.tier === 'local' || a.tier === 'state'}
+                />
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            {driver.actions.map((a, i) => (
-              <DriverActionCard
-                key={i}
-                action={a}
-                isLocked={a.tier === 'local' || a.tier === 'state'}
-              />
-            ))}
-          </div>
-        </div>
       )}
     </div>
   )
