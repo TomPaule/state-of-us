@@ -319,6 +319,94 @@ function TotalVsPreventableChart({ totalData, preventableData, color, height }: 
 }
 // ── Driver card ───────────────────────────────────────────────────────────────
 
+function DriverActionCard({ action, isLocked }: { action: any; isLocked: boolean }) {
+  const tierStyles: Record<string, string> = {
+    personal: 'border-blue-100 bg-blue-50/30',
+    local:    'border-green-100 bg-green-50/30',
+    state:    'border-purple-100 bg-purple-50/30',
+    national: 'border-amber-100 bg-amber-50/30',
+  }
+  const tierButtons: Record<string, string> = {
+    personal: 'bg-blue-600 hover:bg-blue-700 text-white',
+    local:    'bg-green-600 hover:bg-green-700 text-white',
+    state:    'bg-purple-600 hover:bg-purple-700 text-white',
+    national: 'bg-amber-600 hover:bg-amber-700 text-white',
+  }
+
+  if (isLocked) {
+    return (
+      <div className="border border-dashed border-stone-200 rounded-lg px-4 py-3 flex items-center gap-3">
+        <span className="text-stone-300">🔒</span>
+        <div className="flex-1">
+          <div className="text-xs font-medium text-stone-400">{action.text}</div>
+          <div className="text-xs text-stone-300 mt-0.5">
+            {action.tier === 'local' ? 'Local opportunities — upgrade to Community tier' : 'State-specific actions — upgrade to Civic tier'}
+          </div>
+        </div>
+        <TierPill tier={action.tier} />
+      </div>
+    )
+  }
+
+  return (
+    <div className={clsx('border rounded-lg p-3 transition-all', tierStyles[action.tier])}>
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="text-xs font-semibold text-stone-700">{action.text}</div>
+        <TierPill tier={action.tier} />
+      </div>
+
+      {action.whyItMatters && (
+        <div className="mb-2">
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-1">
+            Why this matters for this specific driver
+          </div>
+          <p className="text-xs text-stone-600 leading-relaxed">{action.whyItMatters}</p>
+        </div>
+      )}
+
+      {action.consequence && (
+        <div className="mb-2 px-2.5 py-2 bg-white border border-stone-100 rounded-lg">
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-0.5">
+            If enough people do this
+          </div>
+          <p className="text-xs text-stone-600 leading-relaxed">{action.consequence}</p>
+        </div>
+      )}
+
+      {action.timeEstimate && (
+        <div className="text-xs text-stone-400 font-mono mb-2">⏱ {action.timeEstimate}</div>
+      )}
+
+      {action.legislation && (
+        <BillStatusBar
+          legislation={action.legislation}
+          ringId="lives"
+          categoryId="cardiovascular"
+          actionId={action.tier}
+        />
+      )}
+
+      <div className="flex items-center gap-2 mt-2 flex-wrap">
+        {action.startHere && (
+          <a href={action.startHere} target="_blank" rel="noopener noreferrer" className={clsx('text-xs px-3 py-1.5 rounded-lg font-medium transition-colors', tierButtons[action.tier])}>
+            {action.startHereLabel ?? 'Start here'}
+          </a>
+        )}
+        {!action.startHere && action.tier === 'personal' && (
+          <button className={clsx('text-xs px-3 py-1.5 rounded-lg font-medium transition-colors', tierButtons[action.tier])}>
+            I'll do this
+          </button>
+        )}
+        {!action.startHere && action.tier === 'national' && (
+          <button className={clsx('text-xs px-3 py-1.5 rounded-lg font-medium transition-colors', tierButtons[action.tier])}>
+            Contact your rep
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }) {
   const [open, setOpen] = useState(false)
   return (
@@ -335,7 +423,7 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
       </button>
       {open && (
         <div className="px-3 py-3 border-t border-stone-100 bg-stone-50">
-          {/* Why it exists — bullets */}
+          {/* Why it exists */}
           <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Why this exists</div>
           <ul className="space-y-1.5 mb-4">
             {driver.why.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
@@ -345,26 +433,18 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
               </li>
             ))}
           </ul>
+
           {/* Actions */}
-          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">What you can do</div>
+          <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
+            What you can do about this specific driver
+          </div>
           <div className="flex flex-col gap-2">
             {driver.actions.map((a, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <TierPill tier={a.tier} />
-                <span className="text-xs text-stone-600 leading-relaxed flex-1">{a.text}</span>
-              <button className={clsx(
-                  'text-xs px-2.5 py-1 rounded-lg font-medium shrink-0 transition-colors',
-                  a.tier === 'personal' ? 'bg-blue-600 text-white hover:bg-blue-700' :
-                  a.tier === 'local'    ? 'bg-green-600 text-white hover:bg-green-700' :
-                  a.tier === 'state'    ? 'bg-purple-600 text-white hover:bg-purple-700' :
-                  'bg-amber-600 text-white hover:bg-amber-700'
-                )}>
-                  {a.tier === 'personal' ? "I'll do this" :
-                   a.tier === 'local'    ? 'Find local opportunities' :
-                   a.tier === 'state'    ? 'Find your state rep' :
-                   'Take action'}
-                </button>
-              </div>
+              <DriverActionCard
+                key={i}
+                action={a}
+                isLocked={a.tier === 'local' || a.tier === 'state'}
+              />
             ))}
           </div>
         </div>
