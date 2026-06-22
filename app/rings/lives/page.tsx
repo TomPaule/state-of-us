@@ -9,6 +9,7 @@ import type { Category, DataPoint, Action, ChartPoint, ActionTier } from '@/lib/
 import RingArc from '@/components/ui/RingArc'
 import StatusBadge from '@/components/ui/StatusBadge'
 import TrendChart from '@/components/charts/TrendChart'
+import ShareButton from '@/components/ui/ShareButton'
 import ContactRepModal from '@/components/ui/ContactRepModal'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid,
@@ -411,16 +412,27 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
   const [open, setOpen] = useState(false)
   return (
     <div className="border border-stone-200 rounded-lg overflow-hidden">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full text-left px-3 py-2.5 hover:bg-stone-50 transition-colors flex items-center justify-between gap-2"
-      >
-        <div className="flex-1 min-w-0">
+      <div className="flex items-center gap-2 px-3 py-2.5">
+        <button
+          onClick={() => setOpen(o => !o)}
+          className="flex-1 text-left hover:bg-stone-50 transition-colors min-w-0"
+        >
           <div className="text-xs font-semibold text-stone-700">{driver.label}</div>
           <div className="text-xs text-stone-500 mt-0.5 leading-relaxed">{driver.stat}</div>
+        </button>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <ShareButton
+            contentType="driver"
+            contentId={driver.id}
+            ringId="lives"
+            title={driver.label}
+            stat={driver.stat}
+            why={driver.whyBullets?.[0] ?? driver.why}
+            size="sm"
+          />
+          <span className={clsx('text-stone-400 transition-transform duration-200', open && 'rotate-180')}>▾</span>
         </div>
-        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200 ml-2', open && 'rotate-180')}>▾</span>
-      </button>
+      </div>
       {open && (
         <div className="px-3 py-3 border-t border-stone-100 bg-stone-50">
           {/* Why it exists */}
@@ -469,6 +481,15 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
       <div className="p-4 border-b border-stone-100">
         <div className="flex items-start justify-between gap-2 mb-1">
           {dp.impactWeight && <ImpactWeightBadge weight={dp.impactWeight} />}
+          <ShareButton
+            contentType="data_point"
+            contentId={dp.id}
+            ringId="lives"
+            title={dp.label}
+            stat={dp.note}
+            why={dp.whyBullets?.[0] ?? dp.why}
+            size="sm"
+          />
         </div>
         <div className="text-base font-semibold text-stone-900 mb-0.5">{dp.label}</div>
         {dp.note && (
