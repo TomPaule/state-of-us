@@ -610,6 +610,21 @@ function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
           <p className="text-xs text-green-800 leading-relaxed">{action.livesSaved}</p>
         </div>
       )}
+      {action.ringImpact && (
+        <div className="mb-3 px-3 py-2.5 bg-stone-900 rounded-lg text-white">
+          <div className="text-xs font-semibold uppercase tracking-widest mb-1 text-stone-400">
+            Impact on the Lives Lost ring if this passes
+          </div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-lg font-bold text-green-400">+{action.ringImpact.pointsIfSuccessful} pts</span>
+            <span className="text-xs text-stone-400">{action.ringImpact.timeframe}</span>
+          </div>
+          <p className="text-xs text-stone-300 leading-relaxed">{action.ringImpact.explanation}</p>
+          {action.ringImpact.livesAffected && (
+            <div className="mt-1.5 text-xs font-medium text-green-400">{action.ringImpact.livesAffected}</div>
+          )}
+        </div>
+      )}
 
       {action.legislation && (
         <BillStatusBar
