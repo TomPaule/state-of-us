@@ -19,15 +19,31 @@ export interface TrustRating {
   explanation: string
 }
 
+export interface ActionRingImpact {
+  ringId: string
+  pointsIfSuccessful: number
+  explanation: string
+  livesAffected?: string
+  timeframe?: string
+}
+
+export interface DriverAction {
+  tier: ActionTier
+  text: string
+  whyItMatters?: string
+  startHere?: string
+  startHereLabel?: string
+  consequence?: string
+  timeEstimate?: string
+  legislation?: Legislation
+}
+
 export interface Driver {
   id: string
   label: string
   stat: string
   why: string
-  actions: Array<{
-    tier: ActionTier
-    text: string
-  }>
+  actions: DriverAction[]
 }
 
 export interface DataPoint {
@@ -103,6 +119,7 @@ export interface Action {
   impactScale?: 1 | 2 | 3
   evidenceBase?: string
   livesSaved?: string
+  ringImpact?: ActionRingImpact
   legislation?: Legislation
   organization?: string
   organizationUrl?: string
