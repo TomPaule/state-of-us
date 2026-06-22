@@ -453,6 +453,7 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
               ))}
             </div>
           </div>
+        </div>
       )}
     </div>
   )
