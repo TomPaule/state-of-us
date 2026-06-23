@@ -14,14 +14,12 @@ async function getShare(token: string) {
   console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
   console.log('Service key exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
 
-  const { data, error } = await supabaseAdmin
+const { data, error } = await supabaseAdmin
     .from('shares')
     .select('*')
     .eq('share_token', token)
-    .single()
+    .maybeSingle()
 
-  console.log('Share data:', data)
-  console.log('Share error:', error)
   if (error) {
     console.error('Share fetch error:', error)
     return null
