@@ -474,22 +474,29 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
 // ── Data point card ───────────────────────────────────────────────────────────
 
 function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) {
+  const [open, setOpen] = useState(false)
   return (
     <div className="border border-stone-200 rounded-xl bg-white overflow-hidden">
 
-      {/* Header — label is biggest */}
-      <div className="p-4 border-b border-stone-100">
+      {/* Header — always visible, click to expand */}
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left p-4 hover:bg-stone-50 transition-colors"
+      >
         <div className="flex items-start justify-between gap-2 mb-1">
           {dp.impactWeight && <ImpactWeightBadge weight={dp.impactWeight} />}
-          <ShareButton
-            contentType="data_point"
-            contentId={dp.id}
-            ringId="lives"
-            title={dp.label}
-            stat={dp.note}
-            why={dp.whyBullets?.[0] ?? dp.why}
-            size="sm"
-          />
+          <div className="flex items-center gap-2 shrink-0">
+            <ShareButton
+              contentType="data_point"
+              contentId={dp.id}
+              ringId="lives"
+              title={dp.label}
+              stat={dp.note}
+              why={dp.whyBullets?.[0] ?? dp.why}
+              size="sm"
+            />
+            <span className={clsx('text-stone-400 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+          </div>
         </div>
         <div className="text-base font-semibold text-stone-900 mb-0.5">{dp.label}</div>
         {dp.note && (
@@ -500,103 +507,107 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
           <span className="text-stone-300">·</span>
           <TrendArrow trend={dp.trend} trendIsGood={dp.trendIsGood} />
         </div>
-      </div>
+      </button>
 
-      {/* The problem — mechanism as bullets */}
-      {(dp.mechanismBullets || dp.mechanism) && (
-        <div className="px-4 pt-4 pb-2">
-          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-            The problem — how this causes death
-          </div>
-          <ul className="space-y-2">
-            {dp.mechanismBullets
-              ? dp.mechanismBullets.map((bullet, i) => (
+      {/* Expandable content */}
+      {open && (
+        <div className="border-t border-stone-100">
+          {/* The problem — mechanism as bullets */}
+          {(dp.mechanismBullets || dp.mechanism) && (
+            <div className="px-4 pt-4 pb-2">
+              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                The problem — how this causes death
+              </div>
+              <ul className="space-y-2">
+                {dp.mechanismBullets
+                  ? dp.mechanismBullets.map((bullet, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                        <span className="text-red-300 shrink-0 mt-0.5 font-bold">→</span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))
+                  : dp.mechanism!.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                        <span className="text-red-300 shrink-0 mt-0.5">→</span>
+                        <span>{sentence.trim().replace(/\.$/, '')}.</span>
+                      </li>
+                    ))
+                }
+              </ul>
+            </div>
+          )}
+
+          {/* Why the US gap */}
+          {dp.whyBullets && (
+            <div className="px-4 pt-3 pb-2">
+              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                Why the US is worse than peer nations
+              </div>
+              <ul className="space-y-2">
+                {dp.whyBullets.map((bullet, i) => (
                   <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-                    <span className="text-red-300 shrink-0 mt-0.5 font-bold">→</span>
+                    <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
                     <span>{bullet}</span>
                   </li>
-                ))
-              : dp.mechanism!.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-                    <span className="text-red-300 shrink-0 mt-0.5">→</span>
-                    <span>{sentence.trim().replace(/\.$/, '')}.</span>
-                  </li>
-                ))
-            }
-          </ul>
-        </div>
-      )}
-
-    
-      {/* Why the US gap — only show if whyBullets exists, otherwise skip */}
-      {dp.whyBullets && (
-        <div className="px-4 pt-3 pb-2">
-          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-            Why the US is worse than peer nations
-          </div>
-          <ul className="space-y-2">
-            {dp.whyBullets.map((bullet, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
-                <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
-                <span>{bullet}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-
-      {/* Chart */}
-      <div className="px-4 pb-3 pt-2">
-        <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
-      </div>
-      {/* Source + data quality — always visible */}
-      <div className="mx-4 mb-3 px-3 py-2.5 bg-stone-50 border border-stone-100 rounded-lg">
-        <div className="text-xs text-stone-400 mb-1.5">
-          <span className="font-medium text-stone-500">Source:</span> {dp.source}
-        </div>
-        {dp.nextDataRelease && (
-          <div className="text-xs text-stone-400 mb-2">
-            <span className="font-medium text-stone-500">Next release:</span> {dp.nextDataRelease}
-          </div>
-        )}
-        {dp.trust && (
-          <div className="border-t border-stone-200 pt-2 mt-1">
-            <div className="flex items-center gap-2 mb-1">
-              <span className={clsx(
-                'text-xs font-bold px-2 py-0.5 rounded',
-                dp.trust.grade === 'A' ? 'bg-green-50 text-green-700' :
-                dp.trust.grade === 'B' ? 'bg-blue-50 text-blue-700' :
-                dp.trust.grade === 'C' ? 'bg-amber-50 text-amber-700' :
-                'bg-red-50 text-red-700'
-              )}>
-                Data Quality: {dp.trust.grade}
-              </span>
-              <span className="text-xs text-stone-400">
-                {dp.trust.grade === 'A' ? 'Official registry — highest confidence' :
-                 dp.trust.grade === 'B' ? 'Peer-reviewed — high confidence' :
-                 dp.trust.grade === 'C' ? 'Estimated — moderate confidence' :
-                 'Contested — use with caution'}
-              </span>
+                ))}
+              </ul>
             </div>
-            <p className="text-xs text-stone-400 leading-relaxed">{dp.trust.explanation}</p>
+          )}
+
+          {/* Chart */}
+          <div className="px-4 pb-3 pt-2">
+            <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
           </div>
-        )}
-      </div>
-      {/* Structural drivers — incentive note merged in */}
-      {dp.drivers && dp.drivers.length > 0 && (
-        <div className="px-4 pb-4">
-          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-            What keeps this stuck — structural drivers
+
+          {/* Source + data quality */}
+          <div className="mx-4 mb-3 px-3 py-2.5 bg-stone-50 border border-stone-100 rounded-lg">
+            <div className="text-xs text-stone-400 mb-1.5">
+              <span className="font-medium text-stone-500">Source:</span> {dp.source}
+            </div>
+            {dp.nextDataRelease && (
+              <div className="text-xs text-stone-400 mb-2">
+                <span className="font-medium text-stone-500">Next release:</span> {dp.nextDataRelease}
+              </div>
+            )}
+            {dp.trust && (
+              <div className="border-t border-stone-200 pt-2 mt-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className={clsx(
+                    'text-xs font-bold px-2 py-0.5 rounded',
+                    dp.trust.grade === 'A' ? 'bg-green-50 text-green-700' :
+                    dp.trust.grade === 'B' ? 'bg-blue-50 text-blue-700' :
+                    dp.trust.grade === 'C' ? 'bg-amber-50 text-amber-700' :
+                    'bg-red-50 text-red-700'
+                  )}>
+                    Data Quality: {dp.trust.grade}
+                  </span>
+                  <span className="text-xs text-stone-400">
+                    {dp.trust.grade === 'A' ? 'Official registry — highest confidence' :
+                     dp.trust.grade === 'B' ? 'Peer-reviewed — high confidence' :
+                     dp.trust.grade === 'C' ? 'Estimated — moderate confidence' :
+                     'Contested — use with caution'}
+                  </span>
+                </div>
+                <p className="text-xs text-stone-400 leading-relaxed">{dp.trust.explanation}</p>
+              </div>
+            )}
           </div>
-          <div className="flex flex-col gap-2">
-            {dp.drivers.map(driver => (
-              <DriverCard key={driver.id} driver={driver} />
-            ))}
-          </div>
+
+          {/* Structural drivers */}
+          {dp.drivers && dp.drivers.length > 0 && (
+            <div className="px-4 pb-4">
+              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                What keeps this stuck — structural drivers
+              </div>
+              <div className="flex flex-col gap-2">
+                {dp.drivers.map(driver => (
+                  <DriverCard key={driver.id} driver={driver} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
-
     </div>
   )
 }
