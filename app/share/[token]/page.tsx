@@ -33,10 +33,7 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
         <div className="text-center">
           <div className="text-4xl mb-4">🔍</div>
           <h1 className="font-display text-2xl font-medium text-stone-900 mb-2">Link not found</h1>
-          <p className="text-stone-500 mb-1">Token: {token}</p>
-          <p className="text-stone-500 mb-1">Error: {error ?? 'No error — data just null'}</p>
-          <p className="text-stone-500 mb-1">URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'URL set' : 'URL missing'}</p>
-          <p className="text-stone-500 mb-6">Key: {process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Key set' : 'Key missing'}</p>
+          <p className="text-stone-500 mb-6">This share link may have expired or been removed.</p>
           <Link href="/" className="px-5 py-2.5 bg-stone-900 text-white rounded-lg text-sm font-medium hover:bg-stone-700 transition-colors">
             Explore The State of Us
           </Link>
@@ -111,7 +108,7 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
 
             <div className="pt-4 border-t border-stone-100 flex items-center justify-between">
               <div className="text-xs text-stone-400">
-                {share.click_count + 1} people have seen this
+                {share.click_count + 1 === 1 ? '1 person has seen this' : `${share.click_count + 1} people have seen this`}
               </div>
               <div className="text-xs text-stone-400">
                 Shared via The State of Us
