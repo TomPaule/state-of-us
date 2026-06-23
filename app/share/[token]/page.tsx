@@ -41,7 +41,9 @@ export default async function SharePage({ params }: { params: { token: string } 
         <div className="text-center">
           <div className="text-4xl mb-4">🔍</div>
           <h1 className="font-display text-2xl font-medium text-stone-900 mb-2">Link not found</h1>
-          <p className="text-stone-500 mb-6">This share link may have expired or been removed.</p>
+          <p className="text-stone-500 mb-1">Token: {params.token}</p>
+          <p className="text-stone-500 mb-1">URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'URL set' : 'URL missing'}</p>
+          <p className="text-stone-500 mb-6">Key: {process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Key set' : 'Key missing'}</p>
           <Link href="/" className="px-5 py-2.5 bg-stone-900 text-white rounded-lg text-sm font-medium hover:bg-stone-700 transition-colors">
             Explore The State of Us
           </Link>
