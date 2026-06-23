@@ -23,8 +23,9 @@ async function getShare(token: string) {
   return { data, error: error?.message ?? null }
 }
 
-export default async function SharePage({ params }: { params: { token: string } }) {
-  const { data: share, error } = await getShare(params.token)
+export default async function SharePage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params
+  const { data: share, error } = await getShare(token)
 
   if (!share) {
     return (
@@ -32,7 +33,7 @@ export default async function SharePage({ params }: { params: { token: string } 
         <div className="text-center">
           <div className="text-4xl mb-4">🔍</div>
           <h1 className="font-display text-2xl font-medium text-stone-900 mb-2">Link not found</h1>
-          <p className="text-stone-500 mb-1">Token: {params.token}</p>
+          <p className="text-stone-500 mb-1">Token: {token}</p>
           <p className="text-stone-500 mb-1">Error: {error ?? 'No error — data just null'}</p>
           <p className="text-stone-500 mb-1">URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'URL set' : 'URL missing'}</p>
           <p className="text-stone-500 mb-6">Key: {process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Key set' : 'Key missing'}</p>
