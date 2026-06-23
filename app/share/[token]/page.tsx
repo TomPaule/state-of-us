@@ -10,30 +10,21 @@ async function getShare(token: string) {
     { auth: { autoRefreshToken: false, persistSession: false } }
   )
 
-  console.log('Fetching share for token:', token)
-  console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-  console.log('Service key exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
-
-const { data, error } = await supabaseAdmin
+  const { data, error } = await supabaseAdmin
     .from('shares')
     .select('*')
     .eq('share_token', token)
     .maybeSingle()
 
-  if (error) {
-    console.error('Share fetch error:', error)
-    return null
-  }
-
   if (data) {
     await supabaseAdmin.rpc('increment_share_clicks', { share_token: token })
   }
 
-  return data
+  return { data, error: error?.message ?? null }
 }
 
 export default async function SharePage({ params }: { params: { token: string } }) {
-  const share = await getShare(params.token)
+  const { data: share, error } = await getShare(params.token)
 
   if (!share) {
     return (
@@ -42,6 +33,7 @@ export default async function SharePage({ params }: { params: { token: string } 
           <div className="text-4xl mb-4">🔍</div>
           <h1 className="font-display text-2xl font-medium text-stone-900 mb-2">Link not found</h1>
           <p className="text-stone-500 mb-1">Token: {params.token}</p>
+          <p className="text-stone-500 mb-1">Error: {error ?? 'No error — data just null'}</p>
           <p className="text-stone-500 mb-1">URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'URL set' : 'URL missing'}</p>
           <p className="text-stone-500 mb-6">Key: {process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Key set' : 'Key missing'}</p>
           <Link href="/" className="px-5 py-2.5 bg-stone-900 text-white rounded-lg text-sm font-medium hover:bg-stone-700 transition-colors">
