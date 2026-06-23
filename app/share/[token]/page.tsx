@@ -3,20 +3,24 @@ import Link from 'next/link'
 import { createClient } from '@supabase/supabase-js'
 import { ALL_RINGS } from '@/lib/data/rings'
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { auth: { autoRefreshToken: false, persistSession: false } }
-)
-
 async function getShare(token: string) {
-  const { data } = await supabaseAdmin
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  const { data, error } = await supabaseAdmin
     .from('shares')
     .select('*')
     .eq('share_token', token)
     .single()
 
-  // Increment click count
+  if (error) {
+    console.error('Share fetch error:', error)
+    return null
+  }
+
   if (data) {
     await supabaseAdmin.rpc('increment_share_clicks', { share_token: token })
   }
