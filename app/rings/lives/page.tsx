@@ -16,7 +16,7 @@ import {
   Tooltip, ResponsiveContainer,
 } from 'recharts'
 
-type CategoryTab = 'data' | 'actions'
+type CategoryTab = 'data'
 
 // ── Utility components ────────────────────────────────────────────────────────
 
@@ -1033,9 +1033,8 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
   const [open, setOpen] = useState(false)
   const [tab, setTab] = useState<CategoryTab>('data')
 
-  const tabs: Array<{ id: CategoryTab; label: string }> = [
-    { id: 'data',    label: 'Data & trends' },
-    { id: 'actions', label: 'Actions' },
+ const tabs: Array<{ id: CategoryTab; label: string }> = [
+    { id: 'data', label: 'Data & trends' },
   ]
 
   return (
@@ -1195,105 +1194,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
             )}
 
             {/* ACTIONS TAB */}
-            {tab === 'actions' && (
-              <div>
-                {/* Solved precedent */}
-                {cat.dataPoints.some(dp => dp.solvedPrecedent) && (
-                  <div className="mb-6">
-                    {cat.dataPoints.filter(dp => dp.solvedPrecedent).map(dp => (
-                      dp.solvedPrecedent && (
-                        <SolvedPrecedentBlock
-                          key={dp.id}
-                          precedent={dp.solvedPrecedent}
-                          color={ringColor}
-                        />
-                      )
-                    ))}
-                  </div>
-                )}
-
-                {/* Personal */}
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
-                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Personal — things you can do today</div>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    {cat.actions.filter(a => a.tier === 'personal').map(action => (
-                      <ActionCard key={action.id} action={action} tier="personal" />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Community */}
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
-                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">Local — organize and advocate in your community</div>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    {cat.actions.filter(a => a.tier === 'local').map(action => (
-                      <ActionCard key={action.id} action={action} tier="local" />
-                    ))}
-                  </div>
-                  <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">
-                    <span className="text-stone-300 text-sm">🔒</span>
-                    <div className="flex-1">
-                      <div className="text-xs font-medium text-stone-500">State and local policy actions</div>
-                      <div className="text-xs text-stone-400">Your state legislators, local ballot initiatives, and city council votes relevant to this issue.</div>
-                    </div>
-                    <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-200 text-stone-400 cursor-not-allowed shrink-0">Coming soon</button>
-                  </div>
-
-                  {/* See all actions */}
-                  <div className="mt-4 pt-4 border-t border-stone-100 text-center">
-                    <p className="text-xs text-stone-400 mb-3">
-                      More actions available — personal habits, community organizing, and legislative campaigns across all 12 rings.
-                    </p>
-                    <Link
-                      href="/actions"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-stone-900 text-white rounded-lg text-xs font-medium hover:bg-stone-700 transition-colors"
-                    >
-                      See all actions for Lives Lost
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Systemic */}
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest">National — federal policy and structural change</div>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    {cat.actions.filter(a => a.tier === 'national').map(action => (
-                      <ActionCard key={action.id} action={action} tier="national" />
-                    ))}
-                  </div>
-                  <div className="mt-3 flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">
-                    <span className="text-stone-300 text-sm">🔒</span>
-                    <div className="flex-1">
-                      <div className="text-xs font-medium text-stone-500">State and local policy actions</div>
-                      <div className="text-xs text-stone-400">Your state legislators, local ballot initiatives, and city council votes relevant to this issue.</div>
-                    </div>
-                    <button className="text-xs px-3 py-1.5 rounded-lg border border-stone-200 text-stone-400 cursor-not-allowed shrink-0">Coming soon</button>
-                  </div>
-
-                  {/* See all actions */}
-                  <div className="mt-4 pt-4 border-t border-stone-100 text-center">
-                    <p className="text-xs text-stone-400 mb-3">
-                      More actions available across all 12 rings — personal habits, community organizing, and legislative campaigns.
-                    </p>
-                    <Link
-                      href="/actions"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-stone-900 text-white rounded-lg text-xs font-medium hover:bg-stone-700 transition-colors"
-                    >
-                      See all actions for Lives Lost
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            )}
+            
           </div>
         </div>
       )}
