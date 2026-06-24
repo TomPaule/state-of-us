@@ -38,13 +38,67 @@ export interface DriverAction {
   legislation?: Legislation
 }
 
+export interface DriverBullet {
+  text: string
+  source: string
+}
+
+export interface HistoricalPrecedent {
+  title: string
+  year: string
+  description: string
+  result: string
+  relevance: string
+  chartLabel?: string
+  chart?: ChartPoint[]
+}
+
+export interface PolicyWatchEntry {
+  id: string
+  title: string
+  administration: string
+  date: string
+  direction: PolicyDirection
+  concern: string
+  dataPoints: Array<{
+    claim: string
+    finding: string
+    contested: boolean
+    source: string
+  }>
+  ringImpact: string
+  evidenceQuality: 'A' | 'B' | 'C' | 'D'
+  tradeOffs: Array<{
+    ifYouPrioritize: string
+    assessment: string
+  }>
+  source: string
+}
+
+export interface DriverSubsection {
+  id: string
+  label: string
+  bullets: DriverBullet[]
+  historicalPrecedents?: HistoricalPrecedent[]
+  policyWatch?: {
+    federal: PolicyWatchEntry[]
+    stateTeaser?: string
+    localTeaser?: string
+  }
+  actions?: DriverAction[]
+  contextOnly?: boolean
+}
+
 export interface Driver {
   id: string
   label: string
   stat: string
-  why: string
+  // Legacy fields — being migrated to subsections
+  why?: string
   whyBullets?: string[]
-  actions: DriverAction[]
+  actions?: DriverAction[]
+  // New architecture
+  subsections?: DriverSubsection[]
 }
 
 export interface DataPoint {
