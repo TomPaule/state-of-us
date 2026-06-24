@@ -408,45 +408,362 @@ function DriverActionCard({ action, isLocked }: { action: any; isLocked: boolean
   )
 }
 
-function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }) {
+function HistoricalPrecedentBlock({ precedent, color }: { precedent: any; color: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="border border-green-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2.5 bg-green-50 hover:bg-green-100 transition-colors flex items-center justify-between gap-2"
+      >
+        <div>
+          <div className="text-xs font-semibold text-green-800">{precedent.title}</div>
+          <div className="text-xs text-green-600">{precedent.year}</div>
+        </div>
+        <span className={clsx('text-green-500 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="p-3 bg-white border-t border-green-100">
+          <p className="text-xs text-stone-700 leading-relaxed mb-2">{precedent.description}</p>
+          <div className="px-3 py-2 bg-green-50 rounded-lg mb-2">
+            <div className="text-xs font-medium text-green-700 mb-0.5">Result</div>
+            <p className="text-xs text-green-800 leading-relaxed">{precedent.result}</p>
+          </div>
+          <div className="px-3 py-2 bg-stone-50 rounded-lg mb-2">
+            <div className="text-xs font-medium text-stone-500 mb-0.5">Why this matters here</div>
+            <p className="text-xs text-stone-600 leading-relaxed">{precedent.relevance}</p>
+          </div>
+          {precedent.chart && precedent.chartLabel && (
+            <TrendChart data={precedent.chart} label={precedent.chartLabel} color="#16A34A" height={100} showTarget={false} />
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PolicyWatchEntryBlock({ entry }: { entry: any }) {
+  const [open, setOpen] = useState(false)
+  const dirColors: Record<string, string> = {
+    toward: 'bg-green-50 border-green-200 text-green-800',
+    away:   'bg-red-50 border-red-200 text-red-800',
+    mixed:  'bg-amber-50 border-amber-200 text-amber-800',
+  }
+  const dirIcons: Record<string, string> = {
+    toward: '↑', away: '↓', mixed: '⟷',
+  }
+  return (
+    <div className={clsx('border rounded-lg overflow-hidden', dirColors[entry.direction])}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2.5 hover:opacity-80 transition-opacity flex items-center justify-between gap-2"
+      >
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-sm">{dirIcons[entry.direction]}</span>
+          <div>
+            <div className="text-xs font-semibold">{entry.title}</div>
+            <div className="text-xs opacity-70">{entry.administration} · {entry.date}</div>
+          </div>
+        </div>
+        <span className={clsx('shrink-0 transition-transform duration-200 opacity-60', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="px-3 pb-3 border-t border-current border-opacity-20 bg-white">
+          {/* Concern */}
+          <div className="mt-3">
+            <button className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1 w-full text-left">
+              The concern this addresses
+            </button>
+            <p className="text-xs text-stone-600 leading-relaxed">{entry.concern}</p>
+          </div>
+
+          {/* Data points */}
+          {entry.dataPoints && entry.dataPoints.length > 0 && (
+            <div className="mt-3">
+              <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-2">What the data says</div>
+              <div className="flex flex-col gap-2">
+                {entry.dataPoints.map((dp: any, i: number) => (
+                  <div key={i} className="px-3 py-2 bg-stone-50 rounded-lg">
+                    <div className="text-xs font-medium text-stone-700 mb-0.5 italic">"{dp.claim}"</div>
+                    <div className="text-xs text-stone-600 leading-relaxed mb-1">{dp.finding}</div>
+                    <div className="flex items-center gap-2">
+                      <span className={clsx('text-xs px-1.5 py-0.5 rounded font-medium', dp.contested ? 'bg-amber-50 text-amber-700' : 'bg-green-50 text-green-700')}>
+                        {dp.contested ? 'Contested' : 'Not contested'}
+                      </span>
+                      <span className="text-xs text-stone-400">{dp.source}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Ring impact */}
+          <div className="mt-3 px-3 py-2 bg-stone-900 rounded-lg">
+            <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Ring impact</div>
+            <p className="text-xs text-stone-300 leading-relaxed">{entry.ringImpact}</p>
+            <div className="mt-1 flex items-center gap-2">
+              <span className={clsx('text-xs px-2 py-0.5 rounded font-bold',
+                entry.evidenceQuality === 'A' ? 'bg-green-900 text-green-300' :
+                entry.evidenceQuality === 'B' ? 'bg-blue-900 text-blue-300' :
+                'bg-amber-900 text-amber-300'
+              )}>
+                Evidence: {entry.evidenceQuality}
+              </span>
+            </div>
+          </div>
+
+          {/* Trade-offs */}
+          {entry.tradeOffs && entry.tradeOffs.length > 0 && (
+            <div className="mt-3">
+              <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-2">Trade-offs</div>
+              <div className="flex flex-col gap-2">
+                {entry.tradeOffs.map((t: any, i: number) => (
+                  <div key={i} className="px-3 py-2 bg-stone-50 rounded-lg">
+                    <div className="text-xs font-medium text-stone-700 mb-0.5">
+                      If you prioritize {t.ifYouPrioritize}:
+                    </div>
+                    <p className="text-xs text-stone-600 leading-relaxed">{t.assessment}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-2 text-xs text-stone-400">Source: {entry.source}</div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor: string }) {
   const [open, setOpen] = useState(false)
   return (
     <div className="border border-stone-200 rounded-lg overflow-hidden">
-      <div className="flex items-center gap-2 px-3 py-2.5">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2.5 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
+      >
+        <div className="text-xs font-semibold text-stone-800">{subsection.label}</div>
+        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+      </button>
+
+      {open && (
+        <div className="border-t border-stone-100">
+          {/* Bullets */}
+          {subsection.bullets && subsection.bullets.length > 0 && (
+            <div className="px-3 pt-3 pb-2">
+              <ul className="space-y-2">
+                {subsection.bullets.map((bullet: any, i: number) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-stone-300 shrink-0 mt-0.5 font-bold text-xs">→</span>
+                    <div>
+                      <p className="text-xs text-stone-600 leading-relaxed">{bullet.text}</p>
+                      <p className="text-xs text-stone-400 mt-0.5 italic">Source: {bullet.source}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* What's worked historically */}
+          {subsection.historicalPrecedents && subsection.historicalPrecedents.length > 0 && (
+            <div className="px-3 pb-3">
+              <div className="flex items-center gap-2 my-3">
+                <div className="h-px flex-1 bg-green-100" />
+                <div className="text-xs font-semibold text-green-700 uppercase tracking-widest px-2">
+                  What's worked historically
+                </div>
+                <div className="h-px flex-1 bg-green-100" />
+              </div>
+              <div className="flex flex-col gap-2">
+                {subsection.historicalPrecedents.map((p: any, i: number) => (
+                  <HistoricalPrecedentBlock key={i} precedent={p} color={ringColor} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Policy Watch */}
+          {subsection.policyWatch && (
+            <div className="px-3 pb-3">
+              <div className="flex items-center gap-2 my-3">
+                <div className="h-px flex-1 bg-blue-100" />
+                <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest px-2">
+                  Policy watch
+                </div>
+                <div className="h-px flex-1 bg-blue-100" />
+              </div>
+
+              {/* Federal */}
+              {subsection.policyWatch.federal && subsection.policyWatch.federal.length > 0 && (
+                <div className="mb-3">
+                  <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Federal</div>
+                  <div className="flex flex-col gap-2">
+                    {subsection.policyWatch.federal.map((entry: any) => (
+                      <PolicyWatchEntryBlock key={entry.id} entry={entry} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* State locked */}
+              {subsection.policyWatch.stateTeaser && (
+                <div className="mb-2 flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
+                  <span className="text-stone-300 shrink-0">🔒</span>
+                  <div className="flex-1">
+                    <div className="text-xs font-medium text-stone-400">State policy watch</div>
+                    <div className="text-xs text-stone-300">{subsection.policyWatch.stateTeaser}</div>
+                  </div>
+                  <span className="text-xs text-stone-300 shrink-0">Civic tier</span>
+                </div>
+              )}
+
+              {/* Local locked */}
+              {subsection.policyWatch.localTeaser && (
+                <div className="flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
+                  <span className="text-stone-300 shrink-0">🔒</span>
+                  <div className="flex-1">
+                    <div className="text-xs font-medium text-stone-400">Local policy watch</div>
+                    <div className="text-xs text-stone-300">{subsection.policyWatch.localTeaser}</div>
+                  </div>
+                  <span className="text-xs text-stone-300 shrink-0">Community tier</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* What you can do */}
+          {!subsection.contextOnly && subsection.actions && subsection.actions.length > 0 && (
+            <div className="px-3 pb-3">
+              <div className="flex items-center gap-2 my-3">
+                <div className="h-px flex-1 bg-stone-200" />
+                <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
+                  What you can do
+                </div>
+                <div className="h-px flex-1 bg-stone-200" />
+              </div>
+              <div className="flex flex-col gap-2">
+                {['personal', 'local', 'state', 'national'].map(tier => {
+                  const tierActions = subsection.actions.filter((a: any) => a.tier === tier)
+                  if (tierActions.length === 0) return null
+                  const isLocked = tier === 'local' || tier === 'state'
+                  const tierColors: Record<string, string> = {
+                    personal: 'text-blue-700',
+                    local:    'text-green-700',
+                    state:    'text-purple-700',
+                    national: 'text-amber-700',
+                  }
+                  const tierLabels: Record<string, string> = {
+                    personal: 'Personal',
+                    local:    'Local',
+                    state:    'State',
+                    national: 'National',
+                  }
+                  return (
+                    <div key={tier}>
+                      <div className={clsx('text-xs font-semibold uppercase tracking-widest mb-1.5 flex items-center gap-1.5', tierColors[tier])}>
+                        {isLocked && <span>🔒</span>}
+                        {tierLabels[tier]}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        {tierActions.map((a: any, i: number) => (
+                          <DriverActionCard key={i} action={a} isLocked={isLocked} />
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Context only note */}
+          {subsection.contextOnly && (
+            <div className="px-3 pb-3">
+              <p className="text-xs text-stone-400 italic">
+                This section provides context for understanding the structural driver. Actions to address this are included in other subsections above.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }) {
+  const [open, setOpen] = useState(false)
+  const ringColor = '#E24B4A' // Lives Lost color — passed down in real impl
+
+  // New subsection-based architecture
+  if (driver.subsections && driver.subsections.length > 0) {
+    return (
+      <div className="border border-stone-200 rounded-xl overflow-hidden">
         <button
           onClick={() => setOpen(o => !o)}
-          className="flex-1 text-left hover:bg-stone-50 transition-colors min-w-0"
+          className="w-full text-left px-4 py-3 hover:bg-stone-50 transition-colors flex items-center justify-between gap-2"
         >
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-semibold text-stone-800">{driver.label}</div>
+            <div className="text-xs text-stone-500 mt-0.5 leading-relaxed">{driver.stat}</div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <ShareButton
+              contentType="driver"
+              contentId={driver.id}
+              ringId="lives"
+              title={driver.label}
+              stat={driver.stat}
+              size="sm"
+            />
+            <span className={clsx('text-stone-400 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+          </div>
+        </button>
+
+        {open && (
+          <div className="border-t border-stone-100 px-4 py-4">
+            <div className="flex flex-col gap-3">
+              {driver.subsections.map((subsection: any) => (
+                <SubsectionBlock
+                  key={subsection.id}
+                  subsection={subsection}
+                  ringColor={ringColor}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Legacy architecture — for drivers not yet migrated
+  return (
+    <div className="border border-stone-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2.5 hover:bg-stone-50 transition-colors flex items-center justify-between gap-2"
+      >
+        <div className="flex-1 min-w-0">
           <div className="text-xs font-semibold text-stone-700">{driver.label}</div>
           <div className="text-xs text-stone-500 mt-0.5 leading-relaxed">{driver.stat}</div>
-        </button>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <ShareButton
-            contentType="driver"
-            contentId={driver.id}
-            ringId="lives"
-            title={driver.label}
-            stat={driver.stat}
-            why={driver.whyBullets?.[0] ?? driver.why}
-            size="sm"
-          />
-          <span className={clsx('text-stone-400 transition-transform duration-200', open && 'rotate-180')}>▾</span>
         </div>
-      </div>
+        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200 ml-2', open && 'rotate-180')}>▾</span>
+      </button>
       {open && (
         <div className="px-3 py-3 border-t border-stone-100 bg-stone-50">
-          {/* Why it exists */}
           <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Why this exists</div>
           <ul className="space-y-2 mb-4">
-            {(driver.whyBullets ?? (driver.why ?? '').split('. ').filter(s => s.trim().length > 10)).map((sentence, i) => (
+            {(driver.whyBullets ?? (driver.why ?? '').split('. ').filter((s: string) => s.trim().length > 10)).map((sentence: string, i: number) => (
               <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
                 <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
                 <span>{driver.whyBullets ? sentence : sentence.trim().replace(/\.$/, '') + '.'}</span>
               </li>
             ))}
           </ul>
-
-          {/* Actions — clearly separated */}
           <div className="mt-4 pt-4 border-t-2 border-stone-200">
             <div className="flex items-center gap-2 mb-3">
               <div className="h-px flex-1 bg-stone-200" />
@@ -456,7 +773,7 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
               <div className="h-px flex-1 bg-stone-200" />
             </div>
             <div className="flex flex-col gap-2">
-              {(driver.actions ?? []).map((a, i) => (
+              {(driver.actions ?? []).map((a: any, i: number) => (
                 <DriverActionCard
                   key={i}
                   action={a}
