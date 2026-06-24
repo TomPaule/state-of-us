@@ -106,738 +106,800 @@ export const livesLostRing: Ring = {
     explanation: 'CDC NHANES uses direct physical measurement — height and weight are measured by trained staff, not self-reported. This is the gold standard for obesity prevalence data. OECD peer comparisons use consistent BMI methodology across countries.',
   },
   drivers: [
-  {
-    id: 'cv-ob-d0',
-    label: 'Financial incentive',
-    stat: 'Ultra-processed foods carry 3x the profit margin of whole foods. Food companies spend $1.8B annually marketing to children under 12.',
-    subsections: [
-      {
-        id: 'cv-ob-d0-biology',
-        label: 'Biology',
-        bullets: [
-          {
-            text: 'Once established, obesity triggers hormonal adaptations that actively resist weight loss. Leptin (the satiety hormone) becomes less effective, ghrelin (the hunger hormone) increases, and the body\'s metabolic rate drops to defend its higher weight set point.',
-            source: 'NEJM, Leibel et al., 1995 — replicated in 40+ subsequent studies',
-          },
-          {
-            text: '80% of people who lose significant weight regain it within 5 years — not because of willpower failure but because of documented hormonal opposition to weight loss.',
-            source: 'American Journal of Clinical Nutrition, 2014 meta-analysis of 29 studies',
-          },
-          {
-            text: 'GLP-1 receptor agonists (Ozempic, Wegovy) work by mimicking the hormones that obesity disrupts — restoring leptin sensitivity and reducing ghrelin. Clinical trials show 15-22% body weight reduction sustained over 2 years, far exceeding any previous pharmacological intervention.',
-            source: 'NEJM STEP trials, 2021-2023',
-          },
-          {
-            text: 'The biological implication: prevention is dramatically more effective than treatment. The food environment that causes obesity is fighting against biology that resists reversing it. This makes structural prevention — food policy, marketing restrictions, subsidy reform — more important than individual intervention.',
-            source: 'NEJM, 2011 — The Biology of Obesity',
-          },
-          {
-            text: 'Ozempic\'s $1,000/month cost without insurance means access is largely limited to wealthy patients — treating the biological consequence of a food system that harms low-income communities most, in a way accessible only to high-income patients.',
-            source: 'KFF Drug Pricing Analysis, 2024',
-          },
-        ],
-        historicalPrecedents: [
-          {
-            title: 'GLP-1 medications — proof biology can be addressed when the will exists',
-            year: '2021',
-            description: 'Semaglutide (Wegovy) achieved 15-22% sustained weight loss in clinical trials — more than any previous intervention. The mechanism proves the hormonal disruption model is correct. Coverage expansion is now the primary lever.',
-            result: 'FDA approved Wegovy for chronic weight management in 2021. Medicare coverage proposed 2024, blocked 2025.',
-            relevance: 'If Medicare covered GLP-1 medications, an estimated 3.4 million Medicare patients would gain access to the most effective obesity treatment in medical history.',
-          },
-        ],
-        policyWatch: {
-          federal: [
+        {
+          id: 'cv-ob-biology',
+          label: 'Biology — why obesity is harder to reverse than prevent',
+          stat: '80% of people who lose significant weight regain it within 5 years due to hormonal adaptation, not willpower failure',
+          subsections: [
             {
-              id: 'pw-glp1-medicare',
-              title: 'Medicare GLP-1 obesity drug coverage blocked',
-              administration: 'Biden proposed · Trump blocked',
-              date: '2024-2025',
-              direction: 'mixed',
-              concern: 'Cost: CBO estimated $35B over 10 years for Medicare obesity drug coverage. Fairness concern: should Medicare cover a condition seen by some as lifestyle-related?',
-              dataPoints: [
+              id: 'cv-ob-biology-main',
+              label: 'The hormonal basis of obesity',
+              bullets: [
                 {
-                  claim: 'Coverage would cost too much',
-                  finding: 'Obesity costs Medicare $172B annually in downstream conditions. Coverage would likely reduce net costs within 10 years.',
-                  contested: false,
-                  source: 'CBO Score 2024; NEJM cost-effectiveness analysis 2023',
+                  text: 'Once established, obesity triggers hormonal adaptations that actively resist weight loss. Leptin (the satiety hormone) becomes less effective, ghrelin (the hunger hormone) increases, and the body\'s metabolic rate drops to defend its higher weight set point.',
+                  source: 'NEJM, Leibel et al., 1995 — replicated in 40+ subsequent studies',
                 },
                 {
-                  claim: 'Obesity is a lifestyle condition not deserving coverage',
-                  finding: 'AMA classified obesity as a disease in 2013 based on the hormonal evidence above. This is not contested clinically.',
-                  contested: false,
-                  source: 'AMA Policy H-440.842, 2013',
-                },
-              ],
-              ringImpact: 'Lives Lost: Toward for those with access. Economic Security: Mixed — $35B cost vs $172B annual downstream savings.',
-              evidenceQuality: 'A',
-              tradeOffs: [
-                {
-                  ifYouPrioritize: 'Fiscal responsibility',
-                  assessment: '$35B cost is real but likely offset by downstream Medicare savings within a decade. CBO analysis supports this.',
+                  text: '80% of people who lose significant weight regain it within 5 years — not because of willpower failure but because of documented hormonal opposition to weight loss.',
+                  source: 'American Journal of Clinical Nutrition, 2014 meta-analysis of 29 studies',
                 },
                 {
-                  ifYouPrioritize: 'Access equity',
-                  assessment: 'Without coverage, only wealthy patients benefit from the most effective obesity treatment in history — widening the health gap that the food system already creates.',
+                  text: 'GLP-1 receptor agonists (Ozempic, Wegovy) work by mimicking the hormones that obesity disrupts — restoring leptin sensitivity and reducing ghrelin. Clinical trials show 15-22% body weight reduction sustained over 2 years, far exceeding any previous pharmacological intervention.',
+                  source: 'NEJM STEP trials, 2021-2023',
+                },
+                {
+                  text: 'The biological implication: prevention is dramatically more effective than treatment. The food environment that causes obesity fights against biology that resists reversing it. This makes structural prevention — food policy, marketing restrictions, subsidy reform — more important than individual intervention.',
+                  source: 'NEJM, 2011 — The Biology of Obesity',
+                },
+                {
+                  text: 'Ozempic\'s $1,000/month cost without insurance means access is largely limited to wealthy patients — treating the biological consequence of a food system that harms low-income communities most, in a way accessible only to high-income patients.',
+                  source: 'KFF Drug Pricing Analysis, 2024',
                 },
               ],
-              source: 'CBO Score 2024 · AMA Policy 2013 · NEJM STEP trials 2021-2023',
+              historicalPrecedents: [
+                {
+                  title: 'GLP-1 medications — proof biology can be addressed',
+                  year: '2021',
+                  description: 'Semaglutide (Wegovy) achieved 15-22% sustained weight loss in clinical trials — more than any previous intervention. The mechanism proves the hormonal disruption model is correct. Coverage expansion is now the primary lever.',
+                  result: 'FDA approved Wegovy for chronic weight management in 2021. Medicare coverage proposed 2024, blocked 2025. If passed, ~3.4M Medicare patients would gain access.',
+                  relevance: 'Proof that when political will exists, biological barriers to obesity treatment can be overcome. The science is solved. The access is the problem.',
+                },
+              ],
+              policyWatch: {
+                federal: [
+                  {
+                    id: 'pw-glp1-medicare',
+                    title: 'Medicare GLP-1 obesity drug coverage blocked',
+                    administration: 'Biden proposed · Trump blocked',
+                    date: '2024-2025',
+                    direction: 'mixed',
+                    concern: 'Cost: CBO estimated $35B over 10 years. Fairness: should Medicare cover a condition seen by some as lifestyle-related?',
+                    dataPoints: [
+                      {
+                        claim: 'Coverage would cost too much',
+                        finding: 'Obesity costs Medicare $172B annually in downstream conditions. Coverage would likely reduce net costs within 10 years.',
+                        contested: false,
+                        source: 'CBO Score 2024; NEJM cost-effectiveness analysis 2023',
+                      },
+                      {
+                        claim: 'Obesity is a lifestyle condition',
+                        finding: 'AMA classified obesity as a disease in 2013 based on the hormonal evidence above. Not contested clinically.',
+                        contested: false,
+                        source: 'AMA Policy H-440.842, 2013',
+                      },
+                    ],
+                    ringImpact: 'Lives Lost: Toward for those with access. Economic Security: Mixed — $35B cost vs $172B annual downstream savings.',
+                    evidenceQuality: 'A',
+                    tradeOffs: [
+                      {
+                        ifYouPrioritize: 'Fiscal responsibility',
+                        assessment: '$35B cost is real but likely offset by downstream Medicare savings within a decade.',
+                      },
+                      {
+                        ifYouPrioritize: 'Access equity',
+                        assessment: 'Without coverage, only wealthy patients benefit from the most effective obesity treatment in history — widening the health gap.',
+                      },
+                    ],
+                    source: 'CBO Score 2024 · AMA Policy 2013 · NEJM STEP trials 2021-2023',
+                  },
+                ],
+                stateTeaser: 'Georgia Medicaid GLP-1 coverage status and your state representative\'s position',
+                localTeaser: 'Local clinics offering GLP-1 access at reduced cost near you',
+              },
+              actions: [
+                {
+                  tier: 'personal',
+                  text: 'Take the obesity biology quiz',
+                  whyItMatters: 'Understanding the hormonal basis of obesity changes how you think and talk about it — reducing stigma that prevents people from seeking help.',
+                  startHere: '/quiz/obesity-biology',
+                  startHereLabel: 'Take the quiz — 5 min, earn a badge',
+                  consequence: 'Users who understand the hormonal basis of obesity are significantly more likely to support evidence-based policy and less likely to attribute obesity to personal failure.',
+                  timeEstimate: '5 min',
+                },
+                {
+                  tier: 'personal',
+                  text: 'Talk to your doctor about metabolic health markers — not just weight',
+                  whyItMatters: 'Fasting insulin, HbA1c, and leptin levels predict cardiovascular risk more accurately than BMI and identify metabolic dysfunction before obesity is established.',
+                  startHere: '/log-action/metabolic-checkup',
+                  startHereLabel: 'Log this action to your civic record',
+                  consequence: 'Early metabolic intervention before obesity is established is dramatically more effective than treatment after.',
+                  timeEstimate: 'Next doctor visit',
+                },
+                {
+                  tier: 'national',
+                  text: 'Contact your senators about the Treat and Reduce Obesity Act (S. 2407)',
+                  whyItMatters: 'S. 2407 would restore Medicare coverage of obesity medications. It has 34 Senate co-sponsors of 51 needed to pass.',
+                  consequence: 'If passed, 3.4M Medicare patients gain access to medications shown to reduce cardiovascular mortality by 20% in clinical trials.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Sign the petition: Medicare GLP-1 coverage expansion',
+                  whyItMatters: 'Direct constituent pressure on the Senate Finance Committee, which controls Medicare drug coverage policy.',
+                  startHere: '/petition/medicare-glp1',
+                  startHereLabel: 'Sign petition — verified by email',
+                  consequence: 'CMS has responded to petitions exceeding 25,000 signatures in 4 of the last 6 cases by initiating formal review.',
+                  timeEstimate: '2 min',
+                },
+                {
+                  tier: 'state',
+                  text: 'Contact your Georgia state representative about Medicaid GLP-1 coverage',
+                  whyItMatters: 'Georgia Medicaid does not cover GLP-1 medications for obesity. State-level coverage would reach ~180,000 Georgia Medicaid recipients.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'local',
+                  text: 'Find GLP-1 access programs near you',
+                  whyItMatters: 'Several federally qualified health centers offer GLP-1 medications at reduced cost for uninsured patients.',
+                  timeEstimate: '15 min to research',
+                },
+              ],
             },
           ],
-          stateTeaser: 'Georgia Medicaid GLP-1 coverage status and your state representative\'s position',
-          localTeaser: 'Local clinics and programs offering GLP-1 access at reduced cost near you',
         },
-        actions: [
-          {
-            tier: 'personal',
-            text: 'Take the obesity biology quiz',
-            whyItMatters: 'Understanding the hormonal basis of obesity changes how you think and talk about it — reducing the stigma that prevents people from seeking help and building support for policy solutions.',
-            startHere: '/quiz/obesity-biology',
-            startHereLabel: 'Take the quiz — 5 min, earn a badge',
-            consequence: 'Users who understand the hormonal basis of obesity are significantly more likely to support evidence-based policy interventions and less likely to attribute obesity to personal failure.',
-            timeEstimate: '5 min',
-          },
-          {
-            tier: 'personal',
-            text: 'Talk to your doctor about metabolic health markers — not just weight',
-            whyItMatters: 'Fasting insulin, HbA1c, and leptin levels predict cardiovascular risk more accurately than BMI and identify metabolic dysfunction before obesity is established.',
-            startHere: '/log-action/metabolic-checkup',
-            startHereLabel: 'Log this action to your civic record',
-            consequence: 'Early metabolic intervention before obesity is established is dramatically more effective than treatment after — consistent with the biological evidence above.',
-            timeEstimate: 'Next doctor visit',
-          },
-          {
-            tier: 'national',
-            text: 'Contact your senators about the Treat and Reduce Obesity Act (S. 2407)',
-            whyItMatters: 'S. 2407 would restore Medicare coverage of obesity medications including GLP-1 drugs. It has 34 Senate co-sponsors of 51 needed to pass.',
-            consequence: 'If passed, an estimated 3.4 million Medicare patients would gain access to medications shown to reduce cardiovascular mortality by 20% in clinical trials.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Sign the petition: Medicare GLP-1 coverage expansion',
-            whyItMatters: 'Direct constituent pressure on the Senate Finance Committee, which controls Medicare drug coverage policy.',
-            startHere: '/petition/medicare-glp1',
-            startHereLabel: 'Sign petition — verified by email',
-            consequence: 'FDA and CMS have responded to petitions exceeding 25,000 signatures in 4 of the last 6 cases by initiating formal review.',
-            timeEstimate: '2 min',
-          },
-          {
-            tier: 'state',
-            text: 'Contact your Georgia state representative about Medicaid GLP-1 coverage',
-            whyItMatters: 'Georgia Medicaid does not currently cover GLP-1 medications for obesity. State-level coverage would reach approximately 180,000 Georgia Medicaid recipients with obesity.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'local',
-            text: 'Find GLP-1 access programs near you',
-            whyItMatters: 'Several federally qualified health centers and nonprofit clinics offer GLP-1 medications at reduced cost for uninsured and underinsured patients.',
-            timeEstimate: '15 min to research',
-          },
-        ],
-      },
-      {
-        id: 'cv-ob-d0-profit',
-        label: 'Profit motive',
-        bullets: [
-          {
-            text: 'A bag of Doritos costs approximately $0.15 to produce and sells for $4.99 — a 3,200% markup. A head of broccoli costs $0.80 to produce and sells for $1.29. The math of the food system structurally favors ultra-processed.',
-            source: 'USDA Economic Research Service, 2022',
-          },
-          {
-            text: 'The top 10 ultra-processed food companies generated $450B in revenue in 2023. Profit margins average 28% vs 8% for fresh produce retailers.',
-            source: 'Fortune 500 annual reports, 2023',
-          },
-          {
-            text: 'R&D investment follows profit: food companies spend $32B annually on product development, 90% of which goes to processed and ultra-processed categories.',
-            source: 'EWG Food Industry R&D Report, 2022',
-          },
-          {
-            text: 'When PepsiCo launched a healthier product line in 2010, it underperformed financially and was quietly scaled back by 2012. The market penalizes healthier choices without policy intervention.',
-            source: 'PepsiCo annual reports 2010-2013; documented in Dariush Mozaffarian\'s research',
-          },
-        ],
-        historicalPrecedents: [
-          {
-            title: 'Sugar tax — Mexico 2014',
-            year: '2014',
-            description: 'Mexico implemented a 10% tax on sugary drinks. Industry predicted it would hurt the poor most and devastate the economy.',
-            result: 'Soda consumption fell 12% year one, 17% by year two. Largest declines among the lowest-income households — the opposite of what industry predicted.',
-            relevance: '7 US cities have implemented sugar taxes. Philadelphia saw a 38% reduction in sugary drink purchases in year one. Direct precedent for changing the economics of ultra-processed food.',
-            chartLabel: 'Mexican soda consumption index (2012 = 100)',
-            chart: [
-              { year: 2012, us: 100, peer: 100, target: 80 },
-              { year: 2013, us: 100, peer: 100, target: 80 },
-              { year: 2014, us: 88, peer: 100, target: 80 },
-              { year: 2015, us: 83, peer: 100, target: 80 },
-              { year: 2016, us: 81, peer: 100, target: 80 },
-            ],
-          },
-        ],
-        policyWatch: {
-          federal: [
+        {
+          id: 'cv-ob-profit',
+          label: 'Profit motive — ultra-processed food economics',
+          stat: 'Ultra-processed foods carry 3x the profit margin of whole foods — making harmful food the most financially rewarding food to produce',
+          subsections: [
             {
-              id: 'pw-ftc-merger',
-              title: 'FTC food industry merger scrutiny increased',
-              administration: 'Biden',
-              date: '2024',
-              direction: 'toward',
-              concern: 'Market consolidation reduces competition and makes it harder for healthier alternatives to reach consumers at scale.',
-              dataPoints: [
+              id: 'cv-ob-profit-main',
+              label: 'Why the food system produces harmful food',
+              bullets: [
                 {
-                  claim: 'Food industry consolidation is a problem',
-                  finding: 'Top 10 companies control 85% of US food retail. 3 major mergers approved 2015-2020 reduced competition in key categories.',
-                  contested: false,
-                  source: 'FTC Merger Report 2023',
+                  text: 'A bag of Doritos costs approximately $0.15 to produce and sells for $4.99 — a 3,200% markup. A head of broccoli costs $0.80 to produce and sells for $1.29. The math of the food system structurally favors ultra-processed.',
+                  source: 'USDA Economic Research Service, 2022',
+                },
+                {
+                  text: 'The top 10 ultra-processed food companies generated $450B in revenue in 2023. Profit margins average 28% vs 8% for fresh produce retailers.',
+                  source: 'Fortune 500 annual reports, 2023',
+                },
+                {
+                  text: 'R&D investment follows profit: food companies spend $32B annually on product development, 90% of which goes to processed and ultra-processed categories.',
+                  source: 'EWG Food Industry R&D Report, 2022',
+                },
+                {
+                  text: 'When PepsiCo launched a healthier product line in 2010, it underperformed financially and was quietly scaled back by 2012. The market penalizes healthier choices without policy intervention.',
+                  source: 'PepsiCo annual reports 2010-2013; Dariush Mozaffarian research',
                 },
               ],
-              ringImpact: 'Lives Lost: Toward. Financial System: Toward. Evidence quality: C — early stage.',
-              evidenceQuality: 'C',
-              tradeOffs: [
+              historicalPrecedents: [
                 {
-                  ifYouPrioritize: 'Free market competition',
-                  assessment: 'Antitrust enforcement is the mechanism that creates free market competition — blocking mergers prevents monopoly formation.',
-                },
-                {
-                  ifYouPrioritize: 'Consumer prices short term',
-                  assessment: 'Blocking mergers may reduce short-term efficiency gains. Long-term: competition drives innovation and lower prices.',
+                  title: 'Mexico sugar tax — 2014',
+                  year: '2014',
+                  description: 'Mexico implemented a 10% tax on sugary drinks. Industry predicted it would hurt the poor most and devastate the economy.',
+                  result: 'Soda consumption fell 12% year one, 17% by year two. Largest declines among lowest-income households — opposite of what industry predicted.',
+                  relevance: '7 US cities have implemented sugar taxes. Philadelphia saw 38% reduction in sugary drink purchases in year one. Direct precedent for changing the economics of ultra-processed food.',
+                  chartLabel: 'Mexican soda consumption index (2012 = 100)',
+                  chart: [
+                    { year: 2012, us: 100, peer: 100, target: 80 },
+                    { year: 2013, us: 100, peer: 100, target: 80 },
+                    { year: 2014, us: 88, peer: 100, target: 80 },
+                    { year: 2015, us: 83, peer: 100, target: 80 },
+                    { year: 2016, us: 81, peer: 100, target: 80 },
+                  ],
                 },
               ],
-              source: 'FTC official filing · 2024',
+              policyWatch: {
+                federal: [
+                  {
+                    id: 'pw-ftc-merger',
+                    title: 'FTC food industry merger scrutiny increased',
+                    administration: 'Biden',
+                    date: '2024',
+                    direction: 'toward',
+                    concern: 'Market consolidation reduces competition and makes it harder for healthier alternatives to reach consumers at scale.',
+                    dataPoints: [
+                      {
+                        claim: 'Food industry consolidation is a problem',
+                        finding: 'Top 10 companies control 85% of US food retail. 3 major mergers approved 2015-2020 reduced competition in key categories.',
+                        contested: false,
+                        source: 'FTC Merger Report 2023',
+                      },
+                    ],
+                    ringImpact: 'Lives Lost: Toward. Financial System: Toward. Evidence quality: C — early stage.',
+                    evidenceQuality: 'C',
+                    tradeOffs: [
+                      {
+                        ifYouPrioritize: 'Free market competition',
+                        assessment: 'Antitrust enforcement creates free market competition — blocking mergers prevents monopoly formation.',
+                      },
+                      {
+                        ifYouPrioritize: 'Consumer prices short term',
+                        assessment: 'Blocking mergers may reduce short-term efficiency gains. Long-term: competition drives innovation and lower prices.',
+                      },
+                    ],
+                    source: 'FTC official filing · 2024',
+                  },
+                ],
+                stateTeaser: 'Georgia state-level sugar tax proposals and your state representative\'s position',
+                localTeaser: 'Local sugar tax ballot initiatives and city council votes in your area',
+              },
+              actions: [
+                {
+                  tier: 'personal',
+                  text: 'Complete your weekly food audit',
+                  whyItMatters: 'Seeing your own NOVA score makes the abstract concrete — and creates a baseline you can improve over time.',
+                  startHere: '/tools/food-audit',
+                  startHereLabel: 'Start food audit — score saved to civic record',
+                  consequence: 'Users who complete monthly food audits reduce their ultra-processed consumption by an average of 18% within 3 months.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'personal',
+                  text: 'Take the NOVA food classification quiz',
+                  whyItMatters: 'Understanding what ultra-processed means lets you make informed choices that send market signals.',
+                  startHere: '/quiz/nova-classification',
+                  startHereLabel: 'Take the quiz — earn Food Literacy badge',
+                  consequence: 'If 10% of Americans could identify ultra-processed foods, it would shift $30B in annual purchasing.',
+                  timeEstimate: '5 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Contact your representatives about sugar tax legislation',
+                  whyItMatters: 'Sugar taxes are the most direct policy lever against ultra-processed food profitability — proven effective in 7 US cities and 40+ countries.',
+                  consequence: 'A national 10% sugar tax modeled on Mexico\'s would reduce soda consumption by 15% and generate $13B annually for nutrition programs.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Support FTC antitrust enforcement in the food industry',
+                  whyItMatters: 'Market concentration allows a small number of companies to set the terms of the entire food system.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'state',
+                  text: 'Contact your Georgia state representative about state sugar tax proposals',
+                  whyItMatters: 'Georgia has not implemented a sugar tax. State-level action can precede federal action — as it did with tobacco taxes.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'local',
+                  text: 'Advocate for sugar tax at your city council',
+                  whyItMatters: 'Philadelphia, Berkeley, Seattle, and 4 other US cities have passed city-level sugar taxes. Your city council vote matters.',
+                  timeEstimate: '2-3 hours for a council meeting',
+                },
+              ],
             },
           ],
-          stateTeaser: 'Georgia state-level sugar tax proposals and your state representative\'s position',
-          localTeaser: 'Local sugar tax ballot initiatives and city council votes in your area',
         },
-        actions: [
-          {
-            tier: 'personal',
-            text: 'Complete your weekly food audit',
-            whyItMatters: 'Seeing your own NOVA score makes the abstract concrete — and creates a baseline you can improve over time. Self-monitoring is one of the most evidence-based behavior change techniques.',
-            startHere: '/tools/food-audit',
-            startHereLabel: 'Start food audit — score saved to civic record',
-            consequence: 'Users who complete monthly food audits reduce their ultra-processed consumption by an average of 18% within 3 months.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'personal',
-            text: 'Take the NOVA food classification quiz',
-            whyItMatters: 'Understanding what ultra-processed means lets you make informed choices that send market signals — every consumer who switches reduces demand for the most profitable harmful products.',
-            startHere: '/quiz/nova-classification',
-            startHereLabel: 'Take the quiz — earn Food Literacy badge',
-            consequence: 'If 10% of Americans could identify ultra-processed foods, it would shift $30B in annual purchasing — enough to change industry R&D priorities.',
-            timeEstimate: '5 min',
-          },
-          {
-            tier: 'national',
-            text: 'Contact your representatives about sugar tax legislation',
-            whyItMatters: 'Sugar taxes are the most direct policy lever against ultra-processed food profitability — proven effective in 7 US cities and 40+ countries.',
-            consequence: 'A national 10% sugar tax modeled on Mexico\'s would reduce soda consumption by an estimated 15% and generate $13B annually for nutrition programs.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Support FTC antitrust enforcement in the food industry',
-            whyItMatters: 'Market concentration is what allows a small number of companies to set the terms of the entire food system. Antitrust enforcement creates space for healthier competitors.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'state',
-            text: 'Contact your Georgia state representative about state sugar tax proposals',
-            whyItMatters: 'Georgia has not implemented a sugar tax. State-level action can precede federal action — as it did with tobacco taxes.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'local',
-            text: 'Advocate for sugar tax at your city council',
-            whyItMatters: 'Philadelphia, Berkeley, Seattle, and 4 other US cities have passed sugar taxes at the city level. Your city council vote matters.',
-            timeEstimate: '2-3 hours for a council meeting',
-          },
-        ],
-      },
-      {
-        id: 'cv-ob-d0-child',
-        label: 'Child targeting',
-        bullets: [
-          {
-            text: 'Food companies spend $1.8B annually marketing to children under 12. 80% is for products classified as high in sugar, salt, or saturated fat by the WHO.',
-            source: 'FTC Food Marketing to Children Report, 2012',
-          },
-          {
-            text: 'Brand loyalty established before age 12 is worth an estimated $100,000 in lifetime consumer value per child — making children the most financially valuable marketing target per dollar spent.',
-            source: 'Journal of Consumer Psychology, 2018',
-          },
-          {
-            text: 'Children see an average of 4,500 food ads per year, 98% of which are for ultra-processed products. By age 8, children cannot reliably distinguish advertising from content.',
-            source: 'American Psychological Association, Report on Advertising and Children, 2019',
-          },
-          {
-            text: 'A 2023 study found children who watched YouTube food ads consumed 32% more calories in the subsequent hour than children who watched non-food ads.',
-            source: 'Appetite Journal, 2023',
-          },
-        ],
-        historicalPrecedents: [
-          {
-            title: 'Tobacco advertising ban — US 1970',
-            year: '1970',
-            description: 'Congress banned cigarette ads on TV and radio. Industry spent $40M opposing it and predicted First Amendment violations and economic collapse. Neither happened.',
-            result: 'Youth smoking fell from 28% in 1976 to 5% today — an 82% reduction in 50 years.',
-            relevance: 'Direct constitutional precedent for restricting commercial speech targeting children in food marketing. Same legal argument, same industry opposition, same evidence base.',
-            chartLabel: 'US youth smoking rate (%)',
-            chart: [
-              { year: 1976, us: 28, peer: 25, target: 5 },
-              { year: 1985, us: 22, peer: 20, target: 5 },
-              { year: 1995, us: 18, peer: 15, target: 5 },
-              { year: 2005, us: 12, peer: 10, target: 5 },
-              { year: 2015, us: 8, peer: 7, target: 5 },
-              { year: 2022, us: 5, peer: 5, target: 5 },
-            ],
-          },
-        ],
-        policyWatch: {
-          federal: [
+        {
+          id: 'cv-ob-child',
+          label: 'Child targeting — $1.8B annual marketing machine',
+          stat: 'Children see 4,500 food ads per year, 98% for ultra-processed products. Brand loyalty before age 12 is worth $100,000 in lifetime consumer value.',
+          subsections: [
             {
-              id: 'pw-ftc-child-marketing',
-              title: 'FTC child food marketing guidelines weakened',
-              administration: 'Trump',
-              date: 'Mar 2025',
-              direction: 'away',
-              concern: 'Industry argued voluntary guidelines were sufficient and that mandatory restrictions infringe on First Amendment commercial speech rights and harm small food businesses.',
-              dataPoints: [
+              id: 'cv-ob-child-main',
+              label: 'How child-directed marketing drives obesity',
+              bullets: [
                 {
-                  claim: 'Voluntary self-regulation is sufficient',
-                  finding: 'FTC\'s own 2012 report found industry voluntary pledges reduced child-directed marketing by only 3% — uncontested in independent literature.',
-                  contested: false,
-                  source: 'FTC Report on Food Marketing to Children, 2012',
+                  text: 'Food companies spend $1.8B annually marketing to children under 12. 80% is for products classified as high in sugar, salt, or saturated fat by the WHO.',
+                  source: 'FTC Food Marketing to Children Report, 2012',
                 },
                 {
-                  claim: 'Mandatory restrictions violate First Amendment',
-                  finding: 'SCOTUS upheld restrictions on commercial speech targeting children in Lorillard v. Reilly (2001). Not constitutionally contested.',
-                  contested: false,
-                  source: 'Lorillard Tobacco Co. v. Reilly, 533 U.S. 525 (2001)',
+                  text: 'Brand loyalty established before age 12 is worth an estimated $100,000 in lifetime consumer value per child — making children the most financially valuable marketing target per dollar spent.',
+                  source: 'Journal of Consumer Psychology, 2018',
                 },
                 {
-                  claim: 'Restrictions harm small food businesses',
-                  finding: '80% of child-directed food marketing spend comes from 10 companies. Small business framing is misleading.',
-                  contested: false,
-                  source: 'FTC Food Marketing Report, 2012',
+                  text: 'Children see an average of 4,500 food ads per year, 98% for ultra-processed products. By age 8, children cannot reliably distinguish advertising from content.',
+                  source: 'American Psychological Association, Report on Advertising and Children, 2019',
+                },
+                {
+                  text: 'A 2023 study found children who watched YouTube food ads consumed 32% more calories in the subsequent hour than children who watched non-food ads.',
+                  source: 'Appetite Journal, 2023',
                 },
               ],
-              ringImpact: 'Lives Lost: Away from goals. Removes the primary federal check on child-directed junk food marketing.',
-              evidenceQuality: 'B',
-              tradeOffs: [
+              historicalPrecedents: [
                 {
-                  ifYouPrioritize: 'First Amendment commercial speech',
-                  assessment: 'This policy aligns with that value. Cost: documented higher childhood obesity in countries without restrictions vs those with them.',
-                },
-                {
-                  ifYouPrioritize: 'Child health outcomes',
-                  assessment: 'Mandatory restrictions have stronger evidence base across 12 countries. UK watershed rules reduced child exposure by 37%.',
+                  title: 'Tobacco advertising ban — US 1970',
+                  year: '1970',
+                  description: 'Congress banned cigarette ads on TV and radio. Industry spent $40M opposing it and predicted First Amendment violations and economic collapse. Neither happened.',
+                  result: 'Youth smoking fell from 28% in 1976 to 5% today — an 82% reduction in 50 years.',
+                  relevance: 'Direct constitutional precedent for restricting commercial speech targeting children in food marketing. Same legal argument, same industry opposition, same evidence base.',
+                  chartLabel: 'US youth smoking rate (%)',
+                  chart: [
+                    { year: 1976, us: 28, peer: 25, target: 5 },
+                    { year: 1985, us: 22, peer: 20, target: 5 },
+                    { year: 1995, us: 18, peer: 15, target: 5 },
+                    { year: 2005, us: 12, peer: 10, target: 5 },
+                    { year: 2015, us: 8, peer: 7, target: 5 },
+                    { year: 2022, us: 5, peer: 5, target: 5 },
+                  ],
                 },
               ],
-              source: 'FTC regulatory filing · Mar 2025',
+              policyWatch: {
+                federal: [
+                  {
+                    id: 'pw-ftc-child-marketing',
+                    title: 'FTC child food marketing guidelines weakened',
+                    administration: 'Trump',
+                    date: 'Mar 2025',
+                    direction: 'away',
+                    concern: 'Industry argued voluntary guidelines were sufficient and that mandatory restrictions infringe on First Amendment commercial speech rights.',
+                    dataPoints: [
+                      {
+                        claim: 'Voluntary self-regulation is sufficient',
+                        finding: 'FTC\'s own 2012 report found industry voluntary pledges reduced child-directed marketing by only 3%.',
+                        contested: false,
+                        source: 'FTC Report on Food Marketing to Children, 2012',
+                      },
+                      {
+                        claim: 'Mandatory restrictions violate First Amendment',
+                        finding: 'SCOTUS upheld restrictions on commercial speech targeting children in Lorillard v. Reilly (2001).',
+                        contested: false,
+                        source: 'Lorillard Tobacco Co. v. Reilly, 533 U.S. 525 (2001)',
+                      },
+                      {
+                        claim: 'Restrictions harm small food businesses',
+                        finding: '80% of child-directed food marketing spend comes from 10 companies.',
+                        contested: false,
+                        source: 'FTC Food Marketing Report, 2012',
+                      },
+                    ],
+                    ringImpact: 'Lives Lost: Away from goals. Removes the primary federal check on child-directed junk food marketing.',
+                    evidenceQuality: 'B',
+                    tradeOffs: [
+                      {
+                        ifYouPrioritize: 'First Amendment commercial speech',
+                        assessment: 'This policy aligns with that value. Cost: documented higher childhood obesity in countries without restrictions.',
+                      },
+                      {
+                        ifYouPrioritize: 'Child health outcomes',
+                        assessment: 'Mandatory restrictions have stronger evidence base. UK watershed rules reduced child exposure by 37%.',
+                      },
+                    ],
+                    source: 'FTC regulatory filing · Mar 2025',
+                  },
+                ],
+                stateTeaser: 'Georgia state-level children\'s food advertising legislation and your state representative\'s position',
+                localTeaser: 'School board decisions on food marketing in your district',
+              },
+              actions: [
+                {
+                  tier: 'personal',
+                  text: 'Take the child food marketing quiz',
+                  whyItMatters: 'Understanding how child-directed marketing works makes you a more informed parent and a more effective advocate.',
+                  startHere: '/quiz/child-food-marketing',
+                  startHereLabel: 'Take the quiz — earn Child Advocacy badge',
+                  consequence: 'Parents who understand child-directed marketing are significantly more likely to support mandatory restrictions.',
+                  timeEstimate: '5 min',
+                },
+                {
+                  tier: 'personal',
+                  text: 'Share the child targeting data with another parent',
+                  whyItMatters: 'The $1.8B marketing figure and 4,500 ads per year statistic are among the most persuasive data points on this platform.',
+                  startHere: '/share/cv-ob-child',
+                  startHereLabel: 'Share this section',
+                  consequence: 'Awareness of child-directed marketing is the primary driver of public support for restrictions.',
+                  timeEstimate: '2 min',
+                },
+                {
+                  tier: 'local',
+                  text: 'Advocate for stricter food marketing standards at your school board',
+                  whyItMatters: 'School boards set standards for food marketing on school property — a direct lever against child-directed marketing.',
+                  timeEstimate: '2-3 hours',
+                },
+                {
+                  tier: 'local',
+                  text: 'Support your school\'s wellness policy review',
+                  whyItMatters: 'Federal law requires schools to have wellness policies. Most are weak and rarely enforced. Public comment during review cycles directly influences policy.',
+                  timeEstimate: '1 hour to review and comment',
+                },
+                {
+                  tier: 'state',
+                  text: 'Contact your Georgia state representative about children\'s food advertising restrictions',
+                  whyItMatters: 'Georgia has no restrictions on junk food advertising near schools or in children\'s programming.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'state',
+                  text: 'Track Georgia school nutrition standards legislation',
+                  whyItMatters: 'Georgia school nutrition standards are set at the state level and renewed on a 5-year cycle. The next review is 2027.',
+                  timeEstimate: '5 min to sign up for updates',
+                },
+                {
+                  tier: 'national',
+                  text: 'Contact Sen. Ossoff and Sen. Warnock about mandatory child food marketing restrictions',
+                  whyItMatters: 'The FTC rulemaking comment period closes August 15, 2025. After that date the weakened guidelines become permanent without congressional intervention.',
+                  consequence: 'UK watershed rules reduced child exposure to junk food ads by 37%. 12 countries with mandatory restrictions show slower childhood obesity growth.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Sign the petition: Mandatory restrictions on child-directed junk food marketing',
+                  whyItMatters: 'Direct pressure on the FTC and Congress, which control federal food marketing regulation.',
+                  startHere: '/petition/child-food-marketing',
+                  startHereLabel: 'Sign petition — verified by email',
+                  consequence: 'The FTC has reopened rulemaking on child-directed marketing twice following petition campaigns exceeding 20,000 signatures.',
+                  timeEstimate: '2 min',
+                },
+              ],
             },
           ],
-          stateTeaser: 'Georgia state-level children\'s food advertising legislation and your state representative\'s position',
-          localTeaser: 'School board decisions on food marketing in your district',
         },
-        actions: [
-          {
-            tier: 'personal',
-            text: 'Take the child food marketing quiz',
-            whyItMatters: 'Understanding how child-directed marketing works makes you a more informed parent and a more effective advocate for restrictions.',
-            startHere: '/quiz/child-food-marketing',
-            startHereLabel: 'Take the quiz — earn Child Advocacy badge',
-            consequence: 'Parents who understand child-directed marketing techniques are significantly more likely to support mandatory restrictions and to moderate their children\'s media consumption.',
-            timeEstimate: '5 min',
-          },
-          {
-            tier: 'personal',
-            text: 'Share the child targeting data with another parent',
-            whyItMatters: 'The $1.8B marketing figure and the 4,500 ads per year statistic are among the most persuasive pieces of data on this platform — most parents have no idea of the scale.',
-            startHere: '/share/cv-ob-d0-child',
-            startHereLabel: 'Share this section',
-            consequence: 'Awareness of child-directed marketing is the primary driver of public support for restrictions — countries that passed mandatory restrictions did so after sustained public awareness campaigns.',
-            timeEstimate: '2 min',
-          },
-          {
-            tier: 'local',
-            text: 'Advocate for stricter food marketing standards at your school board',
-            whyItMatters: 'School boards set standards for food marketing on school property and in school events — a direct lever against child-directed marketing that doesn\'t require federal action.',
-            timeEstimate: '2-3 hours for a school board meeting',
-          },
-          {
-            tier: 'local',
-            text: 'Support your school\'s wellness policy review',
-            whyItMatters: 'Federal law requires schools to have wellness policies. Most are weak and rarely enforced. Public comment during review cycles directly influences policy.',
-            timeEstimate: '1 hour to review and comment',
-          },
-          {
-            tier: 'state',
-            text: 'Contact your Georgia state representative about children\'s food advertising restrictions',
-            whyItMatters: 'Several states are considering restrictions on junk food advertising near schools and in children\'s programming. Georgia has no such restrictions currently.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'state',
-            text: 'Track Georgia school nutrition standards legislation',
-            whyItMatters: 'Georgia school nutrition standards are set at the state level and renewed on a 5-year cycle. The next review is 2027.',
-            timeEstimate: '5 min to sign up for updates',
-          },
-          {
-            tier: 'national',
-            text: 'Contact Sen. Ossoff and Sen. Warnock about mandatory child food marketing restrictions',
-            whyItMatters: 'The FTC rulemaking comment period closes August 15, 2025. After that date the weakened guidelines become permanent without congressional intervention.',
-            consequence: 'Countries with mandatory restrictions show measurably slower childhood obesity growth rates. The UK watershed rules alone reduced child exposure to junk food ads by 37%.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Sign the petition: Mandatory restrictions on child-directed junk food marketing',
-            whyItMatters: 'Direct constituent pressure on the FTC and Congress, which control federal food marketing regulation.',
-            startHere: '/petition/child-food-marketing',
-            startHereLabel: 'Sign petition — verified by email',
-            consequence: 'The FTC has reopened rulemaking on child-directed marketing twice following petition campaigns exceeding 20,000 signatures.',
-            timeEstimate: '2 min',
-          },
-        ],
-      },
-      {
-        id: 'cv-ob-d0-lobbying',
-        label: 'Effective lobbying',
-        bullets: [
-          {
-            text: 'The food and beverage industry spent $175M lobbying Congress in 2023 — more than the entire CDC annual nutrition budget.',
-            source: 'OpenSecrets.org, 2023',
-          },
-          {
-            text: 'The 1990 Nutrition Labeling Act was amended 17 times during drafting in response to industry pressure. The final law exempted restaurants entirely — where Americans eat 35% of their calories.',
-            source: 'FDA legislative history, 1990',
-          },
-          {
-            text: 'When the WHO proposed limiting sugar to 10% of daily calories in 2003, the US Sugar Association threatened to lobby Congress to withdraw US funding from the WHO. The guideline was delayed by 13 years.',
-            source: 'The Lancet, 2004; WHO archives',
-          },
-          {
-            text: '27 of the 35 members of the 2020 USDA Dietary Guidelines Advisory Committee had financial ties to food industry companies whose products they were evaluating.',
-            source: 'STAT News investigation, 2020',
-          },
-        ],
-        actions: [
-          {
-            tier: 'personal',
-            text: 'Look up your representative\'s food industry donor history on OpenSecrets',
-            whyItMatters: 'Donor history is the single best predictor of a representative\'s voting record on food policy. Knowing this makes your contact more targeted and more effective.',
-            startHere: 'https://www.opensecrets.org',
-            startHereLabel: 'Search OpenSecrets — share to civic record',
-            consequence: 'Representatives who receive significant food industry donations vote against food marketing restrictions at a rate of 87% vs 34% for those who don\'t.',
-            timeEstimate: '5 min',
-          },
-          {
-            tier: 'national',
-            text: 'Advocate for USDA Dietary Guidelines conflict of interest reform',
-            whyItMatters: 'The guidelines that determine what Americans eat, what schools serve, and what Medicare reimburses are written by a committee with documented industry conflicts.',
-            consequence: 'The next Dietary Guidelines review cycle begins in 2025. Conflict of interest reform must be implemented before committee selection.',
-            timeEstimate: '10 min',
-          },
-        ],
-        contextOnly: false,
-      },
-      {
-        id: 'cv-ob-d0-disinfo',
-        label: 'Disinformation playbook',
-        bullets: [
-          {
-            text: 'In 1965 the Sugar Research Foundation paid two Harvard scientists $50,000 (equivalent) to publish research blaming dietary fat — not sugar — for heart disease. This delayed meaningful sugar regulation by 50 years.',
-            source: 'JAMA Internal Medicine, 2016 — documents released in litigation',
-          },
-          {
-            text: 'Coca-Cola funded $132M in research between 2011-2015, primarily studies finding that exercise — not diet — was the primary driver of obesity. Internal emails showed company executives shaped the research agenda.',
-            source: 'AJPM, 2019; NYT FOIA documents',
-          },
-          {
-            text: 'The Global Energy Balance Network, funded entirely by Coca-Cola, published peer-reviewed papers arguing calories burned mattered more than calories consumed. It disbanded after funding was exposed.',
-            source: 'NEJM, 2015',
-          },
-          {
-            text: 'A 2022 analysis of 1,000 food industry-funded studies found 83% reached conclusions favorable to the funder, vs 46% of independently funded studies on the same topics.',
-            source: 'PLOS Medicine, 2022',
-          },
-        ],
-        contextOnly: true,
-      },
-      {
-        id: 'cv-ob-d0-revolving',
-        label: 'Revolving door',
-        bullets: [
-          {
-            text: '13 of the last 16 USDA Secretaries previously worked in agribusiness or returned to it after their tenure.',
-            source: 'USDA Secretary biographical records',
-          },
-          {
-            text: 'The FDA\'s Center for Food Safety has had 8 former food industry executives in senior leadership roles in the last 20 years, including 3 former Kraft executives.',
-            source: 'FDA leadership records; documented in Marion Nestle\'s Food Politics (2013)',
-          },
-          {
-            text: 'The USDA\'s Economic Research Service, which produces research underlying dietary guidelines, had its Washington DC office relocated to Kansas City in 2019, leading to 60% staff turnover including most senior scientists.',
-            source: 'GAO Report on USDA Reorganization, 2020',
-          },
-          {
-            text: 'In 2023, the FDA commissioner who approved expanded use of artificial food dyes in children\'s cereals joined the board of General Mills 18 months after leaving the FDA.',
-            source: 'SEC filing, General Mills 2023',
-          },
-        ],
-        contextOnly: true,
-      },
-    ],
-  },
-  {
-    id: 'cv-ob-d1',
-    label: 'Food desert exposure',
-    stat: '23.5 million Americans live without reasonable access to fresh, affordable food',
-    subsections: [
-      {
-        id: 'cv-ob-d1-main',
-        label: 'Why food deserts exist',
-        bullets: [
-          {
-            text: 'Grocery chains make location decisions based on projected profit per square foot. Wealthy neighborhoods have higher disposable income and more reliable customer bases — making them significantly more profitable to serve.',
-            source: 'USDA Economic Research Service, Food Access Research Atlas, 2019',
-          },
-          {
-            text: 'Without zoning requirements or financial incentives to serve low-income areas, the market systematically underserves the communities that most need healthy food. This is not malice — it is the rational behavior of profit-maximizing firms operating without regulation.',
-            source: 'Urban Institute, Food Access and Health Outcomes, 2021',
-          },
-          {
-            text: 'The result is a two-tier food system: abundant healthy options in wealthy areas, convenience stores and fast food in low-income areas. Low-income Americans spend 36% more of their income on food than high-income Americans while accessing less nutritious options.',
-            source: 'USDA, 2022; Bureau of Labor Statistics Consumer Expenditure Survey',
-          },
-          {
-            text: 'Food deserts are not randomly distributed — they follow historical patterns of racial segregation and redlining. Counties with majority Black populations are 2.6x more likely to be food deserts than majority white counties, independent of income.',
-            source: 'American Journal of Preventive Medicine, 2019',
-          },
-        ],
-        actions: [
-          {
-            tier: 'personal',
-            text: 'Cook from whole ingredients when possible',
-            whyItMatters: 'Reduces dependence on ultra-processed convenience foods regardless of location and builds skills that make healthy eating sustainable long-term.',
-            startHere: 'https://www.budgetbytes.com',
-            startHereLabel: 'Budget Bytes — affordable whole food recipes',
-            consequence: 'Households that cook from scratch 5+ days per week consume 30% less sodium and 40% less added sugar than processed food-reliant households.',
-            timeEstimate: '30-60 min per meal',
-          },
-          {
-            tier: 'local',
-            text: 'Attend your city council planning meeting and advocate for grocery store zoning',
-            whyItMatters: 'Grocery store location decisions are influenced by zoning laws set at the city level. Public comment at planning meetings directly influences votes on zoning incentives for underserved areas.',
-            consequence: 'Cities that have passed grocery store zoning incentives have seen new store openings in food deserts within 18 months in documented cases.',
-            timeEstimate: '2-3 hours including travel',
-          },
-          {
-            tier: 'local',
-            text: 'Support your local community garden or food bank',
-            whyItMatters: 'Community gardens in food deserts increase fresh produce consumption by an average of 1.4 servings per day among participants.',
-            timeEstimate: 'Varies',
-          },
-          {
-            tier: 'state',
-            text: 'Contact your Georgia state representative about grocery store incentive zones',
-            whyItMatters: 'Georgia has no state-level grocery store incentive program for food deserts. Several states have implemented tax incentives that have measurably increased grocery access.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'state',
-            text: 'Support Georgia SNAP farmers market expansion',
-            whyItMatters: 'SNAP acceptance at farmers markets increases fresh produce access in food deserts without requiring new stores.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Contact your representatives about SNAP produce incentive expansion',
-            whyItMatters: 'The Double Up Food Bucks program matches SNAP dollars spent on produce at participating markets. Federal expansion would reach 8M additional SNAP recipients.',
-            consequence: 'In states with Double Up programs, SNAP participants increased fruit and vegetable purchases by 21% within the first year.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Support the FRESH Act — Furthering Rural Economic and Supermarket Hubs',
-            whyItMatters: 'Would create federal tax incentives for grocery stores opening in food deserts. Currently has bipartisan support in committee.',
-            timeEstimate: '10 min',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'cv-ob-d2',
-    label: 'Agricultural subsidy misalignment',
-    stat: '$14-20B in annual US farm subsidies flow to corn, soy, wheat, and cotton — less than 1% goes to fruits and vegetables',
-    subsections: [
-      {
-        id: 'cv-ob-d2-main',
-        label: 'Why subsidies are misaligned',
-        bullets: [
-          {
-            text: 'US agricultural subsidies were restructured in the 1970s to incentivize maximum commodity production. USDA Secretary Earl Butz explicitly told farmers to "get big or get out" — creating the industrial monoculture system.',
-            source: 'USDA historical records; Nick Cullather, The Hungry World (2010)',
-          },
-          {
-            text: 'A small number of large agricultural corporations receive the majority of subsidy payments. The top 10% of subsidy recipients collect 77% of total payments. ADM and Cargill have received billions in subsidy-adjacent payments.',
-            source: 'EWG Farm Subsidy Database, 2023',
-          },
-          {
-            text: 'Corn and soy states have disproportionate Senate power — Iowa, Nebraska, and Kansas have 6 senators representing 7M people, vs California\'s 2 senators representing 39M. The Farm Bill is negotiated every 5 years and these states punch far above their weight.',
-            source: 'US Census Bureau; Congressional Research Service Farm Bill analyses',
-          },
-          {
-            text: 'The revolving door between USDA leadership and agribusiness means the people writing subsidy rules are the same people who benefit from them. 13 of the last 16 USDA Secretaries came from or returned to agribusiness.',
-            source: 'USDA Secretary biographical records',
-          },
-        ],
-        actions: [
-          {
-            tier: 'personal',
-            text: 'Buy whole foods over processed products',
-            whyItMatters: 'Consumer demand signals influence agricultural investment over time. Sustained shift toward whole foods reduces the economic case for commodity monoculture.',
-            startHere: 'https://www.ewg.org/foodscores',
-            startHereLabel: 'EWG Food Scores — find better options',
-            consequence: 'Market research shows sustained consumer preference shifts influence agricultural investment within 5-10 years.',
-            timeEstimate: 'Ongoing',
-          },
-          {
-            tier: 'local',
-            text: 'Support local farms directly through CSA subscriptions',
-            whyItMatters: 'Local farm revenue that bypasses commodity markets reduces dependence on subsidy-dependent commodity crops.',
-            startHere: 'https://www.localharvest.org',
-            startHereLabel: 'Find a CSA near you',
-            consequence: 'Communities with strong local food economies have measurably more diverse agricultural production and lower food insecurity rates.',
-            timeEstimate: '1 hour to research and sign up',
-          },
-          {
-            tier: 'local',
-            text: 'Attend a Farm Bill advocacy event in your area',
-            whyItMatters: 'The Farm Bill is the single highest-leverage food policy moment — renegotiated every 5 years. Local advocacy directly informs congressional positions.',
-            timeEstimate: '2-3 hours',
-          },
-          {
-            tier: 'state',
-            text: 'Contact your Georgia state agriculture commissioner about diversified farming incentives',
-            whyItMatters: 'Georgia has significant farming capacity that is currently dominated by commodity crops. State-level incentives for fruit and vegetable production can shift this.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'state',
-            text: 'Support Georgia farm-to-school programs',
-            whyItMatters: 'Farm-to-school programs create direct market links between Georgia farms and school cafeterias, incentivizing local produce production.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Contact your senators about the Healthy Food Policy Act (HR 4107) — Farm Bill 2028',
-            whyItMatters: 'HR 4107 would redirect $10B in commodity subsidies toward fruit and vegetable production. The next Farm Bill cycle begins in 2028 — now is when positions are formed.',
-            consequence: 'Redirecting 10% of commodity subsidies to produce would increase national fruit and vegetable consumption by 6.9% with measurable cardiovascular mortality reduction within a decade.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Sign the petition: Redirect 10% of farm subsidies to fruits and vegetables',
-            whyItMatters: 'Direct pressure on the Senate Agriculture Committee, which writes the Farm Bill.',
-            startHere: '/petition/farm-bill-produce',
-            startHereLabel: 'Sign petition — verified by email',
-            timeEstimate: '2 min',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'cv-ob-d3',
-    label: 'Economic stress and allostatic load',
-    stat: 'Adults in poverty have obesity rates 2x higher than high-income adults — not explained by knowledge or preference differences',
-    subsections: [
-      {
-        id: 'cv-ob-d3-main',
-        label: 'How stress causes obesity',
-        bullets: [
-          {
-            text: 'Chronic psychological stress from poverty, housing insecurity, and economic precarity elevates cortisol chronically, which promotes visceral fat storage — the same fat that drives cardiovascular death through atherosclerosis.',
-            source: 'NEJM, 2000; Psychoneuroendocrinology, multiple studies',
-          },
-          {
-            text: 'Economic stress depletes cognitive bandwidth — the mental resources needed to make consistent healthy choices. This is documented neurologically, not a character failing. The cognitive load of poverty is equivalent to losing 13 IQ points.',
-            source: 'Science, Mullainathan & Shafir, 2013',
-          },
-          {
-            text: 'Adults in poverty have obesity rates 2x higher than high-income adults with similar nutritional knowledge — the difference is stress, not information. Nutrition education without addressing economic stress has minimal impact.',
-            source: 'American Journal of Public Health, 2010',
-          },
-          {
-            text: 'Stress drives comfort eating as a neurological coping mechanism — the same mechanism that makes addiction harder to overcome under stress. Ultra-processed foods are specifically engineered to activate stress-relief pathways.',
-            source: 'Neuroscience & Biobehavioral Reviews, 2018',
-          },
-        ],
-        actions: [
-          {
-            tier: 'personal',
-            text: 'Take the stress and cardiovascular health quiz',
-            whyItMatters: 'Understanding the biological connection between stress and cardiovascular risk changes how you approach stress management — from self-care to medical necessity.',
-            startHere: '/quiz/stress-cardiovascular',
-            startHereLabel: 'Take the quiz — earn Stress Biology badge',
-            consequence: 'People who understand the cortisol-visceral fat connection are significantly more likely to prioritize stress management and seek appropriate support.',
-            timeEstimate: '5 min',
-          },
-          {
-            tier: 'personal',
-            text: 'Log one stress reduction practice to your civic record',
-            whyItMatters: 'Stress management is cardiovascular disease prevention — not a luxury. Tracking it treats it with the seriousness it deserves.',
-            startHere: '/log-action/stress-reduction',
-            startHereLabel: 'Log this action',
-            consequence: 'Adults who implement consistent stress management practices show measurably lower cortisol levels and reduced cardiovascular risk markers within 8 weeks.',
-            timeEstimate: '10-20 min daily',
-          },
-          {
-            tier: 'local',
-            text: 'Support local economic security programs',
-            whyItMatters: 'Poverty reduction is cardiovascular disease prevention — the stress-obesity link makes economic security a direct health intervention.',
-            timeEstimate: 'Varies',
-          },
-          {
-            tier: 'local',
-            text: 'Advocate for living wage policies in your city',
-            whyItMatters: 'Cities with living wage ordinances show measurably lower rates of economic stress-related health outcomes including obesity.',
-            timeEstimate: '2-3 hours for a council meeting',
-          },
-          {
-            tier: 'state',
-            text: 'Contact your Georgia state representative about Medicaid expansion',
-            whyItMatters: 'Georgia is one of the few remaining states that has not fully expanded Medicaid. Expansion would reduce economic stress for 500,000+ uninsured Georgians.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'state',
-            text: 'Support Georgia housing stability legislation',
-            whyItMatters: 'Housing insecurity is one of the largest drivers of chronic stress. Georgia eviction rates are among the highest in the nation.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Support economic security legislation — poverty reduction is cardiovascular disease prevention',
-            whyItMatters: 'A $1,000 increase in annual household income is associated with a measurable reduction in obesity rates and cardiovascular risk markers — the link is direct and documented.',
-            consequence: 'Studies show economic security interventions have larger effects on cardiovascular mortality than individual health behavior interventions in low-income populations.',
-            timeEstimate: '10 min',
-          },
-          {
-            tier: 'national',
-            text: 'Contact your representatives about the Child Tax Credit expansion',
-            whyItMatters: 'The expanded Child Tax Credit (2021) reduced child poverty by 30% in one year. Its expiration in 2022 reversed those gains. Reinstatement would reduce chronic stress for millions of families.',
-            consequence: 'Studies of the 2021 expansion showed measurable improvements in food security and reduced financial stress within 3 months of implementation.',
-            timeEstimate: '10 min',
-          },
-        ],
-      },
-    ],
-  },
-],
+        {
+          id: 'cv-ob-lobbying',
+          label: 'Effective lobbying — $175M annual industry spend',
+          stat: 'The food industry spends more lobbying Congress annually than the entire CDC nutrition budget',
+          subsections: [
+            {
+              id: 'cv-ob-lobbying-main',
+              label: 'How industry blocks regulation',
+              bullets: [
+                {
+                  text: 'The food and beverage industry spent $175M lobbying Congress in 2023 — more than the entire CDC annual nutrition budget.',
+                  source: 'OpenSecrets.org, 2023',
+                },
+                {
+                  text: 'The 1990 Nutrition Labeling Act was amended 17 times during drafting in response to industry pressure. The final law exempted restaurants entirely — where Americans eat 35% of their calories.',
+                  source: 'FDA legislative history, 1990',
+                },
+                {
+                  text: 'When the WHO proposed limiting sugar to 10% of daily calories in 2003, the US Sugar Association threatened to lobby Congress to withdraw US funding from the WHO. The guideline was delayed by 13 years.',
+                  source: 'The Lancet, 2004; WHO archives',
+                },
+                {
+                  text: '27 of the 35 members of the 2020 USDA Dietary Guidelines Advisory Committee had financial ties to food industry companies whose products they were evaluating.',
+                  source: 'STAT News investigation, 2020',
+                },
+              ],
+              actions: [
+                {
+                  tier: 'personal',
+                  text: 'Look up your representative\'s food industry donor history on OpenSecrets',
+                  whyItMatters: 'Donor history is the single best predictor of a representative\'s voting record on food policy.',
+                  startHere: 'https://www.opensecrets.org',
+                  startHereLabel: 'Search OpenSecrets',
+                  consequence: 'Representatives who receive significant food industry donations vote against food marketing restrictions at a rate of 87% vs 34% for those who don\'t.',
+                  timeEstimate: '5 min',
+                },
+                {
+                  tier: 'personal',
+                  text: 'Share this lobbying data with your network',
+                  whyItMatters: 'Most people have no idea how much the food industry spends to block regulation. Awareness is the first step to political will.',
+                  startHere: '/share/cv-ob-lobbying',
+                  startHereLabel: 'Share this section',
+                  timeEstimate: '2 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Advocate for USDA Dietary Guidelines conflict of interest reform',
+                  whyItMatters: 'The guidelines that determine what Americans eat, what schools serve, and what Medicare reimburses are written by a committee with documented industry conflicts.',
+                  consequence: 'The next Dietary Guidelines review cycle begins in 2025. Conflict of interest reform must be implemented before committee selection.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Support the DISCERN Act — requiring disclosure of industry funding in nutrition research',
+                  whyItMatters: 'Currently researchers are not required to disclose food industry funding in published papers — making it impossible for readers to evaluate potential bias.',
+                  timeEstimate: '10 min',
+                },
+              ],
+              contextOnly: false,
+            },
+          ],
+        },
+        {
+          id: 'cv-ob-disinfo',
+          label: 'Disinformation playbook',
+          stat: '83% of food industry-funded studies reach conclusions favorable to the funder vs 46% of independent studies on the same topics',
+          subsections: [
+            {
+              id: 'cv-ob-disinfo-main',
+              label: 'How industry creates scientific doubt',
+              bullets: [
+                {
+                  text: 'In 1965 the Sugar Research Foundation paid two Harvard scientists $50,000 (equivalent) to publish research blaming dietary fat — not sugar — for heart disease. This delayed meaningful sugar regulation by 50 years.',
+                  source: 'JAMA Internal Medicine, 2016 — documents released in litigation',
+                },
+                {
+                  text: 'Coca-Cola funded $132M in research between 2011-2015, primarily studies finding that exercise — not diet — was the primary driver of obesity. Internal emails showed company executives shaped the research agenda.',
+                  source: 'AJPM, 2019; NYT FOIA documents',
+                },
+                {
+                  text: 'The Global Energy Balance Network, funded entirely by Coca-Cola, published peer-reviewed papers arguing calories burned mattered more than calories consumed. It disbanded after funding was exposed.',
+                  source: 'NEJM, 2015',
+                },
+                {
+                  text: 'A 2022 analysis of 1,000 food industry-funded studies found 83% reached conclusions favorable to the funder, vs 46% of independently funded studies on the same topics.',
+                  source: 'PLOS Medicine, 2022',
+                },
+              ],
+              contextOnly: true,
+            },
+          ],
+        },
+        {
+          id: 'cv-ob-revolving',
+          label: 'Revolving door',
+          stat: '13 of the last 16 USDA Secretaries came from or returned to agribusiness',
+          subsections: [
+            {
+              id: 'cv-ob-revolving-main',
+              label: 'How industry captures regulation',
+              bullets: [
+                {
+                  text: '13 of the last 16 USDA Secretaries previously worked in agribusiness or returned to it after their tenure.',
+                  source: 'USDA Secretary biographical records',
+                },
+                {
+                  text: 'The FDA\'s Center for Food Safety has had 8 former food industry executives in senior leadership roles in the last 20 years, including 3 former Kraft executives.',
+                  source: 'FDA leadership records; Marion Nestle\'s Food Politics (2013)',
+                },
+                {
+                  text: 'The USDA\'s Economic Research Service had its Washington DC office relocated to Kansas City in 2019, leading to 60% staff turnover including most senior scientists.',
+                  source: 'GAO Report on USDA Reorganization, 2020',
+                },
+                {
+                  text: 'In 2023, the FDA commissioner who approved expanded use of artificial food dyes in children\'s cereals joined the board of General Mills 18 months after leaving the FDA.',
+                  source: 'SEC filing, General Mills 2023',
+                },
+              ],
+              contextOnly: true,
+            },
+          ],
+        },
+        {
+          id: 'cv-ob-d1',
+          label: 'Food desert exposure',
+          stat: '23.5 million Americans live without reasonable access to fresh, affordable food',
+          subsections: [
+            {
+              id: 'cv-ob-d1-main',
+              label: 'Why food deserts exist',
+              bullets: [
+                {
+                  text: 'Grocery chains make location decisions based on projected profit per square foot. Wealthy neighborhoods have higher disposable income and more reliable customer bases — making them significantly more profitable to serve.',
+                  source: 'USDA Economic Research Service, Food Access Research Atlas, 2019',
+                },
+                {
+                  text: 'Without zoning requirements or financial incentives to serve low-income areas, the market systematically underserves the communities that most need healthy food.',
+                  source: 'Urban Institute, Food Access and Health Outcomes, 2021',
+                },
+                {
+                  text: 'Low-income Americans spend 36% more of their income on food than high-income Americans while accessing less nutritious options.',
+                  source: 'USDA, 2022; Bureau of Labor Statistics Consumer Expenditure Survey',
+                },
+                {
+                  text: 'Food deserts follow historical patterns of racial segregation and redlining. Counties with majority Black populations are 2.6x more likely to be food deserts than majority white counties, independent of income.',
+                  source: 'American Journal of Preventive Medicine, 2019',
+                },
+              ],
+              actions: [
+                {
+                  tier: 'personal',
+                  text: 'Cook from whole ingredients when possible',
+                  whyItMatters: 'Reduces dependence on ultra-processed convenience foods regardless of location and builds skills that make healthy eating sustainable.',
+                  startHere: 'https://www.budgetbytes.com',
+                  startHereLabel: 'Budget Bytes — affordable whole food recipes',
+                  consequence: 'Households that cook from scratch 5+ days per week consume 30% less sodium and 40% less added sugar.',
+                  timeEstimate: '30-60 min per meal',
+                },
+                {
+                  tier: 'personal',
+                  text: 'Take the food access quiz',
+                  whyItMatters: 'Understanding the structural causes of food deserts changes the conversation from personal choice to systemic failure.',
+                  startHere: '/quiz/food-access',
+                  startHereLabel: 'Take the quiz — earn Food Access badge',
+                  timeEstimate: '5 min',
+                },
+                {
+                  tier: 'local',
+                  text: 'Attend your city council planning meeting and advocate for grocery store zoning',
+                  whyItMatters: 'Grocery store location decisions are influenced by zoning laws set at the city level.',
+                  consequence: 'Cities that have passed grocery store zoning incentives have seen new store openings in food deserts within 18 months.',
+                  timeEstimate: '2-3 hours',
+                },
+                {
+                  tier: 'local',
+                  text: 'Support your local community garden or food bank',
+                  whyItMatters: 'Community gardens in food deserts increase fresh produce consumption by 1.4 servings per day among participants.',
+                  timeEstimate: 'Varies',
+                },
+                {
+                  tier: 'state',
+                  text: 'Contact your Georgia state representative about grocery store incentive zones',
+                  whyItMatters: 'Georgia has no state-level grocery store incentive program for food deserts.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'state',
+                  text: 'Support Georgia SNAP farmers market expansion',
+                  whyItMatters: 'SNAP acceptance at farmers markets increases fresh produce access without requiring new stores.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Contact your representatives about SNAP produce incentive expansion',
+                  whyItMatters: 'The Double Up Food Bucks program matches SNAP dollars spent on produce. Federal expansion would reach 8M additional SNAP recipients.',
+                  consequence: 'In states with Double Up programs, SNAP participants increased fruit and vegetable purchases by 21% within the first year.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Support the FRESH Act — Furthering Rural Economic and Supermarket Hubs',
+                  whyItMatters: 'Would create federal tax incentives for grocery stores opening in food deserts. Currently has bipartisan support in committee.',
+                  timeEstimate: '10 min',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'cv-ob-d2',
+          label: 'Agricultural subsidy misalignment',
+          stat: '$14-20B in annual US farm subsidies flow to corn, soy, wheat, and cotton — less than 1% goes to fruits and vegetables',
+          subsections: [
+            {
+              id: 'cv-ob-d2-main',
+              label: 'Why subsidies are misaligned',
+              bullets: [
+                {
+                  text: 'US agricultural subsidies were restructured in the 1970s to incentivize maximum commodity production. USDA Secretary Earl Butz explicitly told farmers to "get big or get out" — creating the industrial monoculture system.',
+                  source: 'USDA historical records; Nick Cullather, The Hungry World (2010)',
+                },
+                {
+                  text: 'The top 10% of subsidy recipients collect 77% of total payments. The structure benefits large industrial operations, not small farms.',
+                  source: 'EWG Farm Subsidy Database, 2023',
+                },
+                {
+                  text: 'Corn and soy states have disproportionate Senate power — Iowa, Nebraska, and Kansas have 6 senators representing 7M people, vs California\'s 2 senators representing 39M.',
+                  source: 'US Census Bureau; Congressional Research Service Farm Bill analyses',
+                },
+                {
+                  text: '13 of the last 16 USDA Secretaries came from or returned to agribusiness — the people writing subsidy rules have financial relationships with the industry being regulated.',
+                  source: 'USDA Secretary biographical records',
+                },
+              ],
+              actions: [
+                {
+                  tier: 'personal',
+                  text: 'Buy whole foods over processed products',
+                  whyItMatters: 'Consumer demand signals influence agricultural investment over time. Sustained shift toward whole foods reduces the economic case for commodity monoculture.',
+                  startHere: 'https://www.ewg.org/foodscores',
+                  startHereLabel: 'EWG Food Scores — find better options',
+                  timeEstimate: 'Ongoing',
+                },
+                {
+                  tier: 'personal',
+                  text: 'Take the farm subsidy quiz',
+                  whyItMatters: 'Most Americans don\'t know where their tax dollars go in agricultural policy. Understanding this is the first step to changing it.',
+                  startHere: '/quiz/farm-subsidies',
+                  startHereLabel: 'Take the quiz — earn Farm Policy badge',
+                  timeEstimate: '5 min',
+                },
+                {
+                  tier: 'local',
+                  text: 'Support local farms directly through CSA subscriptions',
+                  whyItMatters: 'Local farm revenue that bypasses commodity markets reduces dependence on subsidy-dependent monoculture.',
+                  startHere: 'https://www.localharvest.org',
+                  startHereLabel: 'Find a CSA near you',
+                  timeEstimate: '1 hour to research',
+                },
+                {
+                  tier: 'local',
+                  text: 'Attend a Farm Bill advocacy event in your area',
+                  whyItMatters: 'The Farm Bill is the single highest-leverage food policy moment. Local advocacy directly informs congressional positions.',
+                  timeEstimate: '2-3 hours',
+                },
+                {
+                  tier: 'state',
+                  text: 'Contact your Georgia state agriculture commissioner about diversified farming incentives',
+                  whyItMatters: 'Georgia has significant farming capacity currently dominated by commodity crops. State-level incentives can shift this.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'state',
+                  text: 'Support Georgia farm-to-school programs',
+                  whyItMatters: 'Farm-to-school programs create direct market links between Georgia farms and school cafeterias, incentivizing local produce production.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Contact your senators about the Healthy Food Policy Act (HR 4107) — Farm Bill 2028',
+                  whyItMatters: 'HR 4107 would redirect $10B in commodity subsidies toward fruit and vegetable production. The next Farm Bill cycle begins in 2028.',
+                  consequence: 'Redirecting 10% of commodity subsidies to produce would increase national fruit and vegetable consumption by 6.9%.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Sign the petition: Redirect 10% of farm subsidies to fruits and vegetables',
+                  whyItMatters: 'Direct pressure on the Senate Agriculture Committee, which writes the Farm Bill.',
+                  startHere: '/petition/farm-bill-produce',
+                  startHereLabel: 'Sign petition — verified by email',
+                  timeEstimate: '2 min',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'cv-ob-d3',
+          label: 'Economic stress and allostatic load',
+          stat: 'Adults in poverty have obesity rates 2x higher than high-income adults — not explained by knowledge or preference differences',
+          subsections: [
+            {
+              id: 'cv-ob-d3-main',
+              label: 'How stress causes obesity',
+              bullets: [
+                {
+                  text: 'Chronic psychological stress from poverty, housing insecurity, and economic precarity elevates cortisol chronically, which promotes visceral fat storage — the same fat that drives cardiovascular death through atherosclerosis.',
+                  source: 'NEJM, 2000; Psychoneuroendocrinology, multiple studies',
+                },
+                {
+                  text: 'Economic stress depletes cognitive bandwidth — the mental resources needed to make consistent healthy choices. The cognitive load of poverty is equivalent to losing 13 IQ points.',
+                  source: 'Science, Mullainathan & Shafir, 2013',
+                },
+                {
+                  text: 'Adults in poverty have obesity rates 2x higher than high-income adults with similar nutritional knowledge — the difference is stress, not information.',
+                  source: 'American Journal of Public Health, 2010',
+                },
+                {
+                  text: 'Stress drives comfort eating as a neurological coping mechanism. Ultra-processed foods are specifically engineered to activate stress-relief pathways.',
+                  source: 'Neuroscience & Biobehavioral Reviews, 2018',
+                },
+              ],
+              actions: [
+                {
+                  tier: 'personal',
+                  text: 'Take the stress and cardiovascular health quiz',
+                  whyItMatters: 'Understanding the biological connection between stress and cardiovascular risk changes how you approach stress management.',
+                  startHere: '/quiz/stress-cardiovascular',
+                  startHereLabel: 'Take the quiz — earn Stress Biology badge',
+                  timeEstimate: '5 min',
+                },
+                {
+                  tier: 'personal',
+                  text: 'Log one stress reduction practice to your civic record',
+                  whyItMatters: 'Stress management is cardiovascular disease prevention — not a luxury. Tracking it treats it with the seriousness it deserves.',
+                  startHere: '/log-action/stress-reduction',
+                  startHereLabel: 'Log this action',
+                  consequence: 'Adults who implement consistent stress management show measurably lower cortisol and reduced cardiovascular risk markers within 8 weeks.',
+                  timeEstimate: '10-20 min daily',
+                },
+                {
+                  tier: 'local',
+                  text: 'Support local economic security programs',
+                  whyItMatters: 'Poverty reduction is cardiovascular disease prevention — the stress-obesity link makes economic security a direct health intervention.',
+                  timeEstimate: 'Varies',
+                },
+                {
+                  tier: 'local',
+                  text: 'Advocate for living wage policies in your city',
+                  whyItMatters: 'Cities with living wage ordinances show measurably lower rates of economic stress-related health outcomes including obesity.',
+                  timeEstimate: '2-3 hours',
+                },
+                {
+                  tier: 'state',
+                  text: 'Contact your Georgia state representative about Medicaid expansion',
+                  whyItMatters: 'Georgia is one of the few remaining states that has not fully expanded Medicaid. Expansion would reduce economic stress for 500,000+ uninsured Georgians.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'state',
+                  text: 'Support Georgia housing stability legislation',
+                  whyItMatters: 'Housing insecurity is one of the largest drivers of chronic stress. Georgia eviction rates are among the highest in the nation.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Support economic security legislation — poverty reduction is cardiovascular disease prevention',
+                  whyItMatters: 'A $1,000 increase in annual household income is associated with a measurable reduction in obesity rates and cardiovascular risk markers.',
+                  consequence: 'Economic security interventions have larger effects on cardiovascular mortality than individual health behavior interventions in low-income populations.',
+                  timeEstimate: '10 min',
+                },
+                {
+                  tier: 'national',
+                  text: 'Contact your representatives about the Child Tax Credit expansion',
+                  whyItMatters: 'The expanded Child Tax Credit (2021) reduced child poverty by 30% in one year. Reinstatement would reduce chronic stress for millions of families.',
+                  consequence: 'The 2021 expansion showed measurable improvements in food security and reduced financial stress within 3 months of implementation.',
+                  timeEstimate: '10 min',
+                },
+              ],
+            },
+          ],
+        },
+      ],
 },
     {
       id: 'cv-hypertension',
