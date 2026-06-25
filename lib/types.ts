@@ -197,6 +197,39 @@ export interface NewsItem {
   url?: string
 }
 
+export type ResearchStage = 
+  | 'preclinical' 
+  | 'phase1' 
+  | 'phase2' 
+  | 'phase3' 
+  | 'fda_review' 
+  | 'approved'
+
+export type FundingTrend = 'increasing' | 'decreasing' | 'stable' | 'cut'
+
+export interface FrontierResearch {
+  id: string
+  title: string
+  description: string
+  mechanism: string
+  currentStage: ResearchStage
+  timeToClinic: string
+  govFunding: {
+    amount: string
+    agency: string
+    trend: FundingTrend
+    note: string
+  }
+  actions: Array<{
+    tier: ActionTier
+    text: string
+    whyItMatters?: string
+    startHere?: string
+    startHereLabel?: string
+    consequence?: string
+  }>
+}
+
 export interface Category {
   id: string
   name: string
@@ -215,6 +248,7 @@ export interface Category {
   systemicIncentive?: string
   actions: Action[]
   solutions: Solution[]
+  frontierResearch?: FrontierResearch[]
 }
 
 export interface Ring {
