@@ -1026,7 +1026,147 @@ function ActionCard({ action, tier }: { action: Action; tier: ActionTier }) {
     </div>
   )
 }
+function FrontierResearchCard({ research }: { research: any }) {
+  const [open, setOpen] = useState(false)
 
+  const stageLabels: Record<string, string> = {
+    preclinical:  'Preclinical',
+    phase1:       'Phase 1 trials',
+    phase2:       'Phase 2 trials',
+    phase3:       'Phase 3 trials',
+    fda_review:   'FDA review',
+    approved:     'FDA approved',
+  }
+
+  const stageColors: Record<string, string> = {
+    preclinical:  'bg-stone-100 text-stone-600',
+    phase1:       'bg-blue-50 text-blue-700',
+    phase2:       'bg-blue-100 text-blue-800',
+    phase3:       'bg-purple-50 text-purple-700',
+    fda_review:   'bg-amber-50 text-amber-700',
+    approved:     'bg-green-50 text-green-700',
+  }
+
+  const fundingTrendColors: Record<string, string> = {
+    increasing:  'text-green-600',
+    stable:      'text-stone-500',
+    decreasing:  'text-amber-600',
+    cut:         'text-red-600',
+  }
+
+  const fundingTrendLabels: Record<string, string> = {
+    increasing:  '↑ Increasing',
+    stable:      '→ Stable',
+    decreasing:  '↓ Decreasing',
+    cut:         '✗ Cut proposed',
+  }
+
+  return (
+    <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-4 py-3 hover:bg-stone-50 transition-colors"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <span className={clsx('text-xs font-medium px-2 py-0.5 rounded-full', stageColors[research.currentStage])}>
+                {stageLabels[research.currentStage]}
+              </span>
+              <span className={clsx('text-xs font-medium', fundingTrendColors[research.govFunding.trend])}>
+                {fundingTrendLabels[research.govFunding.trend]}
+              </span>
+            </div>
+            <div className="text-sm font-semibold text-stone-900 mb-0.5">{research.title}</div>
+            <div className="text-xs text-stone-500 leading-relaxed">{research.description}</div>
+          </div>
+          <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200 mt-1', open && 'rotate-180')}>▾</span>
+        </div>
+      </button>
+
+      {open && (
+        <div className="border-t border-stone-100">
+          {/* Mechanism */}
+          <div className="px-4 pt-4 pb-3">
+            <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+              How it works
+            </div>
+            <p className="text-xs text-stone-600 leading-relaxed">{research.mechanism}</p>
+          </div>
+
+          {/* Timeline + funding */}
+          <div className="px-4 pb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="px-3 py-2.5 bg-stone-50 rounded-lg">
+              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">
+                Time to clinic
+              </div>
+              <p className="text-xs text-stone-700 leading-relaxed">{research.timeToClinic}</p>
+            </div>
+            <div className={clsx(
+              'px-3 py-2.5 rounded-lg',
+              research.govFunding.trend === 'cut' ? 'bg-red-50 border border-red-100' :
+              research.govFunding.trend === 'decreasing' ? 'bg-amber-50 border border-amber-100' :
+              'bg-stone-50'
+            )}>
+              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">
+                Government funding
+              </div>
+              <div className="text-xs font-semibold text-stone-700 mb-0.5">
+                {research.govFunding.amount} · {research.govFunding.agency}
+              </div>
+              <div className={clsx('text-xs font-medium mb-1', fundingTrendColors[research.govFunding.trend])}>
+                {fundingTrendLabels[research.govFunding.trend]}
+              </div>
+              <p className="text-xs text-stone-500 leading-relaxed">{research.govFunding.note}</p>
+            </div>
+          </div>
+
+          {/* Actions */}
+          {research.actions && research.actions.length > 0 && (
+            <div className="px-4 pb-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="h-px flex-1 bg-stone-200" />
+                <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
+                  How you can help advance this
+                </div>
+                <div className="h-px flex-1 bg-stone-200" />
+              </div>
+              <div className="flex flex-col gap-2">
+                {research.actions.map((action: any, i: number) => (
+                  <div key={i} className={clsx(
+                    'border rounded-lg p-3',
+                    action.tier === 'personal'  ? 'border-blue-100 bg-blue-50/30' :
+                    action.tier === 'national'  ? 'border-amber-100 bg-amber-50/30' :
+                    action.tier === 'state'     ? 'border-purple-100 bg-purple-50/30' :
+                    'border-green-100 bg-green-50/30'
+                  )}>
+                    <div className="flex items-start gap-2 mb-2">
+                      <TierPill tier={action.tier} />
+                      <div className="text-xs font-medium text-stone-800 flex-1">{action.text}</div>
+                    </div>
+                    {action.whyItMatters && (
+                      <p className="text-xs text-stone-500 leading-relaxed mb-2">{action.whyItMatters}</p>
+                    )}
+                    {action.consequence && (
+                      <div className="text-xs text-green-700 bg-green-50 px-2.5 py-1.5 rounded-lg mb-2 leading-relaxed">
+                        {action.consequence}
+                      </div>
+                    )}
+                    {action.startHere && (
+                      <a href={action.startHere} target="_blank" rel="noopener noreferrer" className={clsx('inline-flex text-xs px-3 py-1.5 rounded-lg font-medium transition-colors', action.tier === 'personal' ? 'bg-blue-600 text-white hover:bg-blue-700' : action.tier === 'national' ? 'bg-amber-600 text-white hover:bg-amber-700' : action.tier === 'state' ? 'bg-purple-600 text-white hover:bg-purple-700' : 'bg-green-600 text-white hover:bg-green-700')}>
+                        {action.startHereLabel ?? 'Learn more'}
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
 // ── Category accordion ────────────────────────────────────────────────────────
 
 function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: string }) {
@@ -1190,6 +1330,24 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                     <DataPointCard key={dp.id} dp={dp} ringColor={ringColor} />
                   ))}
                 </div>
+                {/* Frontier research */}
+                {cat.frontierResearch && cat.frontierResearch.length > 0 && (
+                  <div className="mt-8">
+                    <div className="mb-4">
+                      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">
+                        The frontier — deaths we can't yet prevent
+                      </div>
+                      <p className="text-sm text-stone-600 leading-relaxed">
+                        ~500,000 cardiovascular deaths per year are not currently preventable — representing genetic conditions, advanced disease states, and mechanisms we don't yet fully understand. Here's what's on the horizon and what you can do to accelerate it.
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      {cat.frontierResearch.map((research: any) => (
+                        <FrontierResearchCard key={research.id} research={research} />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
