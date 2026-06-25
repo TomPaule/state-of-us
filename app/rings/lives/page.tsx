@@ -16,7 +16,6 @@ import {
   Tooltip, ResponsiveContainer,
 } from 'recharts'
 
-type CategoryTab = 'data'
 
 // ── Utility components ────────────────────────────────────────────────────────
 
@@ -1171,11 +1170,7 @@ function FrontierResearchCard({ research }: { research: any }) {
 
 function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: string }) {
   const [open, setOpen] = useState(false)
-  const [tab, setTab] = useState<CategoryTab>('data')
 
- const tabs: Array<{ id: CategoryTab; label: string }> = [
-    { id: 'data', label: 'Data & trends' },
-  ]
 
   return (
     <div className="border border-stone-200 rounded-xl bg-white shadow-card overflow-hidden">
@@ -1218,27 +1213,8 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
 
       {open && (
         <div className="border-t border-stone-100">
-          {/* Tabs */}
-          <div className="flex border-b border-stone-100 bg-stone-50">
-            {tabs.map(t => (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
-                className={clsx(
-                  'px-5 py-3 text-xs font-medium whitespace-nowrap transition-colors border-b-2 -mb-px',
-                  tab === t.id
-                    ? 'border-stone-900 text-stone-900 bg-white'
-                    : 'border-transparent text-stone-500 hover:text-stone-700'
-                )}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
 
           <div className="p-5">
-            {/* DATA TAB */}
-            {tab === 'data' && (
               <div>
                 {/* Category why */}
                 <div className="bg-stone-50 border-l-4 rounded-r-lg p-4 mb-5" style={{ borderLeftColor: ringColor }}>
@@ -1349,9 +1325,6 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                   </div>
                 )}
               </div>
-            )}
-
-            {/* ACTIONS TAB */}
             
           </div>
         </div>
