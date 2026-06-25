@@ -235,6 +235,375 @@ export const livesLostRing: Ring = {
                 },
               ],
             },
+            {
+        id: 'cv-ob-biology-genetics',
+        label: 'Genetics and environment interaction',
+        bullets: [
+          {
+            text: '70% of obesity risk is heritable — but human genes have not meaningfully changed in 50 years while obesity rates have tripled. This proves the food environment is triggering genetic predispositions that were previously unexpressed.',
+            source: 'Nature Reviews Genetics, 2019; CDC obesity prevalence data 1960-2022',
+          },
+          {
+            text: 'Over 900 genetic variants are associated with obesity risk. People with high genetic risk in a healthy food environment have obesity rates similar to people with low genetic risk in an unhealthy food environment — the environment determines whether the genes are expressed.',
+            source: 'NEJM, Loos & Yeo, 2022 — The bigger picture of FTO',
+          },
+          {
+            text: 'This is not an argument against personal agency — it is an argument that personal agency operates within an environment that can make it dramatically easier or harder. Changing the environment is more effective than asking individuals to overcome genetic predispositions through willpower alone.',
+            source: 'Lancet, 2011 — Obesogenic environments and genetic susceptibility',
+          },
+          {
+            text: 'Precision nutrition — tailoring dietary recommendations to individual genetic profiles — has shown 2-3x better outcomes than generic dietary advice in randomized trials. Currently available only to wealthy patients through private testing.',
+            source: 'Cell, 2015 — Personalized Nutrition by Prediction of Glycemic Responses',
+          },
+        ],
+        historicalPrecedents: [
+          {
+            title: 'Finland — reversing genetic predisposition through environment',
+            year: '1972',
+            description: 'Finland had the world\'s highest cardiovascular mortality rate in the 1970s, driven partly by genetic predisposition to high LDL cholesterol combined with a diet heavy in saturated fat. A national intervention program changed the food environment — not the genetics.',
+            result: 'Cardiovascular mortality fell 80% over 40 years. The same genetic population, in a changed food environment, had dramatically different health outcomes.',
+            relevance: 'Proof that genetic predisposition is not destiny — environment is the lever. The US could achieve similar results through food environment intervention.',
+          },
+        ],
+        policyWatch: {
+          federal: [
+            {
+              id: 'pw-nih-nutrition',
+              title: 'NIH precision nutrition research program launched',
+              administration: 'Biden',
+              date: '2022',
+              direction: 'toward',
+              concern: 'Generic dietary guidelines may not account for individual genetic variation in how people process different foods — personalized recommendations could be dramatically more effective.',
+              dataPoints: [
+                {
+                  claim: 'Precision nutrition works better than generic advice',
+                  finding: 'Randomized trials show personalized nutrition recommendations produce 2-3x better metabolic outcomes than standard dietary guidelines.',
+                  contested: false,
+                  source: 'Cell, Zeevi et al., 2015; PREDICT study, 2020',
+                },
+              ],
+              ringImpact: 'Lives Lost: Toward — if precision nutrition becomes accessible at scale, obesity and cardiovascular outcomes could improve dramatically. Evidence quality: B — strong trial data, implementation at scale unproven.',
+              evidenceQuality: 'B',
+              tradeOffs: [
+                {
+                  ifYouPrioritize: 'Immediate population-level impact',
+                  assessment: 'Precision nutrition requires individual testing and is currently expensive. Population-level food environment changes have faster and broader impact.',
+                },
+                {
+                  ifYouPrioritize: 'Long-term effectiveness',
+                  assessment: 'Precision nutrition may ultimately be more effective than generic advice — investing now builds the evidence base for future scale.',
+                },
+              ],
+              source: 'NIH All of Us Research Program · 2022',
+            },
+          ],
+          stateTeaser: 'Georgia state funding for precision nutrition research and access programs',
+          localTeaser: 'Precision nutrition programs at federally qualified health centers near you',
+        },
+        actions: [
+          {
+            tier: 'personal',
+            text: 'Take the genetics and obesity quiz',
+            whyItMatters: 'Understanding the genetic basis of obesity reframes it from a personal failure to a biological predisposition triggered by environment — changing how you think about yourself and others.',
+            startHere: '/quiz/genetics-obesity',
+            startHereLabel: 'Take the quiz — earn Genetics Literacy badge',
+            consequence: 'People who understand the genetic basis of obesity are significantly more likely to support policy-based solutions and less likely to stigmatize people with obesity.',
+            timeEstimate: '5 min',
+          },
+          {
+            tier: 'personal',
+            text: 'Share the genetics data with someone who believes obesity is purely a personal choice',
+            whyItMatters: 'The finding that genes haven\'t changed but obesity tripled is the single most powerful argument against pure personal responsibility framing — and most people have never heard it.',
+            startHere: '/share/cv-ob-biology-genetics',
+            startHereLabel: 'Share this section',
+            timeEstimate: '2 min',
+          },
+          {
+            tier: 'national',
+            text: 'Support NIH precision nutrition research funding',
+            whyItMatters: 'The NIH All of Us program is building the largest precision nutrition dataset in history. Sustained funding could make personalized nutrition accessible to all Americans within a decade.',
+            consequence: 'If precision nutrition recommendations become accessible at scale, modeled estimates suggest 15-25% reduction in diet-related cardiovascular mortality.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'national',
+            text: 'Advocate for insurance coverage of genetic metabolic testing',
+            whyItMatters: 'Currently only wealthy patients can access genetic testing that could identify metabolic risk before obesity and cardiovascular disease develop.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'state',
+            text: 'Contact your Georgia state representative about Medicaid coverage of metabolic screening',
+            whyItMatters: 'Early metabolic screening can identify genetic obesity risk before it becomes established — dramatically cheaper than treating the consequences.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'local',
+            text: 'Find precision nutrition programs near you',
+            whyItMatters: 'Some federally qualified health centers are piloting precision nutrition programs at reduced cost for uninsured patients.',
+            timeEstimate: '15 min to research',
+          },
+        ],
+      },
+      {
+        id: 'cv-ob-biology-sleep',
+        label: 'Sleep deprivation and metabolic disruption',
+        bullets: [
+          {
+            text: 'Americans average 6.8 hours of sleep per night vs the recommended 7-9 hours. Sleep deprivation directly increases ghrelin (the hunger hormone) by 24% and decreases leptin (the satiety hormone) by 18% — making overeating neurologically harder to resist the next day.',
+            source: 'Annals of Internal Medicine, Spiegel et al., 2004',
+          },
+          {
+            text: 'Even one night of poor sleep increases caloric intake by an average of 385 calories the following day — the equivalent of adding a small meal. Chronic sleep deprivation compounds this effect continuously.',
+            source: 'European Journal of Clinical Nutrition, 2012 meta-analysis',
+          },
+          {
+            text: 'Sleep deprivation is not randomly distributed — it follows economic lines. Adults in poverty sleep an average of 45 minutes less per night than high-income adults, driven by multiple jobs, longer commutes, housing instability, and stress. The same economic stress that drives comfort eating also drives the sleep deprivation that makes overeating harder to resist.',
+            source: 'Sleep, 2015; American Journal of Epidemiology, 2019',
+          },
+          {
+            text: 'The US is the only wealthy nation with no federal mandate for paid leave or maximum work hours. Americans work 100-200 more hours per year than workers in Germany, France, or the Netherlands — directly reducing sleep time available to working adults.',
+            source: 'OECD Hours Worked Database, 2023',
+          },
+        ],
+        historicalPrecedents: [
+          {
+            title: 'Denmark — mandatory work hour limits and metabolic health',
+            year: '1990',
+            description: 'Denmark implemented strict maximum work hour limits (48 hours per week, with mandatory rest periods) in the 1990s as part of EU Working Time Directive implementation. Danish workers consistently report better sleep duration than Americans.',
+            result: 'Denmark has obesity rates of 20% vs the US at 42%, with sleep duration averaging 7.8 hours vs 6.8 in the US. Multiple factors contribute but work hour regulation is documented as a significant contributor.',
+            relevance: 'Policy that protects time directly protects sleep, which directly protects metabolic health. The US is the outlier among wealthy nations in providing no such protection.',
+          },
+        ],
+        policyWatch: {
+          federal: [
+            {
+              id: 'pw-paid-leave',
+              title: 'Federal paid leave legislation — repeatedly stalled',
+              administration: 'Biden attempted · Trump opposed',
+              date: '2021-2025',
+              direction: 'away',
+              concern: 'Opponents argue mandatory paid leave imposes costs on small businesses and reduces employment flexibility.',
+              dataPoints: [
+                {
+                  claim: 'Paid leave harms small businesses',
+                  finding: 'California, New Jersey, and New York have had paid leave laws for over a decade. Studies show minimal negative employment effects and significant positive effects on worker retention.',
+                  contested: true,
+                  source: 'Center on Budget and Policy Priorities, 2023; National Bureau of Economic Research, 2018',
+                },
+                {
+                  claim: 'Paid leave has no health benefits',
+                  finding: 'Studies consistently show paid leave is associated with better sleep, lower stress, and improved cardiovascular outcomes. The US is the only wealthy nation without it.',
+                  contested: false,
+                  source: 'Journal of Health Economics, 2020; OECD Better Life Index',
+                },
+              ],
+              ringImpact: 'Lives Lost: Away from goals — absence of paid leave contributes to chronic sleep deprivation and metabolic disruption at population scale. Quality of Life: Away from goals.',
+              evidenceQuality: 'B',
+              tradeOffs: [
+                {
+                  ifYouPrioritize: 'Small business flexibility',
+                  assessment: 'Mandatory paid leave does impose costs, particularly on small businesses. State evidence suggests these are manageable with proper phase-in periods.',
+                },
+                {
+                  ifYouPrioritize: 'Worker health outcomes',
+                  assessment: 'Every other wealthy democracy has concluded these costs are worth paying. The health evidence strongly supports this judgment.',
+                },
+              ],
+              source: 'Congressional Research Service · 2023; State paid leave program evaluations',
+            },
+          ],
+          stateTeaser: 'Georgia state paid leave legislation status and your state representative\'s position',
+          localTeaser: 'Local employers with voluntary paid leave policies you can support',
+        },
+        actions: [
+          {
+            tier: 'personal',
+            text: 'Take the sleep and metabolic health quiz',
+            whyItMatters: 'Most people don\'t know that one night of poor sleep increases next-day caloric intake by 385 calories on average. Understanding this reframes sleep as cardiovascular disease prevention.',
+            startHere: '/quiz/sleep-metabolic-health',
+            startHereLabel: 'Take the quiz — earn Sleep Health badge',
+            consequence: 'People who understand the metabolic effects of sleep deprivation report higher motivation to protect sleep time and more support for work hour regulation.',
+            timeEstimate: '5 min',
+          },
+          {
+            tier: 'personal',
+            text: 'Log your sleep this week to your civic record',
+            whyItMatters: 'Self-monitoring sleep is the first step toward protecting it. Tracking sleep as a health metric — not a lifestyle preference — changes how you prioritize it.',
+            startHere: '/log-action/sleep-tracking',
+            startHereLabel: 'Log your sleep — saved to civic record',
+            consequence: 'Adults who track sleep duration show measurable improvement in average sleep time within 4 weeks.',
+            timeEstimate: '2 min daily',
+          },
+          {
+            tier: 'local',
+            text: 'Advocate for living wage policies in your city',
+            whyItMatters: 'The primary driver of sleep deprivation among low-income adults is multiple jobs and financial stress. Living wage policies address the root cause.',
+            timeEstimate: '2-3 hours for a council meeting',
+          },
+          {
+            tier: 'local',
+            text: 'Support local employer wellness programs that protect sleep',
+            whyItMatters: 'Employers who implement flexible scheduling and protect off-hours show measurably better employee health outcomes including sleep duration.',
+            timeEstimate: 'Varies',
+          },
+          {
+            tier: 'state',
+            text: 'Contact your Georgia state representative about paid leave legislation',
+            whyItMatters: 'Georgia has no state paid leave law. Workers who take unpaid leave face financial stress that compounds the sleep deprivation the leave was meant to address.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'state',
+            text: 'Support Georgia maximum work hour protections for hourly workers',
+            whyItMatters: 'Georgia has no state maximum work hour limits beyond federal FLSA requirements. Unpredictable scheduling in service industries is a documented driver of sleep deprivation.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'national',
+            text: 'Contact your representatives about federal paid leave legislation',
+            whyItMatters: 'The US is the only wealthy nation with no federal paid leave mandate. Every other G7 country has one. The health evidence is unambiguous.',
+            consequence: 'Modeling based on state paid leave program outcomes suggests federal paid leave would reduce chronic sleep deprivation in 40M+ workers with measurable metabolic health benefits.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'national',
+            text: 'Support the Schedules That Work Act',
+            whyItMatters: 'Would require advance notice of work schedules for hourly workers, eliminating the unpredictable scheduling that is the primary driver of sleep disruption among low-wage workers.',
+            consequence: 'Studies of predictable scheduling show 15-20% improvement in sleep duration among affected workers within 6 months of implementation.',
+            timeEstimate: '10 min',
+          },
+        ],
+      },
+      {
+        id: 'cv-ob-biology-microbiome',
+        label: 'Gut microbiome and ultra-processed food',
+        bullets: [
+          {
+            text: 'The gut microbiome — the trillions of bacteria living in the digestive system — directly regulates hunger signaling, caloric extraction from food, and inflammatory response. Ultra-processed foods systematically disrupt the microbiome in ways that promote obesity independent of caloric intake.',
+            source: 'Cell, Sonnenburg & Bäckhed, 2016; Nature Medicine, 2021',
+          },
+          {
+            text: 'A landmark 2021 study found that a diet high in fermented foods (yogurt, kimchi, kefir) increased microbiome diversity and reduced inflammatory markers — while a high-fiber diet without fermented foods showed smaller effects. Microbiome diversity is directly associated with lower obesity rates.',
+            source: 'Cell, Wastyk et al., 2021 — Gut-microbiota-targeted diets modulate human immune status',
+          },
+          {
+            text: 'Emulsifiers — present in nearly all ultra-processed foods — have been shown in multiple studies to disrupt the gut microbiome\'s protective mucus layer, increasing intestinal permeability ("leaky gut") and systemic inflammation that promotes fat storage.',
+            source: 'Nature, Chassaing et al., 2015; Frontiers in Nutrition, 2022',
+          },
+          {
+            text: 'Children\'s microbiomes are established in the first 1,000 days of life and strongly influence lifelong metabolic health. Formula-fed infants, infants exposed to antibiotics, and infants born via C-section have measurably less diverse microbiomes — with documented effects on obesity risk that persist into adulthood.',
+            source: 'Cell Host & Microbe, 2022; JAMA Pediatrics, 2018',
+          },
+        ],
+        historicalPrecedents: [
+          {
+            title: 'Fecal microbiome transplants — proof of causality',
+            year: '2013',
+            description: 'When gut bacteria from obese mice were transplanted into germ-free lean mice, the lean mice became obese — without changing their diet. This landmark experiment proved the microbiome is not just correlated with obesity but causally involved.',
+            result: 'Subsequent human studies confirmed the finding. Fecal microbiome transplants from lean donors to obese recipients improved insulin sensitivity within 6 weeks in randomized controlled trials.',
+            relevance: 'The microbiome is now understood as a modifiable driver of obesity — not a fixed characteristic. Food environment changes that protect the microbiome (reducing ultra-processed foods, increasing fermented foods) have direct biological effects on obesity risk.',
+          },
+        ],
+        policyWatch: {
+          federal: [
+            {
+              id: 'pw-fda-emulsifiers',
+              title: 'FDA emulsifier safety review — long overdue',
+              administration: 'Biden initiated · status uncertain under Trump',
+              date: '2023-present',
+              direction: 'mixed',
+              concern: 'Food industry argues emulsifiers are safe at approved levels and that restricting them would significantly impact food manufacturing costs and shelf stability.',
+              dataPoints: [
+                {
+                  claim: 'Emulsifiers are safe at approved levels',
+                  finding: 'Approved levels were set before microbiome research existed. Multiple studies show effects on microbiome integrity at doses below current approved limits.',
+                  contested: true,
+                  source: 'Nature, 2015; FDA GRAS (Generally Recognized as Safe) review process',
+                },
+                {
+                  claim: 'Restricting emulsifiers would harm food manufacturing',
+                  finding: 'True — emulsifiers extend shelf life and reduce production costs significantly. The trade-off between manufacturing economics and microbiome health is genuine.',
+                  contested: false,
+                  source: 'Food Technology Magazine, 2022; FDA regulatory impact assessments',
+                },
+              ],
+              ringImpact: 'Lives Lost: Toward if restrictions implemented — microbiome protection reduces obesity and downstream cardiovascular risk. Evidence quality: B — strong mechanistic evidence, population-level effect size contested.',
+              evidenceQuality: 'B',
+              tradeOffs: [
+                {
+                  ifYouPrioritize: 'Food manufacturing economics and shelf stability',
+                  assessment: 'Emulsifier restrictions would increase food costs and reduce shelf life. These are real costs, particularly for low-income consumers who depend on affordable shelf-stable foods.',
+                },
+                {
+                  ifYouPrioritize: 'Long-term metabolic health',
+                  assessment: 'The mechanistic evidence for emulsifier disruption of the microbiome is strong. The trade-off is short-term food access vs long-term health outcomes.',
+                },
+              ],
+              source: 'FDA GRAS review process · Nature, Chassaing et al., 2015',
+            },
+          ],
+          stateTeaser: 'State-level food additive regulation initiatives and your state representative\'s position',
+          localTeaser: 'Local food programs promoting fermented and whole foods near you',
+        },
+        actions: [
+          {
+            tier: 'personal',
+            text: 'Take the gut microbiome and food quiz',
+            whyItMatters: 'The connection between emulsifiers, ultra-processed food, and the microbiome is one of the most important and least-known findings in obesity research.',
+            startHere: '/quiz/gut-microbiome',
+            startHereLabel: 'Take the quiz — earn Microbiome badge',
+            consequence: 'People who understand the microbiome connection to obesity are significantly more likely to reduce ultra-processed food consumption and more likely to support food additive regulation.',
+            timeEstimate: '5 min',
+          },
+          {
+            tier: 'personal',
+            text: 'Add one fermented food to your daily diet and log it',
+            whyItMatters: 'Fermented foods (yogurt, kimchi, kefir, sauerkraut) are the most evidence-based way to improve microbiome diversity — shown in randomized trials to reduce inflammatory markers within 10 weeks.',
+            startHere: '/log-action/fermented-food',
+            startHereLabel: 'Log this action — track your streak',
+            consequence: 'Daily fermented food consumption for 10 weeks reduced inflammatory markers by 19% in Stanford randomized trial — comparable to some pharmaceutical interventions.',
+            timeEstimate: '5 min daily',
+          },
+          {
+            tier: 'local',
+            text: 'Support local fermented food programs and community kitchens',
+            whyItMatters: 'Access to fermented foods is highest in communities with food diversity and lowest in food deserts — compounding the microbiome disruption already caused by ultra-processed food dominance.',
+            timeEstimate: 'Varies',
+          },
+          {
+            tier: 'local',
+            text: 'Advocate for fermented and whole foods in school lunch programs',
+            whyItMatters: 'Children\'s microbiomes are most responsive to dietary intervention. School lunch is the most direct policy lever for reaching children during the critical window.',
+            timeEstimate: '2-3 hours for a school board meeting',
+          },
+          {
+            tier: 'state',
+            text: 'Contact your Georgia state representative about food additive transparency',
+            whyItMatters: 'Georgia has no state-level requirements for disclosure of emulsifiers and food additives beyond federal GRAS standards — which predate the microbiome research.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'state',
+            text: 'Support Georgia school nutrition standards that limit ultra-processed food ingredients',
+            whyItMatters: 'Georgia school nutrition standards currently follow minimal federal requirements. State-level standards could go further on emulsifier and additive limits.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'national',
+            text: 'Advocate for updated FDA GRAS review process for food additives',
+            whyItMatters: 'Many food additives including emulsifiers received GRAS status before microbiome research existed. The safety review process has not caught up with the science.',
+            consequence: 'Updated GRAS standards incorporating microbiome research could affect hundreds of additives present in thousands of products — with potential for significant population-level metabolic health improvement.',
+            timeEstimate: '10 min',
+          },
+          {
+            tier: 'national',
+            text: 'Support the Food Labeling Modernization Act',
+            whyItMatters: 'Would require clearer disclosure of ultra-processed food ingredients including emulsifiers — giving consumers the information needed to protect their microbiome.',
+            timeEstimate: '10 min',
+          },
+        ],
+      },
           ],
         },
         {
