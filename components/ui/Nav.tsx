@@ -7,9 +7,11 @@ import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
 
 const links = [
-  { href: '/',        label: 'Vital Signs' },
-  { href: '/tracker', label: 'Policy Tracker' },
-  { href: '/actions', label: 'Actions' },
+  { href: '/',         label: 'Vital Signs' },
+  { href: '/tracker',  label: 'Policy Tracker' },
+  { href: '/actions',  label: 'Actions' },
+  { href: '/updates',  label: 'Updates' },
+  { href: '/record',   label: 'Civic Record' },
 ]
 
 export default function Nav() {
