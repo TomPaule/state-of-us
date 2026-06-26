@@ -86,12 +86,29 @@ function ImpactWeightBadge({ weight }: { weight: string }) {
   )
 }
 
-function TrustBadge({ grade, explanation }: { grade: string; explanation: string }) {
+function TrustBadge({ grade, explanation, methodology }: { 
+  grade: string
+  explanation: string
+  methodology?: {
+    sampleSize?: string
+    peerReviewed?: boolean
+    replicated?: boolean
+    recency?: string
+    conflictsOfInterest?: string
+    limitations?: string
+  }
+}) {
   const colors: Record<string, string> = {
     A: 'bg-green-50 text-green-700 border-green-200',
     B: 'bg-blue-50 text-blue-700 border-blue-200',
     C: 'bg-amber-50 text-amber-700 border-amber-200',
     D: 'bg-red-50 text-red-700 border-red-200',
+  }
+  const gradeDescriptions: Record<string, string> = {
+    A: 'Official government registry or surveillance data — highest confidence. Collected systematically across the entire population with standardized methodology.',
+    B: 'Peer-reviewed research with strong methodology — high confidence. Published in indexed journals, reviewed by independent experts, generally replicated.',
+    C: 'Modeled estimates or single studies — moderate confidence. Based on best available data but involves assumptions that introduce uncertainty.',
+    D: 'Contested or limited data — use with caution. Findings disputed in the literature or based on small samples with significant limitations.',
   }
   const [show, setShow] = useState(false)
   return (
@@ -100,15 +117,90 @@ function TrustBadge({ grade, explanation }: { grade: string; explanation: string
         onClick={e => { e.stopPropagation(); setShow(s => !s) }}
         className={clsx('inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-medium', colors[grade])}
       >
-        Data Quality: {grade}
+        Data Quality: {grade} <span className="opacity-60">▾</span>
       </button>
       {show && (
-        <div className="absolute right-0 top-6 z-10 w-64 bg-white border border-stone-200 rounded-lg p-3 shadow-lg text-xs text-stone-600 leading-relaxed">
-          <div className="font-medium text-stone-900 mb-1">Data quality: {grade}</div>
-          {explanation}
-          <div className="mt-2 pt-2 border-t border-stone-100 text-stone-400">
-            A = official registry · B = peer-reviewed · C = estimated · D = contested
+        <div className="absolute left-0 top-7 z-20 w-80 bg-white border border-stone-200 rounded-xl p-4 shadow-xl text-xs leading-relaxed">
+          {/* Grade header */}
+          <div className="flex items-center gap-2 mb-3">
+            <span className={clsx('px-2 py-0.5 rounded border font-bold text-sm', colors[grade])}>
+              {grade}
+            </span>
+            <div>
+              <div className="font-semibold text-stone-900">
+                {grade === 'A' ? 'Official registry data' :
+                 grade === 'B' ? 'Peer-reviewed research' :
+                 grade === 'C' ? 'Modeled estimate' :
+                 'Contested data'}
+              </div>
+              <div className="text-stone-400">Highest to lowest: A · B · C · D</div>
+            </div>
           </div>
+
+          {/* Grade description */}
+          <p className="text-stone-600 leading-relaxed mb-3 pb-3 border-b border-stone-100">
+            {gradeDescriptions[grade]}
+          </p>
+
+          {/* This source specifically */}
+          <div className="mb-3">
+            <div className="font-semibold text-stone-700 mb-1">Why this source got this grade:</div>
+            <p className="text-stone-600 leading-relaxed">{explanation}</p>
+          </div>
+
+          {/* Methodology details */}
+          {methodology && (
+            <div className="flex flex-col gap-1.5 pt-3 border-t border-stone-100">
+              <div className="font-semibold text-stone-700 mb-0.5">Methodology details:</div>
+              {methodology.sampleSize && (
+                <div className="flex items-start gap-2">
+                  <span className="text-stone-400 shrink-0">Sample:</span>
+                  <span className="text-stone-600">{methodology.sampleSize}</span>
+                </div>
+              )}
+              {methodology.peerReviewed !== undefined && (
+                <div className="flex items-start gap-2">
+                  <span className="text-stone-400 shrink-0">Peer reviewed:</span>
+                  <span className={methodology.peerReviewed ? 'text-green-700' : 'text-amber-700'}>
+                    {methodology.peerReviewed ? 'Yes' : 'No'}
+                  </span>
+                </div>
+              )}
+              {methodology.replicated !== undefined && (
+                <div className="flex items-start gap-2">
+                  <span className="text-stone-400 shrink-0">Replicated:</span>
+                  <span className={methodology.replicated ? 'text-green-700' : 'text-amber-700'}>
+                    {methodology.replicated ? 'Yes — findings confirmed by multiple independent studies' : 'Not yet replicated independently'}
+                  </span>
+                </div>
+              )}
+              {methodology.recency && (
+                <div className="flex items-start gap-2">
+                  <span className="text-stone-400 shrink-0">Recency:</span>
+                  <span className="text-stone-600">{methodology.recency}</span>
+                </div>
+              )}
+              {methodology.conflictsOfInterest && (
+                <div className="flex items-start gap-2">
+                  <span className="text-stone-400 shrink-0">Conflicts:</span>
+                  <span className="text-stone-600">{methodology.conflictsOfInterest}</span>
+                </div>
+              )}
+              {methodology.limitations && (
+                <div className="flex items-start gap-2">
+                  <span className="text-amber-600 shrink-0">Limitations:</span>
+                  <span className="text-stone-600">{methodology.limitations}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          <button
+            onClick={e => { e.stopPropagation(); setShow(false) }}
+            className="mt-3 text-stone-400 hover:text-stone-600 transition-colors w-full text-center pt-2 border-t border-stone-100"
+          >
+            Close
+          </button>
         </div>
       )}
     </div>
@@ -889,21 +981,11 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
             {dp.trust && (
               <div className="border-t border-stone-200 pt-2 mt-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className={clsx(
-                    'text-xs font-bold px-2 py-0.5 rounded',
-                    dp.trust.grade === 'A' ? 'bg-green-50 text-green-700' :
-                    dp.trust.grade === 'B' ? 'bg-blue-50 text-blue-700' :
-                    dp.trust.grade === 'C' ? 'bg-amber-50 text-amber-700' :
-                    'bg-red-50 text-red-700'
-                  )}>
-                    Data Quality: {dp.trust.grade}
-                  </span>
-                  <span className="text-xs text-stone-400">
-                    {dp.trust.grade === 'A' ? 'Official registry — highest confidence' :
-                     dp.trust.grade === 'B' ? 'Peer-reviewed — high confidence' :
-                     dp.trust.grade === 'C' ? 'Estimated — moderate confidence' :
-                     'Contested — use with caution'}
-                  </span>
+                  <TrustBadge 
+                    grade={dp.trust.grade} 
+                    explanation={dp.trust.explanation}
+                    methodology={dp.trust.methodology}
+                  />
                 </div>
                 <p className="text-xs text-stone-400 leading-relaxed">{dp.trust.explanation}</p>
               </div>

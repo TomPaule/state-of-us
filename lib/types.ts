@@ -14,9 +14,19 @@ export interface ChartPoint {
 
 export type TrustGrade = 'A' | 'B' | 'C' | 'D'
 
+export interface TrustMethodology {
+  sampleSize?: string
+  peerReviewed?: boolean
+  replicated?: boolean
+  recency?: string
+  conflictsOfInterest?: string
+  limitations?: string
+}
+
 export interface TrustRating {
   grade: TrustGrade
   explanation: string
+  methodology?: TrustMethodology
 }
 
 export interface ActionRingImpact {

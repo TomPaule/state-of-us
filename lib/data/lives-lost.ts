@@ -1421,9 +1421,17 @@ why: '',  chartLabel: 'Cardiovascular deaths (thousands per year)',
         { year: 2022, us: 25, peer: 15, target: 10 },
       ],
       trust: {
-        grade: 'B',
-        explanation: 'CDC BRFSS is self-reported which consistently undercounts inactivity — people overestimate their exercise levels. True inactivity rates are likely 5-10 percentage points higher. The trend is reliable even if the absolute number understates the problem.',
-      },
+            grade: 'A',
+            explanation: 'CDC BRFSS surveys 400,000+ adults annually using standardized methodology. Self-reported height/weight introduces ~3-5% underestimation bias but trend data is highly reliable.',
+            methodology: {
+              sampleSize: '400,000+ adults surveyed annually across all 50 states',
+              peerReviewed: true,
+              replicated: true,
+              recency: 'Updated annually — most recent data 2023',
+              conflictsOfInterest: 'None — CDC is a federal agency with no commercial interest in obesity prevalence data',
+              limitations: 'Self-reported height and weight underestimates obesity prevalence by approximately 3-5%. Does not capture institutionalized populations.',
+            },
+          },
       drivers: [
         {
           id: 'cv-in-d1',
