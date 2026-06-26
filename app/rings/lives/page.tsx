@@ -1280,10 +1280,6 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                   <div className="text-2xs text-stone-400 uppercase tracking-widest">Preventable</div>
                   <div className="text-sm font-semibold" style={{ color: ringColor }}>{cat.preventable}</div>
                 </div>
-                <div>
-                  <div className="text-2xs text-stone-400 uppercase tracking-widest">Peer nations</div>
-                  <div className="text-sm font-semibold text-green-700">{cat.peerNations}</div>
-                </div>
               </div>
             )}
             <div className="h-0.5 bg-stone-100 rounded-full overflow-hidden">
@@ -1327,7 +1323,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                           <span className="font-medium text-stone-500">Sources:</span> CDC WONDER (US mortality) · IHME Global Burden of Disease (preventable fractions)
                         </div>
                         <div className="text-xs text-stone-400 mb-1">
-                          <span className="font-medium text-stone-500">Next release:</span> January 2026 — CDC WONDER annual mortality update
+                          <span className="font-medium text-stone-500">Next release:</span> January 2027 — CDC WONDER annual mortality update
                         </div>
                         <div className="flex items-center gap-2 pt-1 border-t border-stone-200 mt-1">
                           <span className="text-xs font-bold px-2 py-0.5 rounded bg-green-50 text-green-700">Data Quality: A</span>
