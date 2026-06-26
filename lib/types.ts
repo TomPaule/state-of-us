@@ -264,7 +264,7 @@ export interface Ring {
   humanMetricLabel: string
   status: RingStatus
   northStar: string
-  tagline: string
+  tagline?: string
   updateCadence: string
   trustStatement: string
   trustSources: Array<{ name: string; description: string }>

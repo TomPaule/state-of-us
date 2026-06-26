@@ -553,6 +553,7 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
           {/* Bullets */}
           {subsection.bullets && subsection.bullets.length > 0 && (
             <div className="px-3 pt-3 pb-2">
+              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">The evidence</div>
               <ul className="space-y-2">
                 {subsection.bullets.map((bullet: any, i: number) => (
                   <li key={i} className="flex items-start gap-2">
@@ -832,7 +833,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
           {(dp.mechanismBullets || dp.mechanism) && (
             <div className="px-4 pt-4 pb-2">
               <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-                The problem — how this causes death
+                The mechanism — how this causes death
               </div>
               <ul className="space-y-2">
                 {dp.mechanismBullets
@@ -855,7 +856,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
 
           {/* Why the US gap */}
           {dp.whyBullets && (
-            <div className="px-4 pt-3 pb-2">
+            <div className="px-4 pt-6 pb-2 border-t border-stone-100 mt-2">
               <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
                 Why the US is worse than peer nations
               </div>
@@ -871,7 +872,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
           )}
 
           {/* Chart */}
-          <div className="px-4 pb-3 pt-2">
+          <div className="px-4 pb-3 pt-6 border-t border-stone-100 mt-2">
             <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
           </div>
 
@@ -913,7 +914,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
           {dp.drivers && dp.drivers.length > 0 && (
             <div className="px-4 pb-4">
               <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-                What keeps this stuck — structural drivers
+                What keeps this stuck — structural drivers and solutions
               </div>
               <div className="flex flex-col gap-2">
                 {dp.drivers.map(driver => (
@@ -1294,7 +1295,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                 {/* Data points section header */}
                 <div className="mb-4 p-3 bg-stone-900 rounded-lg">
                   <div className="text-xs font-semibold text-white mb-0.5">
-                    What drives this number — {cat.dataPoints.length} contributing factors
+                    Drivers of preventable death
                   </div>
                   <div className="text-xs text-stone-400">
                     Each factor below contributes to the preventable deaths count. Click any to see the mechanism, data, structural drivers, and what you can do.

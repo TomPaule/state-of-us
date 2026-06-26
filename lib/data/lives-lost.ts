@@ -12,7 +12,6 @@ export const livesLostRing: Ring = {
   humanMetricLabel: 'preventable deaths per year in the United States',
   status: 'critical',
   northStar: 'Zero preventable deaths',
-  tagline: 'Every number here is a person. A better society would have kept them alive.',
   updateCadence: 'Annual · Next update: Jan 2026 · Policy actions: continuous',
   trustStatement: 'All mortality data comes from official death certificate registries using standardized ICD-10 coding. Preventable fractions are sourced from peer-reviewed epidemiological literature — not editorial judgment. Where institutions disagree, both figures are shown.',
   trustSources: [
@@ -33,8 +32,7 @@ export const livesLostRing: Ring = {
   name: 'Cardiovascular disease',
   driver: 'Diet, poverty, pollution, healthcare access',
   totalDeaths: '~700,000', preventable: '~200,000', peerNations: '~85,000', progressPct: 85,
-  why: 'Heart disease is the #1 US killer. The gap between our rate and peer nations reflects policy choices around food systems, healthcare access, and economic inequality — not individual behavior alone.',
-  chartLabel: 'Cardiovascular deaths (thousands per year)',
+why: '',  chartLabel: 'Cardiovascular deaths (thousands per year)',
   systemicIncentive: 'The US food system, healthcare payment model, and built environment all create structural conditions that make cardiovascular disease more likely — and less likely to be prevented. Ultra-processed food is artificially cheap because of $20B in annual agricultural subsidies to commodity crops. Prevention is financially unrewarded because fee-for-service medicine pays for procedures not outcomes. Physical activity requires deliberate effort because car-dependent development eliminated it from daily life. These are not accidents — they are the predictable results of policy choices made over decades, each maintained by industries that profit from the status quo.',
   chart: [
     { year: 1990, us: 320, peer: 180, target: 0 },
