@@ -929,12 +929,19 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
               </div>
               <ul className="space-y-2">
                 {dp.mechanismBullets
-                  ? dp.mechanismBullets.map((bullet, i) => (
+                ? dp.mechanismBullets.map((bullet, i) => {
+                    const boldMatch = bullet.match(/^\*\*(.+?):\*\*\s*(.+)$/)
+                    return (
                       <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
                         <span className="text-red-300 shrink-0 mt-0.5 font-bold">→</span>
-                        <span>{bullet}</span>
+                        <span>
+                          {boldMatch ? (
+                            <><span className="font-semibold text-stone-800">{boldMatch[1]}:</span> {boldMatch[2]}</>
+                          ) : bullet}
+                        </span>
                       </li>
-                    ))
+                    )
+                  })
                   : dp.mechanism!.split('. ').filter(s => s.trim().length > 10).map((sentence, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
                         <span className="text-red-300 shrink-0 mt-0.5">→</span>
@@ -953,25 +960,37 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
                 Why the US is worse than peer nations
               </div>
               <ul className="space-y-2">
-                {dp.whyBullets.map((bullet, i) => (
+                {dp.whyBullets.map((bullet, i) => {
+                const boldMatch = bullet.match(/^\*\*(.+?):\*\*\s*(.+)$/)
+                return (
                   <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
                     <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
-                    <span>{bullet}</span>
+                    <span>
+                      {boldMatch ? (
+                        <><span className="font-semibold text-stone-800">{boldMatch[1]}:</span> {boldMatch[2]}</>
+                      ) : bullet}
+                    </span>
                   </li>
-                ))}
+                )
+              })}
               </ul>
             </div>
           )}
 
           {/* Chart */}
           <div className="px-4 pb-3 pt-6 border-t border-stone-100 mt-2">
-            <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} />
+            <TrendChart data={dp.chart} label={dp.chartLabel} color={ringColor} height={110} showTarget={false} />
           </div>
 
           {/* Source + data quality */}
           <div className="mx-4 mb-3 px-3 py-2.5 bg-stone-50 border border-stone-100 rounded-lg">
             <div className="text-xs text-stone-400 mb-1.5">
-              <span className="font-medium text-stone-500">Source:</span> {dp.source}
+              <span className="font-medium text-stone-500">Source:</span>{' '}
+              {dp.sourceUrl ? (
+                <a href={dp.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-700 transition-colors">
+                  {dp.source}
+                </a>
+              ) : dp.source}
             </div>
             {dp.nextDataRelease && (
               <div className="text-xs text-stone-400 mb-2">
@@ -1332,7 +1351,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                       </div>
                     </div>
                   ) : (
-                    <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} />
+                    <TrendChart data={cat.chart} label={cat.chartLabel} color={ringColor} height={160} showTarget={false} />
                   )}
                 </div>
 
@@ -1350,7 +1369,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                       label={cat.peerRateLabel ?? 'Death rate per 100,000 population'}
                       color={ringColor}
                       height={160}
-                      showTarget={true}
+                      showTarget={false}
                     />
                     <div className="mt-2 px-3 py-2 bg-stone-50 border border-stone-100 rounded-lg">
                       <div className="text-xs text-stone-400 mb-1">
