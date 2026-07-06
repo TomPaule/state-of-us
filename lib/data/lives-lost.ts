@@ -145,43 +145,78 @@ why: '',  chartLabel: 'Cardiovascular deaths (thousands per year)',
                 },
               ],
               policyWatch: {
-                federal: [
-                  {
-                    id: 'pw-glp1-medicare',
-                    title: 'Medicare GLP-1 obesity drug coverage blocked',
-                    administration: 'Biden proposed · Trump blocked',
-                    date: '2024-2025',
-                    direction: 'mixed',
-                    concern: 'Cost: CBO estimated $35B over 10 years. Fairness: should Medicare cover a condition seen by some as lifestyle-related?',
-                    dataPoints: [
-                      {
-                        claim: 'Coverage would cost too much',
-                        finding: 'Obesity costs Medicare $172B annually in downstream conditions. Coverage would likely reduce net costs within 10 years.',
-                        contested: false,
-                        source: 'CBO Score 2024; NEJM cost-effectiveness analysis 2023',
-                      },
-                      {
-                        claim: 'Obesity is a lifestyle condition',
-                        finding: 'AMA classified obesity as a disease in 2013 based on the hormonal evidence above. Not contested clinically.',
-                        contested: false,
-                        source: 'AMA Policy H-440.842, 2013',
-                      },
-                    ],
-                    ringImpact: 'Lives Lost: Toward for those with access. Economic Security: Mixed — $35B cost vs $172B annual downstream savings.',
-                    evidenceQuality: 'A',
-                    tradeOffs: [
-                      {
-                        ifYouPrioritize: 'Fiscal responsibility',
-                        assessment: '$35B cost is real but likely offset by downstream Medicare savings within a decade.',
-                      },
-                      {
-                        ifYouPrioritize: 'Access equity',
-                        assessment: 'Without coverage, only wealthy patients benefit from the most effective obesity treatment in history — widening the health gap.',
-                      },
-                    ],
-                    source: 'CBO Score 2024 · AMA Policy 2013 · NEJM STEP trials 2021-2023',
-                  },
-                ],
+               federal: [
+  {
+    id: 'pw-glp1-medicare-proposed',
+    title: 'Medicare GLP-1 obesity drug coverage — proposed',
+    administration: 'Biden',
+    date: '2024',
+    direction: 'toward',
+    concern: 'Millions of Medicare recipients with obesity cannot afford GLP-1 medications at $1,000/month without coverage — creating a two-tier system where only wealthy patients benefit from the most effective obesity treatment in history.',
+    dataPoints: [
+      {
+        claim: 'GLP-1 medications are effective for obesity',
+        finding: 'Clinical trials show 15-22% sustained body weight reduction — more than any previous pharmacological intervention. FDA approved Wegovy for chronic weight management in 2021.',
+        contested: false,
+        source: 'NEJM STEP trials, 2021-2023',
+      },
+      {
+        claim: 'Medicare coverage would be cost-effective',
+        finding: 'Obesity costs Medicare $172B annually in downstream conditions. Coverage would likely reduce net costs within 10 years.',
+        contested: false,
+        source: 'CBO Score 2024; NEJM cost-effectiveness analysis 2023',
+      },
+    ],
+    ringImpact: 'Lives Lost: Toward — 3.4M Medicare patients would gain access to medications shown to reduce cardiovascular mortality by 20%. Economic Security: Toward — downstream cost reduction outweighs coverage cost within a decade.',
+    evidenceQuality: 'A',
+    tradeOffs: [
+      {
+        ifYouPrioritize: 'Immediate access equity',
+        assessment: 'Biden\'s proposal directly addresses the access gap. Without coverage, only wealthy patients benefit from the science.',
+      },
+      {
+        ifYouPrioritize: 'Fiscal caution',
+        assessment: '$35B 10-year cost is real. Evidence suggests net savings within a decade but uncertainty exists on the timeline.',
+      },
+    ],
+    source: 'CBO Score 2024 · Biden HHS proposal · NEJM STEP trials 2021-2023',
+  },
+  {
+    id: 'pw-glp1-medicare-blocked',
+    title: 'Medicare GLP-1 obesity drug coverage — blocked',
+    administration: 'Trump',
+    date: '2025',
+    direction: 'away',
+    concern: 'Fiscal responsibility and skepticism about whether obesity qualifies as a disease warranting Medicare coverage. Some argue GLP-1 coverage would primarily benefit pharmaceutical companies at taxpayer expense.',
+    dataPoints: [
+      {
+        claim: 'The $35B cost is too high',
+        finding: 'CBO estimates $35B over 10 years. However obesity costs Medicare $172B annually — coverage would likely be net positive within a decade. Contested on timeline, not direction.',
+        contested: true,
+        source: 'CBO Score 2024',
+      },
+      {
+        claim: 'Obesity is a lifestyle condition not deserving coverage',
+        finding: 'AMA classified obesity as a disease in 2013 based on hormonal evidence. The biological basis is not contested clinically — only politically.',
+        contested: false,
+        source: 'AMA Policy H-440.842, 2013',
+      },
+    ],
+    ringImpact: 'Lives Lost: Away from goals — 3.4M Medicare patients remain without access to the most effective obesity treatment available. Economic Security: Mixed — saves $35B short term but foregoes larger downstream savings.',
+    evidenceQuality: 'A',
+    tradeOffs: [
+      {
+        ifYouPrioritize: 'Short-term fiscal restraint',
+        assessment: 'Blocking coverage saves $35B over 10 years. The trade-off is higher downstream costs and continued health inequity.',
+      },
+      {
+        ifYouPrioritize: 'Long-term cost reduction',
+        assessment: 'Blocking coverage likely increases total Medicare spending over 20 years as obesity-related conditions go untreated.',
+      },
+    ],
+    source: 'Trump administration budget proposal 2025 · CBO Score 2024',
+  },
+], 
                 stateTeaser: 'Georgia Medicaid GLP-1 coverage status and your state representative\'s position',
                 localTeaser: 'Local clinics offering GLP-1 access at reduced cost near you',
               },

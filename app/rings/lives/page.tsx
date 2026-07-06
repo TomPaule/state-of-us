@@ -562,10 +562,17 @@ function PolicyWatchEntryBlock({ entry }: { entry: any }) {
         <div className="px-3 pb-3 border-t border-current border-opacity-20 bg-white">
           {/* Concern */}
           <div className="mt-3">
-            <button className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1 w-full text-left">
+            <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-2">
               The concern this addresses
-            </button>
-            <p className="text-xs text-stone-600 leading-relaxed">{entry.concern}</p>
+            </div>
+            <ul className="space-y-1.5">
+              {entry.concern.split('. ').filter((s: string) => s.trim().length > 10).map((sentence: string, i: number) => (
+                <li key={i} className="flex items-start gap-2 text-xs text-stone-600 leading-relaxed">
+                  <span className="text-stone-300 shrink-0 mt-0.5 font-bold">→</span>
+                  <span>{sentence.trim().replace(/\.$/, '')}.</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Data points */}
@@ -589,37 +596,55 @@ function PolicyWatchEntryBlock({ entry }: { entry: any }) {
             </div>
           )}
 
-          {/* Ring impact */}
-          <div className="mt-3 px-3 py-2 bg-stone-900 rounded-lg">
-            <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Ring impact</div>
-            <p className="text-xs text-stone-300 leading-relaxed">{entry.ringImpact}</p>
-            <div className="mt-1 flex items-center gap-2">
-              <span className={clsx('text-xs px-2 py-0.5 rounded font-bold',
-                entry.evidenceQuality === 'A' ? 'bg-green-900 text-green-300' :
-                entry.evidenceQuality === 'B' ? 'bg-blue-900 text-blue-300' :
-                'bg-amber-900 text-amber-300'
-              )}>
-                Evidence: {entry.evidenceQuality}
-              </span>
-            </div>
-          </div>
-
-          {/* Trade-offs */}
-          {entry.tradeOffs && entry.tradeOffs.length > 0 && (
-            <div className="mt-3">
-              <div className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-2">Trade-offs</div>
-              <div className="flex flex-col gap-2">
-                {entry.tradeOffs.map((t: any, i: number) => (
-                  <div key={i} className="px-3 py-2 bg-stone-50 rounded-lg">
-                    <div className="text-xs font-medium text-stone-700 mb-0.5">
-                      If you prioritize {t.ifYouPrioritize}:
-                    </div>
-                    <p className="text-xs text-stone-600 leading-relaxed">{t.assessment}</p>
-                  </div>
-                ))}
+          {/* Ring impact + Trade-offs combined */}
+          <div className="mt-3 bg-stone-900 rounded-xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-stone-800">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs font-semibold text-stone-300 uppercase tracking-widest">
+                  Impact on vital signs
+                </div>
+                <span className={clsx('text-xs px-2 py-0.5 rounded font-bold',
+                  entry.evidenceQuality === 'A' ? 'bg-green-900 text-green-300' :
+                  entry.evidenceQuality === 'B' ? 'bg-blue-900 text-blue-300' :
+                  'bg-amber-900 text-amber-300'
+                )}>
+                  Evidence: {entry.evidenceQuality}
+                </span>
               </div>
+              {entry.ringImpact.split('. ').filter((s: string) => s.trim().length > 5).map((sentence: string, i: number) => (
+                <div key={i} className="flex items-start gap-2 mb-1.5">
+                  <span className={clsx('text-xs font-bold shrink-0 mt-0.5',
+                    sentence.toLowerCase().includes('toward') ? 'text-green-400' :
+                    sentence.toLowerCase().includes('away') ? 'text-red-400' :
+                    'text-stone-400'
+                  )}>
+                    {sentence.toLowerCase().includes('toward') ? '↑' :
+                     sentence.toLowerCase().includes('away') ? '↓' : '·'}
+                  </span>
+                  <p className="text-xs text-stone-300 leading-relaxed">
+                    {sentence.trim().replace(/\.$/, '')}.
+                  </p>
+                </div>
+              ))}
             </div>
-          )}
+            {entry.tradeOffs && entry.tradeOffs.length > 0 && (
+              <div className="px-4 py-3">
+                <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                  Trade-offs — evaluate with your own values
+                </div>
+                <div className="flex flex-col gap-2">
+                  {entry.tradeOffs.map((t: any, i: number) => (
+                    <div key={i} className="px-3 py-2 bg-stone-800 rounded-lg">
+                      <div className="text-xs font-medium text-stone-300 mb-0.5">
+                        If you prioritize {t.ifYouPrioritize}:
+                      </div>
+                      <p className="text-xs text-stone-400 leading-relaxed">{t.assessment}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="mt-2 text-xs text-stone-400">Source: {entry.source}</div>
         </div>
