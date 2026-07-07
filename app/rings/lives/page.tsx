@@ -668,16 +668,31 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
       {open && (
         <div className="border-t border-stone-100">
           {/* Bullets */}
+          {/* Bullets */}
           {subsection.bullets && subsection.bullets.length > 0 && (
             <div className="px-3 pt-3 pb-2">
               <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">The evidence</div>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {subsection.bullets.map((bullet: any, i: number) => (
                   <li key={i} className="flex items-start gap-2">
                     <span className="text-stone-300 shrink-0 mt-0.5 font-bold text-xs">→</span>
-                    <div>
-                      <p className="text-xs text-stone-600 leading-relaxed">{bullet.text}</p>
-                      <p className="text-xs text-stone-400 mt-0.5 italic">Source: {bullet.source}</p>
+                    <div className="flex-1">
+                      <p className="text-xs text-stone-600 leading-relaxed mb-1">{bullet.text}</p>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs text-stone-400 italic">
+                          {bullet.sourceUrl ? (
+                            <a href={bullet.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-600 transition-colors">
+                              {bullet.source}
+                            </a>
+                          ) : bullet.source}
+                        </span>
+                        {bullet.sourceGrade && (
+                          <TrustBadge
+                            grade={bullet.sourceGrade}
+                            explanation={bullet.sourceGradeExplanation ?? ''}
+                          />
+                        )}
+                      </div>
                     </div>
                   </li>
                 ))}

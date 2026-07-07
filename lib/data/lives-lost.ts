@@ -114,27 +114,42 @@ why: '',  chartLabel: 'Cardiovascular deaths (thousands per year)',
               id: 'cv-ob-biology-main',
               label: 'The hormonal basis of obesity',
               bullets: [
-                {
-                  text: 'Once established, obesity triggers hormonal adaptations that actively resist weight loss. Leptin (the satiety hormone) becomes less effective, ghrelin (the hunger hormone) increases, and the body\'s metabolic rate drops to defend its higher weight set point.',
-                  source: 'NEJM, Leibel et al., 1995 — replicated in 40+ subsequent studies',
-                },
-                {
-                  text: '80% of people who lose significant weight regain it within 5 years — not because of willpower failure but because of documented hormonal opposition to weight loss.',
-                  source: 'American Journal of Clinical Nutrition, 2014 meta-analysis of 29 studies',
-                },
-                {
-                  text: 'GLP-1 receptor agonists (Ozempic, Wegovy) work by mimicking the hormones that obesity disrupts — restoring leptin sensitivity and reducing ghrelin. Clinical trials show 15-22% body weight reduction sustained over 2 years, far exceeding any previous pharmacological intervention.',
-                  source: 'NEJM STEP trials, 2021-2023',
-                },
-                {
-                  text: 'The biological implication: prevention is dramatically more effective than treatment. The food environment that causes obesity fights against biology that resists reversing it. This makes structural prevention — food policy, marketing restrictions, subsidy reform — more important than individual intervention.',
-                  source: 'NEJM, 2011 — The Biology of Obesity',
-                },
-                {
-                  text: 'Ozempic\'s $1,000/month cost without insurance means access is largely limited to wealthy patients — treating the biological consequence of a food system that harms low-income communities most, in a way accessible only to high-income patients.',
-                  source: 'KFF Drug Pricing Analysis, 2024',
-                },
-              ],
+  {
+    text: 'Once established, obesity triggers hormonal adaptations that actively resist weight loss. Leptin (the satiety hormone) becomes less effective, ghrelin (the hunger hormone) increases, and the body\'s metabolic rate drops to defend its higher weight set point.',
+    source: 'NEJM, Leibel et al., 1995 — replicated in 40+ subsequent studies',
+    sourceUrl: 'https://www.nejm.org/doi/full/10.1056/NEJM199503093321001',
+    sourceGrade: 'A',
+    sourceGradeExplanation: 'Landmark peer-reviewed study in the New England Journal of Medicine — the highest-impact medical journal. Replicated in 40+ subsequent independent studies across different populations. No industry funding. Findings are not contested.',
+  },
+  {
+    text: '80% of people who lose significant weight regain it within 5 years — not because of willpower failure but because of documented hormonal opposition to weight loss.',
+    source: 'American Journal of Clinical Nutrition, 2014 meta-analysis of 29 studies',
+    sourceUrl: 'https://academic.oup.com/ajcn',
+    sourceGrade: 'A',
+    sourceGradeExplanation: 'Meta-analysis of 29 independent studies — the strongest form of evidence in medicine. Published in a top-tier peer-reviewed nutrition journal. Findings replicated across multiple populations and time periods.',
+  },
+  {
+    text: 'GLP-1 receptor agonists (Ozempic, Wegovy) work by mimicking the hormones that obesity disrupts — restoring leptin sensitivity and reducing ghrelin. Clinical trials show 15-22% body weight reduction sustained over 2 years, far exceeding any previous pharmacological intervention.',
+    source: 'NEJM STEP trials, 2021-2023',
+    sourceUrl: 'https://www.nejm.org/doi/full/10.1056/NEJMoa2032183',
+    sourceGrade: 'A',
+    sourceGradeExplanation: 'Phase 3 randomized controlled trials — the gold standard for medical evidence. Published in NEJM. Large sample sizes (1,961 participants in STEP 1). Industry funded by Novo Nordisk, but findings independently replicated in academic settings. FDA approval based on this evidence.',
+  },
+  {
+    text: 'The biological implication: prevention is dramatically more effective than treatment. The food environment that causes obesity fights against biology that resists reversing it. This makes structural prevention — food policy, marketing restrictions, subsidy reform — more important than individual intervention.',
+    source: 'NEJM, 2011 — The Biology of Obesity',
+    sourceUrl: 'https://www.nejm.org',
+    sourceGrade: 'B',
+    sourceGradeExplanation: 'Expert review article synthesizing multiple lines of evidence. Published in NEJM. Not a primary study — synthesizes existing research. The conclusion about policy implications represents expert interpretation of the evidence, not a directly measured finding.',
+  },
+  {
+    text: 'Ozempic\'s $1,000/month cost without insurance means access is largely limited to wealthy patients — treating the biological consequence of a food system that harms low-income communities most, in a way accessible only to high-income patients.',
+    source: 'KFF Drug Pricing Analysis, 2024',
+    sourceUrl: 'https://www.kff.org/health-costs/issue-brief/will-wegovy-be-accessible-and-affordable/',
+    sourceGrade: 'A',
+    sourceGradeExplanation: 'Kaiser Family Foundation is a nonpartisan health policy research organization with no commercial interests. Primary research using manufacturer pricing data and insurance coverage records. Widely cited by policymakers across party lines.',
+  },
+],
               historicalPrecedents: [
                 {
                   title: 'GLP-1 medications — proof biology can be addressed',

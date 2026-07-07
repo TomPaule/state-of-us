@@ -51,6 +51,9 @@ export interface DriverAction {
 export interface DriverBullet {
   text: string
   source: string
+  sourceUrl?: string
+  sourceGrade?: TrustGrade
+  sourceGradeExplanation?: string
 }
 
 export interface HistoricalPrecedent {
