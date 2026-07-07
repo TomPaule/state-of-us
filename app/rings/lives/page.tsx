@@ -1420,7 +1420,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                     Drivers of preventable death
                   </div>
                   <div className="text-xs text-stone-400">
-                    Each factor below contributes to the preventable deaths count. Click any to see the mechanism, data, structural drivers, and what you can do.
+                    
                   </div>
                 </div>
 
@@ -1488,7 +1488,7 @@ export default function LivesLostPage() {
                 {scoreToGrade(ring.score)}
               </span>
               <span className="text-xs text-stone-400 leading-relaxed">
-                Grade {scoreToGrade(ring.score)} · Score {ring.score}/100 · Calculated from 7 leading causes of preventable death, each weighted by contribution to total mortality
+                Grade {scoreToGrade(ring.score)} · Score {ring.score}/100 · Calculated from 7 leading causes of death, each weighted by contribution to total mortality
               </span>
             </div>
           </div>
@@ -1527,7 +1527,7 @@ export default function LivesLostPage() {
       {/* Categories */}
       <div className="mb-4">
         <h2 className="font-display text-xl font-medium text-stone-900 mb-1">
-          Leading causes of preventable death
+          Leading causes of death
         </h2>
         <p className="text-sm text-stone-500">
           Ordered by total annual deaths. Click any cause to explore the data, drivers, and actions.
