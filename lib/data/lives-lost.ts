@@ -5,6 +5,8 @@ export const livesLostRing: Ring = {
   order: 3,
   cluster: 'survival',
   name: 'Lives Lost',
+  lastUpdated: 'July 2026',
+  dataAsOf: 'CDC WONDER 2022 data — released 2024',
   color: '#E24B4A',
   bgColor: '#FCEBEB',
   score: 30,
@@ -30,6 +32,8 @@ export const livesLostRing: Ring = {
    {
   id: 'cardiovascular',
   name: 'Cardiovascular disease',
+  lastUpdated: 'July 2026',
+  dataAsOf: 'CDC WONDER 2022 · IHME GBD 2021 · AHA 2024',
   driver: 'Diet, poverty, pollution, healthcare access',
   totalDeaths: '~700,000', preventable: '~200,000', peerNations: '~85,000', progressPct: 85,
 why: '',  chartLabel: 'Cardiovascular deaths (thousands per year)',
@@ -69,6 +73,8 @@ why: '',  chartLabel: 'Cardiovascular deaths (thousands per year)',
     {
   id: 'cv-obesity',
   label: 'Obesity rate',
+  lastUpdated: 'July 2026',
+  dataAsOf: 'CDC BRFSS 2023',
   value: '42% of adults',
   note: 'Contributes ~80,000 preventable cardiovascular deaths per year',
   mechanismBullets: [
@@ -109,10 +115,13 @@ why: '',  chartLabel: 'Cardiovascular deaths (thousands per year)',
           id: 'cv-ob-biology',
           label: 'Biology — why obesity is harder to reverse than prevent',
           stat: '80% of people who lose significant weight regain it within 5 years due to hormonal adaptation, not willpower failure',
+          lastUpdated: 'July 2026',
           subsections: [
             {
               id: 'cv-ob-biology-main',
               label: 'The hormonal basis of obesity',
+              lastUpdated: 'July 2026',
+              dataAsOf: 'NEJM STEP trials 2023 · KFF 2024 · NEJM Leibel 1995',
               bullets: [
   {
     text: 'Once established, obesity triggers hormonal adaptations that actively resist weight loss. Leptin (the satiety hormone) becomes less effective, ghrelin (the hunger hormone) increases, and the body\'s metabolic rate drops to defend its higher weight set point.',

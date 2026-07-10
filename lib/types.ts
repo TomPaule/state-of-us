@@ -88,10 +88,81 @@ export interface PolicyWatchEntry {
   source: string
 }
 
+export interface IssueEvidence {
+  id: string
+  claim: string
+  finding: string
+  source: string
+  sourceUrl?: string
+  grade: TrustGrade
+  gradeExplanation: string
+}
+
+export interface SolutionEvidence {
+  id: string
+  claim: string
+  finding: string
+  source: string
+  sourceUrl?: string
+  grade: TrustGrade
+  gradeExplanation: string
+}
+
+export interface OptionProCon {
+  label: string
+  explanation: string
+  source: string
+  sourceUrl?: string
+  grade: TrustGrade
+}
+
+export interface PolicyOption {
+  id: string
+  label: string
+  isOptimal?: boolean
+  pros: OptionProCon[]
+  cons: OptionProCon[]
+}
+
+export interface WhereThingsStandEntry {
+  id: string
+  branch: 'personal' | 'local' | 'state' | 'national_legislative' | 'national_judicial' | 'national_executive' | 'private'
+  title: string
+  status?: string
+  direction?: PolicyDirection
+  description: string
+  billId?: string
+  billName?: string
+  billNumber?: string
+  billStage?: string
+  billStageCount?: number
+  billStageTotal?: number
+  billStageLabel?: string
+  senatorContext?: Array<{
+    name: string
+    position: 'supporting' | 'opposing' | 'undecided' | 'not_cosponsored'
+    persuadability: string
+    pacDonations?: string
+    nextElection?: string
+  }>
+  actions: Array<{
+    label: string
+    url?: string
+    type: 'contact' | 'petition' | 'quiz' | 'download' | 'log' | 'share' | 'external'
+    prefilledMessage?: string
+  }>
+  locked?: boolean
+  lockedTier?: 'civic' | 'community'
+  lastUpdated: string
+  dataAsOf?: string
+}
+
 export interface DriverSubsection {
   id: string
   label: string
-  bullets: DriverBullet[]
+  lastUpdated?: string
+  // Legacy fields — still used by non-migrated subsections
+  bullets?: DriverBullet[]
   historicalPrecedents?: HistoricalPrecedent[]
   policyWatch?: {
     federal: PolicyWatchEntry[]
@@ -100,6 +171,13 @@ export interface DriverSubsection {
   }
   actions?: DriverAction[]
   contextOnly?: boolean
+  // New architecture
+  issueClaim?: string
+  issueEvidence?: IssueEvidence[]
+  solutionClaim?: string
+  solutionEvidence?: SolutionEvidence[]
+  options?: PolicyOption[]
+  whereThingsStand?: WhereThingsStandEntry[]
 }
 
 export interface Driver {
@@ -112,6 +190,7 @@ export interface Driver {
   actions?: DriverAction[]
   // New architecture
   subsections?: DriverSubsection[]
+  lastUpdated?: string
 }
 
 export interface DataPoint {
@@ -137,6 +216,8 @@ export interface DataPoint {
   livesSaved?: string
   incentiveNote?: string
   drivers?: Driver[]
+  lastUpdated?: string
+  dataAsOf?: string
 }
 
 export interface Incentive {
@@ -262,6 +343,8 @@ export interface Category {
   actions: Action[]
   solutions: Solution[]
   frontierResearch?: FrontierResearch[]
+  lastUpdated?: string
+  dataAsOf?: string
 }
 
 export interface Ring {
@@ -283,6 +366,8 @@ export interface Ring {
   trustSources: Array<{ name: string; description: string }>
   summaryStats: Array<{ label: string; value: string; note: string }>
   categories: Category[]
+  lastUpdated?: string
+  dataAsOf?: string
 }
 
 export interface Cluster {
