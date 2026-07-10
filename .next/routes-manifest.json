@@ -1,0 +1,140 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/rings/[id]",
+      "regex": "^/rings/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/rings/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/share/[token]",
+      "regex": "^/share/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPtoken": "nxtPtoken"
+      },
+      "namedRegex": "^/share/(?<nxtPtoken>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/actions",
+      "regex": "^/actions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/actions(?:/)?$"
+    },
+    {
+      "page": "/api/auth/send-magic-link",
+      "regex": "^/api/auth/send\\-magic\\-link(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/send\\-magic\\-link(?:/)?$"
+    },
+    {
+      "page": "/api/share/click",
+      "regex": "^/api/share/click(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/share/click(?:/)?$"
+    },
+    {
+      "page": "/api/share/create",
+      "regex": "^/api/share/create(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/share/create(?:/)?$"
+    },
+    {
+      "page": "/auth",
+      "regex": "^/auth(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth(?:/)?$"
+    },
+    {
+      "page": "/auth/callback",
+      "regex": "^/auth/callback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/callback(?:/)?$"
+    },
+    {
+      "page": "/record",
+      "regex": "^/record(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/record(?:/)?$"
+    },
+    {
+      "page": "/rings/lives",
+      "regex": "^/rings/lives(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/rings/lives(?:/)?$"
+    },
+    {
+      "page": "/tracker",
+      "regex": "^/tracker(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/tracker(?:/)?$"
+    },
+    {
+      "page": "/updates",
+      "regex": "^/updates(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/updates(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

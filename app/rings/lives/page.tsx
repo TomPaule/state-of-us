@@ -962,7 +962,94 @@ function WhereThingsStandCard({ entry }: { entry: any }) {
     </div>
   )
 }
+function PublicTierGroup({ label, color, entries }: { label: string; color: string; entries: any[] }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="border border-stone-100 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
+      >
+        <div className={clsx('text-xs font-semibold uppercase tracking-widest', color)}>
+          {label}
+        </div>
+        <span className={clsx('text-stone-400 text-xs transition-transform duration-200', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="p-2 flex flex-col gap-2">
+          {entries.map((entry: any) => (
+            <WhereThingsStandCard key={entry.id} entry={entry} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
+function NationalGroup({ entries }: { entries: any[] }) {
+  const [open, setOpen] = useState(false)
+  const legislative = entries.filter((e: any) => e.branch === 'national_legislative')
+  const judicial = entries.filter((e: any) => e.branch === 'national_judicial')
+  const executive = entries.filter((e: any) => e.branch === 'national_executive')
+
+  return (
+    <div className="border border-stone-100 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-3 py-2 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
+      >
+        <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest">
+          National
+        </div>
+        <span className={clsx('text-stone-400 text-xs transition-transform duration-200', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="p-2 flex flex-col gap-3">
+
+          {legislative.length > 0 && (
+            <div>
+              <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-1.5 px-1">
+                Legislative
+              </div>
+              <div className="flex flex-col gap-2">
+                {legislative.map((entry: any) => (
+                  <WhereThingsStandCard key={entry.id} entry={entry} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {judicial.length > 0 && (
+            <div>
+              <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-1.5 px-1">
+                Judicial
+              </div>
+              <div className="flex flex-col gap-2">
+                {judicial.map((entry: any) => (
+                  <WhereThingsStandCard key={entry.id} entry={entry} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {executive.length > 0 && (
+            <div>
+              <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-1.5 px-1">
+                Executive
+              </div>
+              <div className="flex flex-col gap-2">
+                {executive.map((entry: any) => (
+                  <WhereThingsStandCard key={entry.id} entry={entry} />
+                ))}
+              </div>
+            </div>
+          )}
+
+        </div>
+      )}
+    </div>
+  )
+}
 function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor: string }) {
   const [open, setOpen] = useState(false)
 
@@ -1050,12 +1137,8 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
               {/* Where things stand + what you can do */}
               {subsection.whereThingsStand && subsection.whereThingsStand.length > 0 && (
                 <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="h-px flex-1 bg-stone-200" />
-                    <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
-                      Actions
-                    </div>
-                    <div className="h-px flex-1 bg-stone-200" />
+                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                    Actions
                   </div>
                   <div className="flex flex-col gap-4">
                     {/* Personal */}
@@ -1084,12 +1167,37 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
                           <div className="w-2 h-2 rounded-full bg-amber-400" />
                           Public sector
                         </div>
-                        <div className="flex flex-col gap-2">
-                          {subsection.whereThingsStand
-                            .filter((e: any) => ['local', 'state', 'national_legislative', 'national_judicial', 'national_executive'].includes(e.branch))
-                            .map((entry: any) => (
-                              <WhereThingsStandCard key={entry.id} entry={entry} />
-                            ))}
+                        <div className="flex flex-col gap-3">
+
+                          {/* Local */}
+                          {subsection.whereThingsStand.filter((e: any) => e.branch === 'local').length > 0 && (
+                            <PublicTierGroup
+                              label="Local"
+                              color="text-green-700"
+                              entries={subsection.whereThingsStand.filter((e: any) => e.branch === 'local')}
+                            />
+                          )}
+
+                          {/* State */}
+                          {subsection.whereThingsStand.filter((e: any) => e.branch === 'state').length > 0 && (
+                            <PublicTierGroup
+                              label="State"
+                              color="text-purple-700"
+                              entries={subsection.whereThingsStand.filter((e: any) => e.branch === 'state')}
+                            />
+                          )}
+
+                          {/* National */}
+                          {subsection.whereThingsStand.filter((e: any) => 
+                            ['national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
+                          ).length > 0 && (
+                            <NationalGroup
+                              entries={subsection.whereThingsStand.filter((e: any) => 
+                                ['national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
+                              )}
+                            />
+                          )}
+
                         </div>
                       </div>
                     )}

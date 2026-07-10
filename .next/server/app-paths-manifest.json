@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/actions/page": "app/actions/page.js",
+  "/api/auth/send-magic-link/route": "app/api/auth/send-magic-link/route.js",
+  "/api/share/click/route": "app/api/share/click/route.js",
+  "/api/share/create/route": "app/api/share/create/route.js",
+  "/auth/callback/route": "app/auth/callback/route.js",
+  "/auth/page": "app/auth/page.js",
+  "/page": "app/page.js",
+  "/record/page": "app/record/page.js",
+  "/rings/[id]/page": "app/rings/[id]/page.js",
+  "/rings/lives/page": "app/rings/lives/page.js",
+  "/share/[token]/page": "app/share/[token]/page.js",
+  "/tracker/page": "app/tracker/page.js",
+  "/updates/page": "app/updates/page.js"
+}

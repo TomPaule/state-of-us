@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/actions/page": "/actions",
+  "/api/auth/send-magic-link/route": "/api/auth/send-magic-link",
+  "/api/share/click/route": "/api/share/click",
+  "/api/share/create/route": "/api/share/create",
+  "/auth/callback/route": "/auth/callback",
+  "/auth/page": "/auth",
+  "/page": "/",
+  "/record/page": "/record",
+  "/rings/[id]/page": "/rings/[id]",
+  "/rings/lives/page": "/rings/lives",
+  "/share/[token]/page": "/share/[token]",
+  "/tracker/page": "/tracker",
+  "/updates/page": "/updates"
+}
