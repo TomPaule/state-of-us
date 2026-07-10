@@ -161,6 +161,7 @@ export interface DriverSubsection {
   id: string
   label: string
   lastUpdated?: string
+    dataAsOf?: string
   // Legacy fields — still used by non-migrated subsections
   bullets?: DriverBullet[]
   historicalPrecedents?: HistoricalPrecedent[]
