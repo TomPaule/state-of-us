@@ -993,7 +993,7 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
               {subsection.issueClaim && (
                 <div>
                   <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-                    Issue
+                    Problem
                   </div>
                   <div className="px-4 py-3 bg-red-50 border border-red-100 rounded-xl">
                     <p className="text-sm font-medium text-red-900 leading-relaxed">
@@ -1002,7 +1002,7 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
                     {subsection.issueEvidence && subsection.issueEvidence.length > 0 && (
                       <EvidenceDropdown
                         items={subsection.issueEvidence}
-                        label="Issue evidence"
+                        label="Problem evidence"
                         color="red"
                       />
                     )}
@@ -1053,14 +1053,63 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
                   <div className="flex items-center gap-2 mb-3">
                     <div className="h-px flex-1 bg-stone-200" />
                     <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
-                      Where things stand + what you can do
+                      Actions
                     </div>
                     <div className="h-px flex-1 bg-stone-200" />
                   </div>
-                  <div className="flex flex-col gap-2">
-                    {subsection.whereThingsStand.map((entry: any) => (
-                      <WhereThingsStandCard key={entry.id} entry={entry} />
-                    ))}
+                  <div className="flex flex-col gap-4">
+                    {/* Personal */}
+                    {subsection.whereThingsStand.filter((e: any) => e.branch === 'personal').length > 0 && (
+                      <div>
+                        <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest mb-2 flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-blue-400" />
+                          Personal
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          {subsection.whereThingsStand
+                            .filter((e: any) => e.branch === 'personal')
+                            .map((entry: any) => (
+                              <WhereThingsStandCard key={entry.id} entry={entry} />
+                            ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Public */}
+                    {subsection.whereThingsStand.filter((e: any) => 
+                      ['local', 'state', 'national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
+                    ).length > 0 && (
+                      <div>
+                        <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-2 flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-amber-400" />
+                          Public sector
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          {subsection.whereThingsStand
+                            .filter((e: any) => ['local', 'state', 'national_legislative', 'national_judicial', 'national_executive'].includes(e.branch))
+                            .map((entry: any) => (
+                              <WhereThingsStandCard key={entry.id} entry={entry} />
+                            ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Private */}
+                    {subsection.whereThingsStand.filter((e: any) => e.branch === 'private').length > 0 && (
+                      <div>
+                        <div className="text-xs font-semibold text-stone-600 uppercase tracking-widest mb-2 flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-stone-400" />
+                          Private sector
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          {subsection.whereThingsStand
+                            .filter((e: any) => e.branch === 'private')
+                            .map((entry: any) => (
+                              <WhereThingsStandCard key={entry.id} entry={entry} />
+                            ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
