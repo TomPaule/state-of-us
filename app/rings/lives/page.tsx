@@ -652,172 +652,567 @@ function PolicyWatchEntryBlock({ entry }: { entry: any }) {
     </div>
   )
 }
+function EvidenceDropdown({ items, label, color }: { items: any[]; label: string; color: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="mt-2">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 text-xs font-medium text-stone-500 hover:text-stone-700 transition-colors"
+      >
+        <span className={clsx('transition-transform duration-200', open && 'rotate-180')}>▾</span>
+        {label} ({items.length} {items.length === 1 ? 'source' : 'sources'})
+      </button>
+      {open && (
+        <div className="mt-2 flex flex-col gap-2">
+          {items.map((ev: any) => (
+            <div key={ev.id} className="px-3 py-2.5 bg-white border border-stone-100 rounded-lg">
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <div className="text-xs font-medium text-stone-700">{ev.claim}</div>
+                <TrustBadge grade={ev.grade} explanation={ev.gradeExplanation} />
+              </div>
+              <p className="text-xs text-stone-600 leading-relaxed mb-1">{ev.finding}</p>
+              <div className="text-xs text-stone-400">
+                {ev.sourceUrl ? (
+                  <a href={ev.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-600 transition-colors">
+                    {ev.source}
+                  </a>
+                ) : ev.source}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function OptionCard({ option }: { option: any }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className={clsx(
+      'border rounded-xl overflow-hidden',
+      option.isOptimal ? 'border-green-300 bg-green-50/30' : 'border-stone-200 bg-white'
+    )}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-4 py-3 hover:bg-stone-50/50 transition-colors flex items-center gap-3"
+      >
+        {option.isOptimal && (
+          <span className="text-xs font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full shrink-0">
+            ★ Optimal
+          </span>
+        )}
+        <div className="flex-1 text-xs font-semibold text-stone-800">{option.label}</div>
+        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 border-t border-stone-100">
+          {/* Pros */}
+          {option.pros && option.pros.length > 0 && (
+            <div className="mt-3">
+              <div className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-2">
+                Pros
+              </div>
+              <div className="flex flex-col gap-2">
+                {option.pros.map((pro: any, i: number) => (
+                  <div key={i} className="px-3 py-2 bg-green-50 border border-green-100 rounded-lg">
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <div className="text-xs font-medium text-green-800">{pro.label}</div>
+                      <TrustBadge grade={pro.grade} explanation={pro.gradeExplanation ?? pro.source} />
+                    </div>
+                    <p className="text-xs text-green-700 leading-relaxed mb-1">{pro.explanation}</p>
+                    <div className="text-xs text-green-600 italic">
+                      {pro.sourceUrl ? (
+                        <a href={pro.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-800 transition-colors">
+                          {pro.source}
+                        </a>
+                      ) : pro.source}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {/* Cons */}
+          {option.cons && option.cons.length > 0 && (
+            <div className="mt-3">
+              <div className="text-xs font-semibold text-red-700 uppercase tracking-widest mb-2">
+                Cons
+              </div>
+              <div className="flex flex-col gap-2">
+                {option.cons.map((con: any, i: number) => (
+                  <div key={i} className="px-3 py-2 bg-red-50 border border-red-100 rounded-lg">
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <div className="text-xs font-medium text-red-800">{con.label}</div>
+                      <TrustBadge grade={con.grade} explanation={con.gradeExplanation ?? con.source} />
+                    </div>
+                    <p className="text-xs text-red-700 leading-relaxed mb-1">{con.explanation}</p>
+                    <div className="text-xs text-red-600 italic">
+                      {con.sourceUrl ? (
+                        <a href={con.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-red-800 transition-colors">
+                          {con.source}
+                        </a>
+                      ) : con.source}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function WhereThingsStandCard({ entry }: { entry: any }) {
+  const [open, setOpen] = useState(false)
+  const branchLabels: Record<string, string> = {
+    personal: 'Personal',
+    local: 'Local',
+    state: 'State',
+    national_legislative: 'Legislative',
+    national_judicial: 'Judicial',
+    national_executive: 'Executive',
+    private: 'Private sector',
+  }
+  const branchColors: Record<string, string> = {
+    personal: 'bg-blue-50 text-blue-700 border-blue-200',
+    local: 'bg-green-50 text-green-700 border-green-200',
+    state: 'bg-purple-50 text-purple-700 border-purple-200',
+    national_legislative: 'bg-amber-50 text-amber-700 border-amber-200',
+    national_judicial: 'bg-orange-50 text-orange-700 border-orange-200',
+    national_executive: 'bg-red-50 text-red-700 border-red-200',
+    private: 'bg-stone-100 text-stone-700 border-stone-200',
+  }
+  const dirIcons: Record<string, string> = {
+    toward: '↑', away: '↓', mixed: '⟷',
+  }
+  const dirColors: Record<string, string> = {
+    toward: 'text-green-600', away: 'text-red-600', mixed: 'text-amber-600',
+  }
+
+  if (entry.locked) {
+    return (
+      <div className="flex items-center gap-3 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl">
+        <span className="text-stone-300 shrink-0">🔒</span>
+        <div className="flex-1">
+          <div className="text-xs font-medium text-stone-400">{entry.title}</div>
+          <div className="text-xs text-stone-300">
+            {entry.lockedTier === 'civic' ? 'Upgrade to Civic tier' : 'Upgrade to Community tier'}
+          </div>
+        </div>
+        <span className={clsx('text-xs px-2 py-0.5 rounded-full border font-medium', branchColors[entry.branch])}>
+          {branchLabels[entry.branch]}
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full text-left px-4 py-3 hover:bg-stone-50 transition-colors"
+      >
+        <div className="flex items-start gap-3">
+          <span className={clsx('text-xs px-2 py-0.5 rounded-full border font-medium shrink-0 mt-0.5', branchColors[entry.branch])}>
+            {branchLabels[entry.branch]}
+          </span>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-0.5">
+              <div className="text-xs font-semibold text-stone-800">{entry.title}</div>
+              {entry.direction && (
+                <span className={clsx('text-xs font-bold', dirColors[entry.direction])}>
+                  {dirIcons[entry.direction]}
+                </span>
+              )}
+            </div>
+            {entry.status && (
+              <div className="text-xs text-stone-400">{entry.status}</div>
+            )}
+          </div>
+          <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+        </div>
+      </button>
+
+      {open && (
+        <div className="border-t border-stone-100 px-4 py-4">
+          <p className="text-xs text-stone-600 leading-relaxed mb-3">{entry.description}</p>
+
+          {/* Bill lifecycle */}
+          {entry.billName && (
+            <div className="mb-3 px-3 py-3 bg-blue-50 border border-blue-100 rounded-lg">
+              <div className="text-xs font-semibold text-blue-900 mb-0.5">
+                {entry.billName} · {entry.billNumber}
+              </div>
+              {entry.billStageCount !== undefined && (
+                <div className="mt-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="flex-1 h-1.5 bg-blue-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-blue-500 rounded-full"
+                        style={{ width: `${(entry.billStageCount / entry.billStageTotal) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-blue-700 font-medium shrink-0">
+                      {entry.billStageCount}/{entry.billStageTotal}
+                    </span>
+                  </div>
+                  <div className="text-xs text-blue-600">{entry.billStageLabel}</div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Senator context */}
+          {entry.senatorContext && entry.senatorContext.length > 0 && (
+            <div className="mb-3">
+              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                Your senators
+              </div>
+              <div className="flex flex-col gap-2">
+                {entry.senatorContext.map((sen: any, i: number) => (
+                  <div key={i} className="px-3 py-2 bg-stone-50 rounded-lg">
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <div className="text-xs font-semibold text-stone-800">{sen.name}</div>
+                      <span className={clsx('text-xs px-1.5 py-0.5 rounded font-medium',
+                        sen.position === 'supporting' ? 'bg-green-50 text-green-700' :
+                        sen.position === 'opposing' ? 'bg-red-50 text-red-700' :
+                        'bg-amber-50 text-amber-700'
+                      )}>
+                        {sen.position === 'supporting' ? 'Supporting' :
+                         sen.position === 'opposing' ? 'Opposing' :
+                         sen.position === 'not_cosponsored' ? 'Not co-sponsored' :
+                         'Undecided'}
+                      </span>
+                    </div>
+                    <div className="text-xs text-stone-500">{sen.persuadability}</div>
+                    {sen.pacDonations && (
+                      <div className="text-xs text-stone-400 mt-0.5">
+                        Pharma PAC donations: {sen.pacDonations}
+                      </div>
+                    )}
+                    {sen.nextElection && (
+                      <div className="text-xs text-stone-400">
+                        Next election: {sen.nextElection}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Actions */}
+          {entry.actions && entry.actions.length > 0 && (
+            <div className="flex flex-col gap-2">
+              {entry.actions.map((action: any, i: number) => {
+                if (action.type === 'contact' || action.type === 'external') {
+                  return (
+                    <a key={i} href={action.url ?? '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-stone-900 text-white rounded-lg text-xs font-medium hover:bg-stone-700 transition-colors">
+                      {action.label}
+                    </a>
+                  )
+                }
+                if (action.type === 'petition') {
+                  return (
+                    <a key={i} href={action.url ?? '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg text-xs font-medium hover:bg-amber-700 transition-colors">
+                      {action.label}
+                    </a>
+                  )
+                }
+                if (action.type === 'download') {
+                  return (
+                    <button
+                      key={i}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors"
+                    >
+                      ↓ {action.label}
+                    </button>
+                  )
+                }
+                if (action.type === 'quiz') {
+                  return (
+                    <a key={i} href={action.url ?? '#'} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors">
+                      {action.label}
+                    </a>
+                  )
+                }
+                return (
+                  <button
+                    key={i}
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-stone-200 text-stone-600 rounded-lg text-xs font-medium hover:bg-stone-50 transition-colors"
+                  >
+                    {action.label}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          {entry.lastUpdated && (
+            <div className="mt-3 text-xs text-stone-400">
+              Last updated: {entry.lastUpdated}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor: string }) {
   const [open, setOpen] = useState(false)
+
+  const hasNewArchitecture = subsection.issueClaim || subsection.solutionClaim || 
+    subsection.options || subsection.whereThingsStand
+
   return (
     <div className="border border-stone-200 rounded-lg overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full text-left px-3 py-2.5 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
       >
-        <div className="text-xs font-semibold text-stone-800">{subsection.label}</div>
+        <div>
+          <div className="text-xs font-semibold text-stone-800">{subsection.label}</div>
+          {subsection.lastUpdated && (
+            <div className="text-xs text-stone-400 mt-0.5">Updated {subsection.lastUpdated}</div>
+          )}
+        </div>
         <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
       </button>
 
       {open && (
         <div className="border-t border-stone-100">
-          {/* Bullets */}
-          {/* Bullets */}
-          {subsection.bullets && subsection.bullets.length > 0 && (
-            <div className="px-3 pt-3 pb-2">
-              <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">The evidence</div>
-              <ul className="space-y-3">
-                {subsection.bullets.map((bullet: any, i: number) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-stone-300 shrink-0 mt-0.5 font-bold text-xs">→</span>
-                    <div className="flex-1">
-                      <p className="text-xs text-stone-600 leading-relaxed mb-1">{bullet.text}</p>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs text-stone-400 italic">
-                          {bullet.sourceUrl ? (
-                            <a href={bullet.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-600 transition-colors">
-                              {bullet.source}
-                            </a>
-                          ) : bullet.source}
-                        </span>
-                        {bullet.sourceGrade && (
-                          <TrustBadge
-                            grade={bullet.sourceGrade}
-                            explanation={bullet.sourceGradeExplanation ?? ''}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {hasNewArchitecture ? (
+            <div className="px-4 py-4 flex flex-col gap-6">
 
-          {/* What's worked historically */}
-          {subsection.historicalPrecedents && subsection.historicalPrecedents.length > 0 && (
-            <div className="px-3 pb-3">
-              <div className="flex items-center gap-2 my-3">
-                <div className="h-px flex-1 bg-green-100" />
-                <div className="text-xs font-semibold text-green-700 uppercase tracking-widest px-2">
-                  What's worked historically
+              {/* Issue Claim + Evidence */}
+              {subsection.issueClaim && (
+                <div>
+                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                    Issue
+                  </div>
+                  <div className="px-4 py-3 bg-red-50 border border-red-100 rounded-xl">
+                    <p className="text-sm font-medium text-red-900 leading-relaxed">
+                      {subsection.issueClaim}
+                    </p>
+                    {subsection.issueEvidence && subsection.issueEvidence.length > 0 && (
+                      <EvidenceDropdown
+                        items={subsection.issueEvidence}
+                        label="Issue evidence"
+                        color="red"
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className="h-px flex-1 bg-green-100" />
-              </div>
-              <div className="flex flex-col gap-2">
-                {subsection.historicalPrecedents.map((p: any, i: number) => (
-                  <HistoricalPrecedentBlock key={i} precedent={p} color={ringColor} />
-                ))}
-              </div>
-            </div>
-          )}
+              )}
 
-          {/* Policy Watch */}
-          {subsection.policyWatch && (
-            <div className="px-3 pb-3">
-              <div className="flex items-center gap-2 my-3">
-                <div className="h-px flex-1 bg-blue-100" />
-                <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest px-2">
-                  Policy watch
+              {/* Solution Claim + Evidence */}
+              {subsection.solutionClaim && (
+                <div>
+                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                    Solution
+                  </div>
+                  <div className="px-4 py-3 bg-green-50 border border-green-100 rounded-xl">
+                    <p className="text-sm font-medium text-green-900 leading-relaxed">
+                      {subsection.solutionClaim}
+                    </p>
+                    {subsection.solutionEvidence && subsection.solutionEvidence.length > 0 && (
+                      <EvidenceDropdown
+                        items={subsection.solutionEvidence}
+                        label="Solution evidence"
+                        color="green"
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className="h-px flex-1 bg-blue-100" />
-              </div>
+              )}
 
-              {/* Federal */}
-              {subsection.policyWatch.federal && subsection.policyWatch.federal.length > 0 && (
-                <div className="mb-3">
-                  <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Federal</div>
+              {/* Options */}
+              {subsection.options && subsection.options.length > 0 && (
+                <div>
+                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+                    Options — paths forward ranked by evidence
+                  </div>
                   <div className="flex flex-col gap-2">
-                    {subsection.policyWatch.federal.map((entry: any) => (
-                      <PolicyWatchEntryBlock key={entry.id} entry={entry} />
+                    {subsection.options
+                      .sort((a: any, b: any) => (b.isOptimal ? 1 : 0) - (a.isOptimal ? 1 : 0))
+                      .map((option: any) => (
+                        <OptionCard key={option.id} option={option} />
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Where things stand + what you can do */}
+              {subsection.whereThingsStand && subsection.whereThingsStand.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-px flex-1 bg-stone-200" />
+                    <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
+                      Where things stand + what you can do
+                    </div>
+                    <div className="h-px flex-1 bg-stone-200" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {subsection.whereThingsStand.map((entry: any) => (
+                      <WhereThingsStandCard key={entry.id} entry={entry} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Legacy architecture */
+            <div>
+              {/* Bullets */}
+              {subsection.bullets && subsection.bullets.length > 0 && (
+                <div className="px-3 pt-3 pb-2">
+                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">The evidence</div>
+                  <ul className="space-y-3">
+                    {subsection.bullets.map((bullet: any, i: number) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-stone-300 shrink-0 mt-0.5 font-bold text-xs">→</span>
+                        <div className="flex-1">
+                          <p className="text-xs text-stone-600 leading-relaxed mb-1">{bullet.text}</p>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs text-stone-400 italic">
+                              {bullet.sourceUrl ? (
+                                <a href={bullet.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-600 transition-colors">
+                                  {bullet.source}
+                                </a>
+                              ) : bullet.source}
+                            </span>
+                            {bullet.sourceGrade && (
+                              <TrustBadge
+                                grade={bullet.sourceGrade}
+                                explanation={bullet.sourceGradeExplanation ?? ''}
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* What's worked historically */}
+              {subsection.historicalPrecedents && subsection.historicalPrecedents.length > 0 && (
+                <div className="px-3 pb-3">
+                  <div className="flex items-center gap-2 my-3">
+                    <div className="h-px flex-1 bg-green-100" />
+                    <div className="text-xs font-semibold text-green-700 uppercase tracking-widest px-2">
+                      What's worked historically
+                    </div>
+                    <div className="h-px flex-1 bg-green-100" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {subsection.historicalPrecedents.map((p: any, i: number) => (
+                      <HistoricalPrecedentBlock key={i} precedent={p} color={ringColor} />
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* State locked */}
-              {subsection.policyWatch.stateTeaser && (
-                <div className="mb-2 flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
-                  <span className="text-stone-300 shrink-0">🔒</span>
-                  <div className="flex-1">
-                    <div className="text-xs font-medium text-stone-400">State policy watch</div>
-                    <div className="text-xs text-stone-300">{subsection.policyWatch.stateTeaser}</div>
+              {/* Policy Watch */}
+              {subsection.policyWatch && (
+                <div className="px-3 pb-3">
+                  <div className="flex items-center gap-2 my-3">
+                    <div className="h-px flex-1 bg-blue-100" />
+                    <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest px-2">
+                      Policy watch
+                    </div>
+                    <div className="h-px flex-1 bg-blue-100" />
                   </div>
-                  <span className="text-xs text-stone-300 shrink-0">Civic tier</span>
-                </div>
-              )}
-
-              {/* Local locked */}
-              {subsection.policyWatch.localTeaser && (
-                <div className="flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
-                  <span className="text-stone-300 shrink-0">🔒</span>
-                  <div className="flex-1">
-                    <div className="text-xs font-medium text-stone-400">Local policy watch</div>
-                    <div className="text-xs text-stone-300">{subsection.policyWatch.localTeaser}</div>
-                  </div>
-                  <span className="text-xs text-stone-300 shrink-0">Community tier</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* What you can do */}
-          {!subsection.contextOnly && subsection.actions && subsection.actions.length > 0 && (
-            <div className="px-3 pb-3">
-              <div className="flex items-center gap-2 my-3">
-                <div className="h-px flex-1 bg-stone-200" />
-                <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
-                  What you can do
-                </div>
-                <div className="h-px flex-1 bg-stone-200" />
-              </div>
-              <div className="flex flex-col gap-2">
-                {['personal', 'local', 'state', 'national'].map(tier => {
-                  const tierActions = subsection.actions.filter((a: any) => a.tier === tier)
-                  if (tierActions.length === 0) return null
-                  const isLocked = tier === 'local' || tier === 'state'
-                  const tierColors: Record<string, string> = {
-                    personal: 'text-blue-700',
-                    local:    'text-green-700',
-                    state:    'text-purple-700',
-                    national: 'text-amber-700',
-                  }
-                  const tierLabels: Record<string, string> = {
-                    personal: 'Personal',
-                    local:    'Local',
-                    state:    'State',
-                    national: 'National',
-                  }
-                  return (
-                    <div key={tier}>
-                      <div className={clsx('text-xs font-semibold uppercase tracking-widest mb-1.5 flex items-center gap-1.5', tierColors[tier])}>
-                        {isLocked && <span>🔒</span>}
-                        {tierLabels[tier]}
-                      </div>
+                  {subsection.policyWatch.federal && subsection.policyWatch.federal.length > 0 && (
+                    <div className="mb-3">
+                      <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Federal</div>
                       <div className="flex flex-col gap-2">
-                        {tierActions.map((a: any, i: number) => (
-                          <DriverActionCard key={i} action={a} isLocked={isLocked} />
+                        {subsection.policyWatch.federal.map((entry: any) => (
+                          <PolicyWatchEntryBlock key={entry.id} entry={entry} />
                         ))}
                       </div>
                     </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
+                  )}
+                  {subsection.policyWatch.stateTeaser && (
+                    <div className="mb-2 flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
+                      <span className="text-stone-300 shrink-0">🔒</span>
+                      <div className="flex-1">
+                        <div className="text-xs font-medium text-stone-400">State policy watch</div>
+                        <div className="text-xs text-stone-300">{subsection.policyWatch.stateTeaser}</div>
+                      </div>
+                      <span className="text-xs text-stone-300 shrink-0">Civic tier</span>
+                    </div>
+                  )}
+                  {subsection.policyWatch.localTeaser && (
+                    <div className="flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
+                      <span className="text-stone-300 shrink-0">🔒</span>
+                      <div className="flex-1">
+                        <div className="text-xs font-medium text-stone-400">Local policy watch</div>
+                        <div className="text-xs text-stone-300">{subsection.policyWatch.localTeaser}</div>
+                      </div>
+                      <span className="text-xs text-stone-300 shrink-0">Community tier</span>
+                    </div>
+                  )}
+                </div>
+              )}
 
-          {/* Context only note */}
-          {subsection.contextOnly && (
-            <div className="px-3 pb-3">
-              <p className="text-xs text-stone-400 italic">
-                This section provides context for understanding the structural driver. Actions to address this are included in other subsections above.
-              </p>
+              {/* What you can do — legacy */}
+              {!subsection.contextOnly && subsection.actions && subsection.actions.length > 0 && (
+                <div className="px-3 pb-3">
+                  <div className="flex items-center gap-2 my-3">
+                    <div className="h-px flex-1 bg-stone-200" />
+                    <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
+                      What you can do
+                    </div>
+                    <div className="h-px flex-1 bg-stone-200" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {['personal', 'local', 'state', 'national'].map(tier => {
+                      const tierActions = subsection.actions.filter((a: any) => a.tier === tier)
+                      if (tierActions.length === 0) return null
+                      const isLocked = tier === 'local' || tier === 'state'
+                      const tierColors: Record<string, string> = {
+                        personal: 'text-blue-700',
+                        local:    'text-green-700',
+                        state:    'text-purple-700',
+                        national: 'text-amber-700',
+                      }
+                      const tierLabels: Record<string, string> = {
+                        personal: 'Personal',
+                        local:    'Local',
+                        state:    'State',
+                        national: 'National',
+                      }
+                      return (
+                        <div key={tier}>
+                          <div className={clsx('text-xs font-semibold uppercase tracking-widest mb-1.5 flex items-center gap-1.5', tierColors[tier])}>
+                            {isLocked && <span>🔒</span>}
+                            {tierLabels[tier]}
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            {tierActions.map((a: any, i: number) => (
+                              <DriverActionCard key={i} action={a} isLocked={isLocked} />
+                            ))}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {subsection.contextOnly && (
+                <div className="px-3 pb-3">
+                  <p className="text-xs text-stone-400 italic">
+                    This section provides context for understanding the structural driver. Actions to address this are included in other subsections above.
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
