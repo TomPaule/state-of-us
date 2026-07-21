@@ -120,7 +120,7 @@ function TrustBadge({ grade, explanation, methodology }: {
         Data Quality: {grade} <span className="opacity-60">▾</span>
       </button>
       {show && (
-        <div className="absolute left-0 top-7 z-20 w-80 bg-white border border-stone-200 rounded-xl p-4 shadow-xl text-xs leading-relaxed">
+        <div className="absolute left-0 top-7 z-20 w-72 max-w-[calc(100vw-2rem)] bg-white border border-stone-200 rounded-xl p-4 shadow-xl text-xs leading-relaxed">
           {/* Grade header */}
           <div className="flex items-center gap-2 mb-3">
             <span className={clsx('px-2 py-0.5 rounded border font-bold text-sm', colors[grade])}>
@@ -707,7 +707,7 @@ function OptionCard({ option }: { option: any }) {
         <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
       </button>
       {open && (
-        <div className="px-4 pb-4 border-t border-stone-100">
+        <div className="px-2 pb-3 sm:px-4 sm:pb-4 border-t border-stone-100">
           {/* Pros */}
           {option.pros && option.pros.length > 0 && (
             <div className="mt-3">
@@ -838,7 +838,7 @@ function WhereThingsStandCard({ entry }: { entry: any }) {
       </button>
 
       {open && (
-        <div className="border-t border-stone-100 px-4 py-4">
+        <div className="border-t border-stone-100 px-2 py-3 sm:px-4 sm:py-4">
           <p className="text-xs text-stone-600 leading-relaxed mb-3">{entry.description}</p>
 
           {/* Bill lifecycle */}
@@ -1074,7 +1074,7 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
       {open && (
         <div className="border-t border-stone-100">
           {hasNewArchitecture ? (
-            <div className="px-4 py-4 flex flex-col gap-6">
+            <div className="px-2 py-3 sm:px-4 sm:py-4 flex flex-col gap-4 sm:gap-6">
 
               {/* Issue Claim + Evidence */}
               {subsection.issueClaim && (
@@ -1860,6 +1860,53 @@ function FrontierResearchCard({ research }: { research: any }) {
     </div>
   )
 }
+function CollapsibleSection({
+  title,
+  subtitle,
+  defaultOpen,
+  dark,
+  children,
+}: {
+  title: string
+  subtitle?: string
+  defaultOpen: boolean
+  dark: boolean
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div className="mb-4">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className={clsx(
+          'w-full text-left p-3 rounded-lg flex items-center justify-between gap-2 transition-colors',
+          dark ? 'bg-stone-900 hover:bg-stone-800' : 'bg-stone-50 hover:bg-stone-100 border border-stone-200'
+        )}
+      >
+        <div>
+          <div className={clsx('text-xs font-semibold', dark ? 'text-white' : 'text-stone-700')}>
+            {title}
+          </div>
+          {subtitle && (
+            <div className={clsx('text-xs mt-0.5 leading-relaxed', dark ? 'text-stone-400' : 'text-stone-500')}>
+              {subtitle}
+            </div>
+          )}
+        </div>
+        <span className={clsx(
+          'shrink-0 transition-transform duration-200 text-sm',
+          open && 'rotate-180',
+          dark ? 'text-stone-400' : 'text-stone-400'
+        )}>▾</span>
+      </button>
+      {open && (
+        <div className="mt-3">
+          {children}
+        </div>
+      )}
+    </div>
+  )
+}
 // ── Category accordion ────────────────────────────────────────────────────────
 
 function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: string }) {
@@ -1981,38 +2028,32 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                   </div>
                 )}
 
-                {/* Data points section header */}
-                <div className="mb-4 p-3 bg-stone-900 rounded-lg">
-                  <div className="text-xs font-semibold text-white mb-0.5">
-                    Drivers of preventable death
+                {/* Data points — collapsible */}
+                <CollapsibleSection
+                  title="Drivers of preventable death"
+                  defaultOpen={true}
+                  dark={true}
+                >
+                  <div className="flex flex-col gap-4">
+                    {cat.dataPoints.map(dp => (
+                      <DataPointCard key={dp.id} dp={dp} ringColor={ringColor} />
+                    ))}
                   </div>
-                  <div className="text-xs text-stone-400">
-                    
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  {cat.dataPoints.map(dp => (
-                    <DataPointCard key={dp.id} dp={dp} ringColor={ringColor} />
-                  ))}
-                </div>
+                </CollapsibleSection>
                 {/* Frontier research */}
                 {cat.frontierResearch && cat.frontierResearch.length > 0 && (
-                  <div className="mt-8">
-                    <div className="mb-4">
-                      <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">
-                        The frontier — deaths we can't yet prevent
-                      </div>
-                      <p className="text-sm text-stone-600 leading-relaxed">
-                        ~500,000 cardiovascular deaths per year are not currently preventable — representing genetic conditions, advanced disease states, and mechanisms we don't yet fully understand. Here's what's on the horizon and what you can do to accelerate it.
-                      </p>
-                    </div>
+                  <CollapsibleSection
+                    title="The frontier — deaths we can't yet prevent"
+                    subtitle="~500,000 cardiovascular deaths per year are not currently preventable. Here's what's on the horizon."
+                    defaultOpen={false}
+                    dark={false}
+                  >
                     <div className="flex flex-col gap-3">
                       {cat.frontierResearch.map((research: any) => (
                         <FrontierResearchCard key={research.id} research={research} />
                       ))}
                     </div>
-                  </div>
+                  </CollapsibleSection>
                 )}
               </div>
             
