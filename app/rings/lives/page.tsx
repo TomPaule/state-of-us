@@ -96,18 +96,26 @@ function TrustBadge({ grade, explanation, howToUse, checklist }: {
 
   React.useEffect(() => {
     if (show) {
+      const scrollY = window.scrollY
       document.body.style.overflow = 'hidden'
       document.body.style.position = 'fixed'
       document.body.style.width = '100%'
+      document.body.style.top = `-${scrollY}px`
     } else {
+      const scrollY = document.body.style.top
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
+      document.body.style.top = ''
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
     }
     return () => {
+      const scrollY = document.body.style.top
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
+      document.body.style.top = ''
+      if (scrollY) window.scrollTo(0, parseInt(scrollY) * -1)
     }
   }, [show])
 
@@ -1112,22 +1120,31 @@ function NationalGroup({ entries }: { entries: any[] }) {
 }
 function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor: string }) {
   const [open, setOpen] = useState(false)
-  React.useEffect(() => {
+ React.useEffect(() => {
     if (open) {
+      const scrollY = window.scrollY
       document.body.style.overflow = 'hidden'
       document.body.style.position = 'fixed'
       document.body.style.width = '100%'
+      document.body.style.top = `-${scrollY}px`
     } else {
+      const scrollY = document.body.style.top
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
+      document.body.style.top = ''
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
     }
     return () => {
+      const scrollY = document.body.style.top
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
+      document.body.style.top = ''
+      if (scrollY) window.scrollTo(0, parseInt(scrollY) * -1)
     }
   }, [open])
+
   const hasNewArchitecture = subsection.issueClaim || subsection.solutionClaim ||
     subsection.options || subsection.whereThingsStand
 
