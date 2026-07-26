@@ -12,22 +12,50 @@ export interface ChartPoint {
   target: number
 }
 
-export type TrustGrade = 'A' | 'B' | 'C' | 'D'
+export type TrustGrade = 'A' | 'B' | 'C' | 'D' | 'F'
 
-export interface TrustMethodology {
-  sampleSize?: string
+export interface TrustChecklist {
   peerReviewed?: boolean
   replicated?: boolean
-  recency?: string
-  conflictsOfInterest?: string
-  limitations?: string
+  largeSampleSize?: boolean
+  sampleSizeDetail?: string
+  noConflictsOfInterest?: boolean
+  conflictsDetail?: string
+  causalEvidence?: boolean
+  systematicReview?: boolean
+  recentData?: boolean
+  recencyDetail?: string
+  generalizablePopulation?: boolean
+  populationDetail?: string
+  effectSizeReported?: boolean
+  fundingDisclosed?: boolean
+  fundingDetail?: string
+  governmentSource?: boolean
+  longitudinal?: boolean
+  preRegistered?: boolean
+  openData?: boolean
 }
 
 export interface TrustRating {
   grade: TrustGrade
   explanation: string
-  methodology?: TrustMethodology
+  howToUse?: string
+  checklist?: TrustChecklist
+  // Legacy
+  methodology?: {
+    sampleSize?: string
+    peerReviewed?: boolean
+    replicated?: boolean
+    recency?: string
+    conflictsOfInterest?: string
+    limitations?: string
+    preRegistered?: boolean
+    openData?: boolean
+    governmentSource?: boolean
+    longitudinal?: boolean
+  }
 }
+
 
 export interface ActionRingImpact {
   ringId: string

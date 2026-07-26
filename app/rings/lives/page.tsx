@@ -86,122 +86,183 @@ function ImpactWeightBadge({ weight }: { weight: string }) {
   )
 }
 
-function TrustBadge({ grade, explanation, methodology }: { 
+function TrustBadge({ grade, explanation, howToUse, checklist }: {
   grade: string
   explanation: string
-  methodology?: {
-    sampleSize?: string
-    peerReviewed?: boolean
-    replicated?: boolean
-    recency?: string
-    conflictsOfInterest?: string
-    limitations?: string
-  }
+  howToUse?: string
+  checklist?: any
 }) {
-  const colors: Record<string, string> = {
+  const [show, setShow] = useState(false)
+
+  React.useEffect(() => {
+    if (show) {
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+  }, [show])
+
+  const gradeColors: Record<string, string> = {
     A: 'bg-green-50 text-green-700 border-green-200',
     B: 'bg-blue-50 text-blue-700 border-blue-200',
     C: 'bg-amber-50 text-amber-700 border-amber-200',
     D: 'bg-red-50 text-red-700 border-red-200',
+    F: 'bg-red-100 text-red-800 border-red-300',
   }
-  const gradeDescriptions: Record<string, string> = {
-    A: 'Official government registry or surveillance data — highest confidence. Collected systematically across the entire population with standardized methodology.',
-    B: 'Peer-reviewed research with strong methodology — high confidence. Published in indexed journals, reviewed by independent experts, generally replicated.',
-    C: 'Modeled estimates or single studies — moderate confidence. Based on best available data but involves assumptions that introduce uncertainty.',
-    D: 'Contested or limited data — use with caution. Findings disputed in the literature or based on small samples with significant limitations.',
+
+  const gradeGuidance: Record<string, string> = {
+    A: 'Strong foundation — this finding is well-established.',
+    B: 'Good evidence — minor limitations noted. Appropriate to cite with context.',
+    C: 'Preliminary — treat as one data point, not settled science. Seek corroboration.',
+    D: 'Weak evidence — significant limitations. Do not use to form strong conclusions.',
+    F: 'Unreliable — do not use to inform your opinion on this topic.',
   }
-  const [show, setShow] = useState(false)
+
+  const criteria = [
+    {
+      group: 'Critical',
+      items: [
+        { label: 'Peer reviewed', value: checklist?.peerReviewed, description: 'Evaluated by independent experts before publication' },
+        { label: 'Independently replicated', value: checklist?.replicated, description: 'Findings confirmed by separate research teams' },
+        { label: 'Large sample size', value: checklist?.largeSampleSize, description: checklist?.sampleSizeDetail ?? 'Sufficient participants to detect real effects' },
+        { label: 'No conflicts of interest', value: checklist?.noConflictsOfInterest, description: checklist?.conflictsDetail ?? 'No financial relationships that could bias results' },
+        { label: 'Causal evidence (RCT/natural experiment)', value: checklist?.causalEvidence, description: 'Establishes cause and effect, not just correlation' },
+      ]
+    },
+    {
+      group: 'Important',
+      items: [
+        { label: 'Systematic review or meta-analysis', value: checklist?.systematicReview, description: 'Synthesizes findings across multiple studies' },
+        { label: 'Recent data', value: checklist?.recentData, description: checklist?.recencyDetail ?? 'Data collected recently enough to be relevant' },
+        { label: 'Generalizable population', value: checklist?.generalizablePopulation, description: checklist?.populationDetail ?? 'Study population reflects who the finding applies to' },
+        { label: 'Effect size reported', value: checklist?.effectSizeReported, description: 'Reports practical magnitude, not just statistical significance' },
+        { label: 'Funding source disclosed', value: checklist?.fundingDisclosed, description: checklist?.fundingDetail ?? 'Who paid for the research is transparently stated' },
+      ]
+    },
+    {
+      group: 'Additional',
+      items: [
+        { label: 'Government or institutional source', value: checklist?.governmentSource, description: 'Collected by a public institution with no commercial interest' },
+        { label: 'Longitudinal data', value: checklist?.longitudinal, description: 'Tracks the same population over time' },
+        { label: 'Pre-registered study design', value: checklist?.preRegistered, description: 'Hypothesis registered before data collection — prevents p-hacking' },
+        { label: 'Open data available', value: checklist?.openData, description: 'Raw data publicly available for independent verification' },
+      ]
+    }
+  ]
+
+  const criticalPassing = criteria[0].items.filter(i => i.value === true).length
+  const criticalTotal = criteria[0].items.length
+
+  const badgeContent = (
+    <>
+      {/* Header */}
+      <div className={clsx('px-4 py-3 flex items-center justify-between', gradeColors[grade])}>
+        <div>
+          <div className="font-bold text-sm">Grade {grade}</div>
+          <div className="opacity-80 text-xs">{gradeGuidance[grade]}</div>
+        </div>
+        <div className="text-right opacity-70 text-xs">
+          <div>{criticalPassing}/{criticalTotal} critical</div>
+          <div>criteria met</div>
+        </div>
+      </div>
+
+      {/* Checklist */}
+      <div className="px-4 py-3 border-b border-stone-100">
+        <div className="font-semibold text-stone-700 mb-3 uppercase tracking-widest text-xs">
+          Evidence quality checklist
+        </div>
+        {criteria.map((group, gi) => (
+          <div key={gi} className="mb-3">
+            <div className="text-xs text-stone-400 uppercase tracking-widest mb-2">
+              {group.group}
+            </div>
+            <div className="flex flex-col gap-1.5">
+              {group.items.map((item, ii) => (
+                <div key={ii} className="flex items-start gap-2">
+                  <div className="flex items-center gap-1.5 shrink-0 mt-0.5">
+                    <span className="text-stone-300 text-xs">{gi * 5 + ii + 1}.</span>
+                    <span className={clsx('font-bold text-sm',
+                      item.value === true ? 'text-green-600' :
+                      item.value === false ? 'text-red-500' :
+                      'text-stone-300'
+                    )}>
+                      {item.value === true ? '✓' : item.value === false ? '✗' : '·'}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <span className={clsx('font-medium text-xs',
+                      item.value === true ? 'text-stone-800' :
+                      item.value === false ? 'text-stone-500' :
+                      'text-stone-400'
+                    )}>
+                      {item.label}
+                    </span>
+                    <span className="text-stone-400 text-xs"> — {item.description}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Why this grade */}
+      <div className="px-4 py-3 border-b border-stone-100">
+        <div className="font-semibold text-stone-700 mb-1 text-xs">Why this grade:</div>
+        <p className="text-stone-600 leading-relaxed text-xs">{explanation}</p>
+      </div>
+
+      {/* How to use */}
+      <div className="px-4 py-3 bg-stone-50">
+        <div className="font-semibold text-stone-700 mb-1 text-xs">How to use this finding:</div>
+        <p className="text-stone-600 leading-relaxed text-xs">
+          {howToUse ?? gradeGuidance[grade]}
+        </p>
+      </div>
+    </>
+  )
+
   return (
-    <div className="relative inline-block">
+    <div className="inline-block">
       <button
         onClick={e => { e.stopPropagation(); setShow(s => !s) }}
-        className={clsx('inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-medium', colors[grade])}
+        className={clsx('inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-medium', gradeColors[grade])}
       >
-        Data Quality: {grade} <span className="opacity-60">▾</span>
+        Data Quality: {grade}
+        <span className={clsx('transition-transform duration-200 inline-block', show && 'rotate-180')}>▾</span>
       </button>
-     {show && (
-        <div className="fixed inset-x-4 top-auto z-50 bg-white border border-stone-200 rounded-xl p-4 shadow-xl text-xs leading-relaxed mx-auto max-w-sm">
-          {/* Grade header */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className={clsx('px-2 py-0.5 rounded border font-bold text-sm', colors[grade])}>
-              {grade}
-            </span>
-            <div>
-              <div className="font-semibold text-stone-900">
-                {grade === 'A' ? 'Official registry data' :
-                 grade === 'B' ? 'Peer-reviewed research' :
-                 grade === 'C' ? 'Modeled estimate' :
-                 'Contested data'}
-              </div>
-              <div className="text-stone-400">Highest to lowest: A · B · C · D</div>
+
+      {show && (
+        <>
+          {/* Mobile — full screen drawer */}
+          <div className="sm:hidden fixed inset-0 z-[200] bg-white overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between">
+              <div className="font-semibold text-stone-900 text-sm">Data Quality: Grade {grade}</div>
+              <button
+                onClick={e => { e.stopPropagation(); setShow(false) }}
+                className="text-stone-400 hover:text-stone-700 text-lg"
+              >
+                ✕
+              </button>
             </div>
+            {badgeContent}
           </div>
 
-          {/* Grade description */}
-          <p className="text-stone-600 leading-relaxed mb-3 pb-3 border-b border-stone-100">
-            {gradeDescriptions[grade]}
-          </p>
-
-          {/* This source specifically */}
-          <div className="mb-3">
-            <div className="font-semibold text-stone-700 mb-1">Why this source got this grade:</div>
-            <p className="text-stone-600 leading-relaxed">{explanation}</p>
+          {/* Desktop — inline dropdown */}
+          <div className="hidden sm:block mt-1 rounded-xl border border-stone-200 bg-white text-xs leading-relaxed shadow-sm overflow-hidden">
+            {badgeContent}
           </div>
-
-          {/* Methodology details */}
-          {methodology && (
-            <div className="flex flex-col gap-1.5 pt-3 border-t border-stone-100">
-              <div className="font-semibold text-stone-700 mb-0.5">Methodology details:</div>
-              {methodology.sampleSize && (
-                <div className="flex items-start gap-2">
-                  <span className="text-stone-400 shrink-0">Sample:</span>
-                  <span className="text-stone-600">{methodology.sampleSize}</span>
-                </div>
-              )}
-              {methodology.peerReviewed !== undefined && (
-                <div className="flex items-start gap-2">
-                  <span className="text-stone-400 shrink-0">Peer reviewed:</span>
-                  <span className={methodology.peerReviewed ? 'text-green-700' : 'text-amber-700'}>
-                    {methodology.peerReviewed ? 'Yes' : 'No'}
-                  </span>
-                </div>
-              )}
-              {methodology.replicated !== undefined && (
-                <div className="flex items-start gap-2">
-                  <span className="text-stone-400 shrink-0">Replicated:</span>
-                  <span className={methodology.replicated ? 'text-green-700' : 'text-amber-700'}>
-                    {methodology.replicated ? 'Yes — findings confirmed by multiple independent studies' : 'Not yet replicated independently'}
-                  </span>
-                </div>
-              )}
-              {methodology.recency && (
-                <div className="flex items-start gap-2">
-                  <span className="text-stone-400 shrink-0">Recency:</span>
-                  <span className="text-stone-600">{methodology.recency}</span>
-                </div>
-              )}
-              {methodology.conflictsOfInterest && (
-                <div className="flex items-start gap-2">
-                  <span className="text-stone-400 shrink-0">Conflicts:</span>
-                  <span className="text-stone-600">{methodology.conflictsOfInterest}</span>
-                </div>
-              )}
-              {methodology.limitations && (
-                <div className="flex items-start gap-2">
-                  <span className="text-amber-600 shrink-0">Limitations:</span>
-                  <span className="text-stone-600">{methodology.limitations}</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          <button
-            onClick={e => { e.stopPropagation(); setShow(false) }}
-            className="mt-3 text-stone-400 hover:text-stone-600 transition-colors w-full text-center pt-2 border-t border-stone-100"
-          >
-            Close
-          </button>
-        </div>
+        </>
       )}
     </div>
   )
@@ -1574,13 +1635,13 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
             {dp.trust && (
               <div className="border-t border-stone-200 pt-2 mt-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <TrustBadge 
-                    grade={dp.trust.grade} 
+                  <TrustBadge
+                    grade={dp.trust.grade}
                     explanation={dp.trust.explanation}
-                    methodology={dp.trust.methodology}
+                    howToUse={dp.trust.howToUse}
+                    checklist={dp.trust.checklist}
                   />
                 </div>
-                <p className="text-xs text-stone-400 leading-relaxed">{dp.trust.explanation}</p>
               </div>
             )}
           </div>
