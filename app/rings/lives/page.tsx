@@ -1052,6 +1052,16 @@ function NationalGroup({ entries }: { entries: any[] }) {
 }
 function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor: string }) {
   const [open, setOpen] = useState(false)
+  React.useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
   const hasNewArchitecture = subsection.issueClaim || subsection.solutionClaim ||
     subsection.options || subsection.whereThingsStand
 
@@ -1303,7 +1313,7 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
         </button>
 
         {open && (
-          <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+          <div className="fixed inset-0 z-50 bg-white overflow-y-auto" style={{ touchAction: 'pan-y' }}>
             <div className="sticky top-0 bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between gap-2">
               <div className="text-sm font-semibold text-stone-900 leading-snug">{subsection.label}</div>
               <button
@@ -1374,7 +1384,7 @@ function DriverCard({ driver }: { driver: NonNullable<DataPoint['drivers']>[0] }
         </button>
 
         {open && (
-          <div className="border-t border-stone-100 px-4 py-4">
+          <div className="border-t border-stone-100 px-2 sm:px-4 py-3 sm:py-4">
             <div className="flex flex-col gap-3">
               {driver.subsections.map((subsection: any) => (
                 <SubsectionBlock
@@ -1884,7 +1894,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
       {/* Header */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full text-left px-5 py-4 hover:bg-stone-50 transition-colors"
+        className="w-full text-left px-3 sm:px-5 py-3 sm:py-4 hover:bg-stone-50 transition-colors"
       >
         <div className="flex items-start gap-4">
           <div className="flex-1 min-w-0">
@@ -1917,7 +1927,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
       {open && (
         <div className="border-t border-stone-100">
 
-          <div className="p-5">
+          <div className="p-2 sm:p-5">
               <div>
                 {/* Category why */}
                 <div className="bg-stone-50 border-l-4 rounded-r-lg p-4 mb-5" style={{ borderLeftColor: ringColor }}>
@@ -2036,7 +2046,7 @@ export default function LivesLostPage() {
   const ring = getRingById('lives')!
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
 
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-stone-400 mb-8">
