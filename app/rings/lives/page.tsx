@@ -1055,11 +1055,17 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
   React.useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
     } else {
       document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
     }
     return () => {
       document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
     }
   }, [open])
   const hasNewArchitecture = subsection.issueClaim || subsection.solutionClaim ||
@@ -1458,7 +1464,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
       {/* Header — always visible, click to expand */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full text-left p-4 hover:bg-stone-50 transition-colors"
+        className="w-full text-left p-3 sm:p-4 hover:bg-stone-50 transition-colors"
       >
         <div className="flex items-start justify-between gap-2 mb-1">
           {dp.impactWeight && <ImpactWeightBadge weight={dp.impactWeight} />}
@@ -1491,7 +1497,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
         <div className="border-t border-stone-100">
           {/* The problem — mechanism as bullets */}
           {(dp.mechanismBullets || dp.mechanism) && (
-            <div className="px-4 pt-4 pb-2">
+            <div className="px-2 sm:px-4 pt-3 sm:pt-4 pb-2">
               <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
                 The mechanism — how this causes death
               </div>
@@ -1523,7 +1529,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
 
           {/* Why the US gap */}
           {dp.whyBullets && (
-            <div className="px-4 pt-6 pb-2 border-t border-stone-100 mt-2">
+            <div className="px-2 sm:px-4 pt-4 sm:pt-6 pb-2 border-t border-stone-100 mt-2">
               <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
                 Why the US is worse than peer nations
               </div>
@@ -1551,7 +1557,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
           </div>
 
           {/* Source + data quality */}
-          <div className="mx-4 mb-3 px-3 py-2.5 bg-stone-50 border border-stone-100 rounded-lg">
+          <div className="mx-2 sm:mx-4 mb-3 px-2 sm:px-3 py-2 sm:py-2.5 bg-stone-50 border border-stone-100 rounded-lg">
             <div className="text-xs text-stone-400 mb-1.5">
               <span className="font-medium text-stone-500">Source:</span>{' '}
               {dp.sourceUrl ? (
@@ -1581,7 +1587,7 @@ function DataPointCard({ dp, ringColor }: { dp: DataPoint; ringColor: string }) 
 
           {/* Structural drivers */}
           {dp.drivers && dp.drivers.length > 0 && (
-            <div className="px-4 pb-4">
+            <div className="px-2 sm:px-4 pb-3 sm:pb-4">
               <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
                 What keeps this stuck — structural drivers and solutions
               </div>
@@ -1756,7 +1762,7 @@ function FrontierResearchCard({ research }: { research: any }) {
       {open && (
         <div className="border-t border-stone-100">
           {/* Mechanism */}
-          <div className="px-4 pt-4 pb-3">
+          <div className="px-2 sm:px-4 pt-3 sm:pt-4 pb-3">
             <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
               How it works
             </div>
@@ -1792,7 +1798,7 @@ function FrontierResearchCard({ research }: { research: any }) {
 
           {/* Actions */}
           {research.actions && research.actions.length > 0 && (
-            <div className="px-4 pb-4">
+            <div className="px-2 sm:px-4 pb-3 sm:pb-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="h-px flex-1 bg-stone-200" />
                 <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
