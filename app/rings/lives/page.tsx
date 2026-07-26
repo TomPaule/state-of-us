@@ -1896,7 +1896,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
 
 
   return (
-    <div className="border border-stone-200 rounded-xl bg-white shadow-card overflow-hidden">
+    <div className="border-y sm:border border-stone-200 sm:rounded-xl bg-white sm:shadow-card overflow-hidden">
       {/* Header */}
       <button
         onClick={() => setOpen(o => !o)}
@@ -2052,17 +2052,17 @@ export default function LivesLostPage() {
   const ring = getRingById('lives')!
 
   return (
-    <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
+    <div className="max-w-5xl mx-auto px-0 sm:px-6 py-6 sm:py-10">
 
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-stone-400 mb-8">
+      <div className="flex items-center gap-2 text-sm text-stone-400 mb-8 px-3 sm:px-0">
         <Link href="/" className="hover:text-stone-700 transition-colors">Vital Signs</Link>
         <span>/</span>
         <span className="text-stone-900">Ring {ring.order} — {ring.name}</span>
       </div>
 
       {/* Ring header */}
-      <div className="flex items-start gap-6 mb-6 flex-wrap">
+      <div className="flex items-start gap-6 mb-6 flex-wrap px-3 sm:px-0">
         <RingArc score={ring.score} color={ring.color} bgColor={ring.bgColor} size={72} strokeWidth={5} />
         <div className="flex-1 min-w-64">
           <div className="text-xs font-mono text-stone-400 uppercase tracking-widest mb-1">
@@ -2116,7 +2116,7 @@ export default function LivesLostPage() {
       </div>
 
       {/* Categories */}
-      <div className="mb-4">
+      <div className="mb-4 px-3 sm:px-0">
         <h2 className="font-display text-xl font-medium text-stone-900 mb-1">
           Leading causes of death
         </h2>
@@ -2124,12 +2124,11 @@ export default function LivesLostPage() {
           Ordered by total annual deaths. Click any cause to explore the data, drivers, and actions.
         </p>
       </div>
-
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3 sm:gap-4">
         {ring.categories.map((cat, i) => (
           <div key={cat.id} className="flex gap-3 items-start">
             <div
-              className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-1"
+              className="hidden sm:flex w-7 h-7 rounded-full items-center justify-center text-xs font-bold shrink-0 mt-1"
               style={{ background: ring.color + '15', color: ring.color }}
             >
               {i + 1}
