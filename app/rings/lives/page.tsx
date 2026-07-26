@@ -1052,329 +1052,295 @@ function NationalGroup({ entries }: { entries: any[] }) {
 }
 function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor: string }) {
   const [open, setOpen] = useState(false)
-
-  const hasNewArchitecture = subsection.issueClaim || subsection.solutionClaim || 
+  const hasNewArchitecture = subsection.issueClaim || subsection.solutionClaim ||
     subsection.options || subsection.whereThingsStand
 
-  return (
-    <div className="border border-stone-200 rounded-lg overflow-hidden">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full text-left px-3 py-2.5 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
-      >
+  const content = hasNewArchitecture ? (
+    <div className="flex flex-col gap-6">
+      {/* Problem */}
+      {subsection.issueClaim && (
         <div>
-          <div className="text-xs font-semibold text-stone-800">{subsection.label}</div>
-          {subsection.lastUpdated && (
-            <div className="text-xs text-stone-400 mt-0.5">Updated {subsection.lastUpdated}</div>
-          )}
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">Problem</div>
+          <div className="px-4 py-3 bg-red-50 border border-red-100 rounded-xl">
+            <p className="text-sm font-medium text-red-900 leading-relaxed">{subsection.issueClaim}</p>
+            {subsection.issueEvidence && subsection.issueEvidence.length > 0 && (
+              <EvidenceDropdown items={subsection.issueEvidence} label="Problem evidence" color="red" />
+            )}
+          </div>
         </div>
-        <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
-      </button>
+      )}
 
-      {open && (
-        <div className="border-t border-stone-100">
-          {hasNewArchitecture ? (
-            <div className="px-1 py-3 sm:px-4 sm:py-4 flex flex-col gap-4 sm:gap-6">
+      {/* Solution */}
+      {subsection.solutionClaim && (
+        <div>
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">Solution</div>
+          <div className="px-4 py-3 bg-green-50 border border-green-100 rounded-xl">
+            <p className="text-sm font-medium text-green-900 leading-relaxed">{subsection.solutionClaim}</p>
+            {subsection.solutionEvidence && subsection.solutionEvidence.length > 0 && (
+              <EvidenceDropdown items={subsection.solutionEvidence} label="Solution evidence" color="green" />
+            )}
+          </div>
+        </div>
+      )}
 
-              {/* Issue Claim + Evidence */}
-              {subsection.issueClaim && (
-                <div>
-                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-                    Problem
-                  </div>
-                  <div className="px-4 py-3 bg-red-50 border border-red-100 rounded-xl">
-                    <p className="text-sm font-medium text-red-900 leading-relaxed">
-                      {subsection.issueClaim}
-                    </p>
-                    {subsection.issueEvidence && subsection.issueEvidence.length > 0 && (
-                      <EvidenceDropdown
-                        items={subsection.issueEvidence}
-                        label="Problem evidence"
-                        color="red"
-                      />
+      {/* Options */}
+      {subsection.options && subsection.options.length > 0 && (
+        <div>
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
+            Options — ranked by evidence
+          </div>
+          <div className="flex flex-col gap-2">
+            {subsection.options
+              .sort((a: any, b: any) => (b.isOptimal ? 1 : 0) - (a.isOptimal ? 1 : 0))
+              .map((option: any) => (
+                <OptionCard key={option.id} option={option} />
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* Actions */}
+      {subsection.whereThingsStand && subsection.whereThingsStand.length > 0 && (
+        <div>
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">Actions</div>
+          <div className="flex flex-col gap-4">
+            {/* Personal */}
+            {subsection.whereThingsStand.filter((e: any) => e.branch === 'personal').length > 0 && (
+              <div>
+                <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-blue-400" />Personal
+                </div>
+                <div className="flex flex-col gap-2">
+                  {subsection.whereThingsStand.filter((e: any) => e.branch === 'personal').map((entry: any) => (
+                    <WhereThingsStandCard key={entry.id} entry={entry} />
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Public */}
+            {subsection.whereThingsStand.filter((e: any) =>
+              ['local', 'state', 'national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
+            ).length > 0 && (
+              <div>
+                <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-amber-400" />Public sector
+                </div>
+                <div className="flex flex-col gap-3">
+                  {subsection.whereThingsStand.filter((e: any) => e.branch === 'local').length > 0 && (
+                    <PublicTierGroup label="Local" color="text-green-700" entries={subsection.whereThingsStand.filter((e: any) => e.branch === 'local')} />
+                  )}
+                  {subsection.whereThingsStand.filter((e: any) => e.branch === 'state').length > 0 && (
+                    <PublicTierGroup label="State" color="text-purple-700" entries={subsection.whereThingsStand.filter((e: any) => e.branch === 'state')} />
+                  )}
+                  {subsection.whereThingsStand.filter((e: any) =>
+                    ['national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
+                  ).length > 0 && (
+                    <NationalGroup entries={subsection.whereThingsStand.filter((e: any) =>
+                      ['national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
+                    )} />
+                  )}
+                </div>
+              </div>
+            )}
+            {/* Private */}
+            {subsection.whereThingsStand.filter((e: any) => e.branch === 'private').length > 0 && (
+              <div>
+                <div className="text-xs font-semibold text-stone-600 uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-stone-400" />Private sector
+                </div>
+                <div className="flex flex-col gap-2">
+                  {subsection.whereThingsStand.filter((e: any) => e.branch === 'private').map((entry: any) => (
+                    <WhereThingsStandCard key={entry.id} entry={entry} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  ) : (
+    /* Legacy architecture */
+    <div>
+      {subsection.bullets && subsection.bullets.length > 0 && (
+        <div className="pt-3 pb-2">
+          <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">The evidence</div>
+          <ul className="space-y-3">
+            {subsection.bullets.map((bullet: any, i: number) => (
+              <li key={i} className="flex items-start gap-2">
+                <span className="text-stone-300 shrink-0 mt-0.5 font-bold text-xs">→</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-stone-600 leading-relaxed mb-1">{bullet.text}</p>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs text-stone-400 italic break-all">
+                      {bullet.sourceUrl ? (
+                        <a href={bullet.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-600 transition-colors">
+                          {bullet.source}
+                        </a>
+                      ) : bullet.source}
+                    </span>
+                    {bullet.sourceGrade && (
+                      <TrustBadge grade={bullet.sourceGrade} explanation={bullet.sourceGradeExplanation ?? ''} />
                     )}
                   </div>
                 </div>
-              )}
-
-              {/* Solution Claim + Evidence */}
-              {subsection.solutionClaim && (
-                <div>
-                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-                    Solution
-                  </div>
-                  <div className="px-4 py-3 bg-green-50 border border-green-100 rounded-xl">
-                    <p className="text-sm font-medium text-green-900 leading-relaxed">
-                      {subsection.solutionClaim}
-                    </p>
-                    {subsection.solutionEvidence && subsection.solutionEvidence.length > 0 && (
-                      <EvidenceDropdown
-                        items={subsection.solutionEvidence}
-                        label="Solution evidence"
-                        color="green"
-                      />
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Options */}
-              {subsection.options && subsection.options.length > 0 && (
-                <div>
-                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-                    Options — paths forward ranked by evidence
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {subsection.options
-                      .sort((a: any, b: any) => (b.isOptimal ? 1 : 0) - (a.isOptimal ? 1 : 0))
-                      .map((option: any) => (
-                        <OptionCard key={option.id} option={option} />
-                      ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Where things stand + what you can do */}
-              {subsection.whereThingsStand && subsection.whereThingsStand.length > 0 && (
-                <div>
-                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">
-                    Actions
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    {/* Personal */}
-                    {subsection.whereThingsStand.filter((e: any) => e.branch === 'personal').length > 0 && (
-                      <div>
-                        <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest mb-2 flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-blue-400" />
-                          Personal
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          {subsection.whereThingsStand
-                            .filter((e: any) => e.branch === 'personal')
-                            .map((entry: any) => (
-                              <WhereThingsStandCard key={entry.id} entry={entry} />
-                            ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Public */}
-                    {subsection.whereThingsStand.filter((e: any) => 
-                      ['local', 'state', 'national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
-                    ).length > 0 && (
-                      <div>
-                        <div className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-2 flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-amber-400" />
-                          Public sector
-                        </div>
-                        <div className="flex flex-col gap-3">
-
-                          {/* Local */}
-                          {subsection.whereThingsStand.filter((e: any) => e.branch === 'local').length > 0 && (
-                            <PublicTierGroup
-                              label="Local"
-                              color="text-green-700"
-                              entries={subsection.whereThingsStand.filter((e: any) => e.branch === 'local')}
-                            />
-                          )}
-
-                          {/* State */}
-                          {subsection.whereThingsStand.filter((e: any) => e.branch === 'state').length > 0 && (
-                            <PublicTierGroup
-                              label="State"
-                              color="text-purple-700"
-                              entries={subsection.whereThingsStand.filter((e: any) => e.branch === 'state')}
-                            />
-                          )}
-
-                          {/* National */}
-                          {subsection.whereThingsStand.filter((e: any) => 
-                            ['national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
-                          ).length > 0 && (
-                            <NationalGroup
-                              entries={subsection.whereThingsStand.filter((e: any) => 
-                                ['national_legislative', 'national_judicial', 'national_executive'].includes(e.branch)
-                              )}
-                            />
-                          )}
-
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Private */}
-                    {subsection.whereThingsStand.filter((e: any) => e.branch === 'private').length > 0 && (
-                      <div>
-                        <div className="text-xs font-semibold text-stone-600 uppercase tracking-widest mb-2 flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-stone-400" />
-                          Private sector
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          {subsection.whereThingsStand
-                            .filter((e: any) => e.branch === 'private')
-                            .map((entry: any) => (
-                              <WhereThingsStandCard key={entry.id} entry={entry} />
-                            ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {subsection.historicalPrecedents && subsection.historicalPrecedents.length > 0 && (
+        <div className="pb-3">
+          <div className="flex items-center gap-2 my-3">
+            <div className="h-px flex-1 bg-green-100" />
+            <div className="text-xs font-semibold text-green-700 uppercase tracking-widest px-2">What's worked historically</div>
+            <div className="h-px flex-1 bg-green-100" />
+          </div>
+          <div className="flex flex-col gap-2">
+            {subsection.historicalPrecedents.map((p: any, i: number) => (
+              <HistoricalPrecedentBlock key={i} precedent={p} color={ringColor} />
+            ))}
+          </div>
+        </div>
+      )}
+      {subsection.policyWatch && (
+        <div className="pb-3">
+          <div className="flex items-center gap-2 my-3">
+            <div className="h-px flex-1 bg-blue-100" />
+            <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest px-2">Policy watch</div>
+            <div className="h-px flex-1 bg-blue-100" />
+          </div>
+          {subsection.policyWatch.federal && subsection.policyWatch.federal.length > 0 && (
+            <div className="mb-3">
+              <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Federal</div>
+              <div className="flex flex-col gap-2">
+                {subsection.policyWatch.federal.map((entry: any) => (
+                  <PolicyWatchEntryBlock key={entry.id} entry={entry} />
+                ))}
+              </div>
             </div>
-          ) : (
-            /* Legacy architecture */
-            <div>
-              {/* Bullets */}
-              {subsection.bullets && subsection.bullets.length > 0 && (
-                <div className="px-3 pt-3 pb-2">
-                  <div className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-2">The evidence</div>
-                  <ul className="space-y-3">
-                    {subsection.bullets.map((bullet: any, i: number) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-stone-300 shrink-0 mt-0.5 font-bold text-xs">→</span>
-                        <div className="flex-1">
-                          <p className="text-xs text-stone-600 leading-relaxed mb-1">{bullet.text}</p>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-xs text-stone-400 italic">
-                              {bullet.sourceUrl ? (
-                                <a href={bullet.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-600 transition-colors">
-                                  {bullet.source}
-                                </a>
-                              ) : bullet.source}
-                            </span>
-                            {bullet.sourceGrade && (
-                              <TrustBadge
-                                grade={bullet.sourceGrade}
-                                explanation={bullet.sourceGradeExplanation ?? ''}
-                              />
-                            )}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* What's worked historically */}
-              {subsection.historicalPrecedents && subsection.historicalPrecedents.length > 0 && (
-                <div className="px-3 pb-3">
-                  <div className="flex items-center gap-2 my-3">
-                    <div className="h-px flex-1 bg-green-100" />
-                    <div className="text-xs font-semibold text-green-700 uppercase tracking-widest px-2">
-                      What's worked historically
-                    </div>
-                    <div className="h-px flex-1 bg-green-100" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {subsection.historicalPrecedents.map((p: any, i: number) => (
-                      <HistoricalPrecedentBlock key={i} precedent={p} color={ringColor} />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Policy Watch */}
-              {subsection.policyWatch && (
-                <div className="px-3 pb-3">
-                  <div className="flex items-center gap-2 my-3">
-                    <div className="h-px flex-1 bg-blue-100" />
-                    <div className="text-xs font-semibold text-blue-700 uppercase tracking-widest px-2">
-                      Policy watch
-                    </div>
-                    <div className="h-px flex-1 bg-blue-100" />
-                  </div>
-                  {subsection.policyWatch.federal && subsection.policyWatch.federal.length > 0 && (
-                    <div className="mb-3">
-                      <div className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">Federal</div>
-                      <div className="flex flex-col gap-2">
-                        {subsection.policyWatch.federal.map((entry: any) => (
-                          <PolicyWatchEntryBlock key={entry.id} entry={entry} />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {subsection.policyWatch.stateTeaser && (
-                    <div className="mb-2 flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
-                      <span className="text-stone-300 shrink-0">🔒</span>
-                      <div className="flex-1">
-                        <div className="text-xs font-medium text-stone-400">State policy watch</div>
-                        <div className="text-xs text-stone-300">{subsection.policyWatch.stateTeaser}</div>
-                      </div>
-                      <span className="text-xs text-stone-300 shrink-0">Civic tier</span>
-                    </div>
-                  )}
-                  {subsection.policyWatch.localTeaser && (
-                    <div className="flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
-                      <span className="text-stone-300 shrink-0">🔒</span>
-                      <div className="flex-1">
-                        <div className="text-xs font-medium text-stone-400">Local policy watch</div>
-                        <div className="text-xs text-stone-300">{subsection.policyWatch.localTeaser}</div>
-                      </div>
-                      <span className="text-xs text-stone-300 shrink-0">Community tier</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* What you can do — legacy */}
-              {!subsection.contextOnly && subsection.actions && subsection.actions.length > 0 && (
-                <div className="px-3 pb-3">
-                  <div className="flex items-center gap-2 my-3">
-                    <div className="h-px flex-1 bg-stone-200" />
-                    <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">
-                      What you can do
-                    </div>
-                    <div className="h-px flex-1 bg-stone-200" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {['personal', 'local', 'state', 'national'].map(tier => {
-                      const tierActions = subsection.actions.filter((a: any) => a.tier === tier)
-                      if (tierActions.length === 0) return null
-                      const isLocked = tier === 'local' || tier === 'state'
-                      const tierColors: Record<string, string> = {
-                        personal: 'text-blue-700',
-                        local:    'text-green-700',
-                        state:    'text-purple-700',
-                        national: 'text-amber-700',
-                      }
-                      const tierLabels: Record<string, string> = {
-                        personal: 'Personal',
-                        local:    'Local',
-                        state:    'State',
-                        national: 'National',
-                      }
-                      return (
-                        <div key={tier}>
-                          <div className={clsx('text-xs font-semibold uppercase tracking-widest mb-1.5 flex items-center gap-1.5', tierColors[tier])}>
-                            {isLocked && <span>🔒</span>}
-                            {tierLabels[tier]}
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            {tierActions.map((a: any, i: number) => (
-                              <DriverActionCard key={i} action={a} isLocked={isLocked} />
-                            ))}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {subsection.contextOnly && (
-                <div className="px-3 pb-3">
-                  <p className="text-xs text-stone-400 italic">
-                    This section provides context for understanding the structural driver. Actions to address this are included in other subsections above.
-                  </p>
-                </div>
-              )}
+          )}
+          {subsection.policyWatch.stateTeaser && (
+            <div className="mb-2 flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
+              <span className="text-stone-300 shrink-0">🔒</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-medium text-stone-400">State policy watch</div>
+                <div className="text-xs text-stone-300">{subsection.policyWatch.stateTeaser}</div>
+              </div>
+              <span className="text-xs text-stone-300 shrink-0">Civic tier</span>
+            </div>
+          )}
+          {subsection.policyWatch.localTeaser && (
+            <div className="flex items-center gap-3 px-3 py-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-lg">
+              <span className="text-stone-300 shrink-0">🔒</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-medium text-stone-400">Local policy watch</div>
+                <div className="text-xs text-stone-300">{subsection.policyWatch.localTeaser}</div>
+              </div>
+              <span className="text-xs text-stone-300 shrink-0">Community tier</span>
             </div>
           )}
         </div>
       )}
+      {!subsection.contextOnly && subsection.actions && subsection.actions.length > 0 && (
+        <div className="pb-3">
+          <div className="flex items-center gap-2 my-3">
+            <div className="h-px flex-1 bg-stone-200" />
+            <div className="text-xs font-semibold text-stone-900 uppercase tracking-widest px-2">What you can do</div>
+            <div className="h-px flex-1 bg-stone-200" />
+          </div>
+          <div className="flex flex-col gap-2">
+            {['personal', 'local', 'state', 'national'].map(tier => {
+              const tierActions = subsection.actions.filter((a: any) => a.tier === tier)
+              if (tierActions.length === 0) return null
+              const isLocked = tier === 'local' || tier === 'state'
+              const tierColors: Record<string, string> = {
+                personal: 'text-blue-700', local: 'text-green-700',
+                state: 'text-purple-700', national: 'text-amber-700',
+              }
+              const tierLabels: Record<string, string> = {
+                personal: 'Personal', local: 'Local', state: 'State', national: 'National',
+              }
+              return (
+                <div key={tier}>
+                  <div className={clsx('text-xs font-semibold uppercase tracking-widest mb-1.5 flex items-center gap-1.5', tierColors[tier])}>
+                    {isLocked && <span>🔒</span>}{tierLabels[tier]}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {tierActions.map((a: any, i: number) => (
+                      <DriverActionCard key={i} action={a} isLocked={isLocked} />
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+      {subsection.contextOnly && (
+        <p className="text-xs text-stone-400 italic pb-3">
+          This section provides context for understanding the structural driver. Actions are included in other subsections above.
+        </p>
+      )}
     </div>
+  )
+
+  return (
+    <>
+      {/* Mobile — full screen drawer */}
+      <div className="sm:hidden">
+        <button
+          onClick={() => setOpen(true)}
+          className="w-full text-left px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-lg flex items-center justify-between gap-2"
+        >
+          <div>
+            <div className="text-xs font-semibold text-stone-800">{subsection.label}</div>
+            {subsection.lastUpdated && (
+              <div className="text-xs text-stone-400 mt-0.5">Updated {subsection.lastUpdated}</div>
+            )}
+          </div>
+          <span className="text-stone-400 shrink-0 text-sm">→</span>
+        </button>
+
+        {open && (
+          <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between gap-2">
+              <div className="text-sm font-semibold text-stone-900 leading-snug">{subsection.label}</div>
+              <button
+                onClick={() => setOpen(false)}
+                className="text-stone-400 hover:text-stone-700 text-lg font-light shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="px-4 py-4">
+              {content}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop — inline expand */}
+      <div className="hidden sm:block border border-stone-200 rounded-lg overflow-hidden">
+        <button
+          onClick={() => setOpen(o => !o)}
+          className="w-full text-left px-3 py-2.5 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between gap-2"
+        >
+          <div>
+            <div className="text-xs font-semibold text-stone-800">{subsection.label}</div>
+            {subsection.lastUpdated && (
+              <div className="text-xs text-stone-400 mt-0.5">Updated {subsection.lastUpdated}</div>
+            )}
+          </div>
+          <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
+        </button>
+        {open && (
+          <div className="border-t border-stone-100 px-4 py-4">
+            {content}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
@@ -2031,6 +1997,7 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                 {/* Data points — collapsible */}
                 <CollapsibleSection
                   title="Drivers of preventable death"
+                  subtitle="The factors below contribute to preventable cardiovascular deaths. Click any to see the mechanism, evidence, and what you can do."
                   defaultOpen={false}
                   dark={false}
                 >
