@@ -170,9 +170,8 @@ function TrustBadge({ grade, explanation, howToUse, checklist }: {
           <div className="font-bold text-sm">Grade {grade}</div>
           <div className="opacity-80 text-xs">{gradeGuidance[grade]}</div>
         </div>
-        <div className="text-right opacity-70 text-xs">
-          <div>{criticalPassing}/{criticalTotal} critical</div>
-          <div>criteria met</div>
+        <div className="text-right opacity-70 text-xs whitespace-nowrap">
+          {criticalPassing}/{criticalTotal} critical criteria met
         </div>
       </div>
 
