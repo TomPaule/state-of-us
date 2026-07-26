@@ -36,7 +36,9 @@ export default function Nav() {
     } else {
       document.body.style.overflow = ''
     }
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [menuOpen])
 
   async function handleSignOut() {
@@ -113,7 +115,7 @@ export default function Nav() {
 
       {/* Mobile menu drawer */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-14 bottom-0 z-[100] bg-white border-t border-stone-200 overflow-y-auto">
+        <div className="md:hidden absolute left-0 right-0 top-full z-[100] bg-white border-t border-b border-stone-200 shadow-lg max-h-screen overflow-y-auto">
           <nav className="flex flex-col p-4 gap-1">
             {links.map(({ href, label }) => {
               const active = path === href
