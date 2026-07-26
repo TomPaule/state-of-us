@@ -113,7 +113,7 @@ export default function Nav() {
 
       {/* Mobile menu drawer */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 top-14 z-40 bg-white border-t border-stone-200 overflow-y-auto">
+        <div className="md:hidden fixed inset-x-0 top-14 bottom-0 z-[100] bg-white border-t border-stone-200 overflow-y-auto">
           <nav className="flex flex-col p-4 gap-1">
             {links.map(({ href, label }) => {
               const active = path === href
