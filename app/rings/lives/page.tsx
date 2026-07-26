@@ -119,8 +119,8 @@ function TrustBadge({ grade, explanation, methodology }: {
       >
         Data Quality: {grade} <span className="opacity-60">▾</span>
       </button>
-      {show && (
-        <div className="absolute left-0 top-7 z-20 w-72 max-w-[calc(100vw-2rem)] bg-white border border-stone-200 rounded-xl p-4 shadow-xl text-xs leading-relaxed">
+     {show && (
+        <div className="fixed inset-x-4 top-auto z-50 bg-white border border-stone-200 rounded-xl p-4 shadow-xl text-xs leading-relaxed mx-auto max-w-sm">
           {/* Grade header */}
           <div className="flex items-center gap-2 mb-3">
             <span className={clsx('px-2 py-0.5 rounded border font-bold text-sm', colors[grade])}>
@@ -666,7 +666,7 @@ function EvidenceDropdown({ items, label, color }: { items: any[]; label: string
       {open && (
         <div className="mt-2 flex flex-col gap-2">
           {items.map((ev: any) => (
-            <div key={ev.id} className="px-3 py-2.5 bg-white border border-stone-100 rounded-lg">
+            <div key={ev.id} className="px-2 py-2 sm:px-3 sm:py-2.5 bg-white border border-stone-100 rounded-lg">
               <div className="flex items-start justify-between gap-2 mb-1">
                 <div className="text-xs font-medium text-stone-700">{ev.claim}</div>
                 <TrustBadge grade={ev.grade} explanation={ev.gradeExplanation} />
@@ -707,7 +707,7 @@ function OptionCard({ option }: { option: any }) {
         <span className={clsx('text-stone-400 shrink-0 transition-transform duration-200', open && 'rotate-180')}>▾</span>
       </button>
       {open && (
-        <div className="px-2 pb-3 sm:px-4 sm:pb-4 border-t border-stone-100">
+        <div className="px-1 pb-2 sm:px-4 sm:pb-4 border-t border-stone-100">
           {/* Pros */}
           {option.pros && option.pros.length > 0 && (
             <div className="mt-3">
@@ -1074,7 +1074,7 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
       {open && (
         <div className="border-t border-stone-100">
           {hasNewArchitecture ? (
-            <div className="px-2 py-3 sm:px-4 sm:py-4 flex flex-col gap-4 sm:gap-6">
+            <div className="px-1 py-3 sm:px-4 sm:py-4 flex flex-col gap-4 sm:gap-6">
 
               {/* Issue Claim + Evidence */}
               {subsection.issueClaim && (
@@ -2031,8 +2031,8 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                 {/* Data points — collapsible */}
                 <CollapsibleSection
                   title="Drivers of preventable death"
-                  defaultOpen={true}
-                  dark={true}
+                  defaultOpen={false}
+                  dark={false}
                 >
                   <div className="flex flex-col gap-4">
                     {cat.dataPoints.map(dp => (
@@ -2043,8 +2043,8 @@ function CategoryAccordion({ cat, ringColor }: { cat: Category; ringColor: strin
                 {/* Frontier research */}
                 {cat.frontierResearch && cat.frontierResearch.length > 0 && (
                   <CollapsibleSection
-                    title="The frontier — deaths we can't yet prevent"
-                    subtitle="~500,000 cardiovascular deaths per year are not currently preventable. Here's what's on the horizon."
+                    title="What science is building toward"
+                    subtitle="~500,000 cardiovascular deaths per year are not yet preventable. Here's what's on the horizon and how you can accelerate it."
                     defaultOpen={false}
                     dark={false}
                   >
