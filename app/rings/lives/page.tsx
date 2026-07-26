@@ -95,29 +95,15 @@ function TrustBadge({ grade, explanation, howToUse, checklist }: {
   const [show, setShow] = useState(false)
 
   React.useEffect(() => {
-    if (show) {
-      const scrollY = window.scrollY
+    if (show) { // or `open` for SubsectionBlock
       document.body.style.overflow = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.top = `-${scrollY}px`
     } else {
-      const scrollY = document.body.style.top
       document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
-      window.scrollTo(0, parseInt(scrollY || '0') * -1)
     }
     return () => {
-      const scrollY = document.body.style.top
       document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
-      if (scrollY) window.scrollTo(0, parseInt(scrollY) * -1)
     }
-  }, [show])
+  }, [show]) // or [open]
 
   const gradeColors: Record<string, string> = {
     A: 'bg-green-50 text-green-700 border-green-200',
@@ -252,7 +238,7 @@ function TrustBadge({ grade, explanation, howToUse, checklist }: {
       {show && (
         <>
           {/* Mobile — full screen drawer */}
-          <div className="sm:hidden fixed inset-0 z-[200] bg-white overflow-y-auto">
+          <div className="sm:hidden fixed inset-0 z-[200] bg-white overflow-y-auto overscroll-none">
             <div className="sticky top-0 bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between">
               <div className="font-semibold text-stone-900 text-sm">Data Quality: Grade {grade}</div>
               <button
@@ -1122,26 +1108,12 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
   const [open, setOpen] = useState(false)
  React.useEffect(() => {
     if (open) {
-      const scrollY = window.scrollY
       document.body.style.overflow = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.top = `-${scrollY}px`
     } else {
-      const scrollY = document.body.style.top
       document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
-      window.scrollTo(0, parseInt(scrollY || '0') * -1)
     }
     return () => {
-      const scrollY = document.body.style.top
       document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
-      if (scrollY) window.scrollTo(0, parseInt(scrollY) * -1)
     }
   }, [open])
 
@@ -1396,7 +1368,7 @@ function SubsectionBlock({ subsection, ringColor }: { subsection: any; ringColor
         </button>
 
         {open && (
-          <div className="fixed inset-0 z-50 bg-white overflow-y-auto" style={{ touchAction: 'pan-y' }}>
+          <div className="fixed inset-0 z-50 bg-white overflow-y-auto overscroll-none">
             <div className="sticky top-0 bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between gap-2">
               <div className="text-sm font-semibold text-stone-900 leading-snug">{subsection.label}</div>
               <button
